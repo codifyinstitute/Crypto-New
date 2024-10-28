@@ -81,9 +81,9 @@ function App() {
         <Route path="/admin/query" element={<AdminQueries />} />
         <Route path="/star" element={<Starreview />} />
         <Route path="/wallet" element={<Wallet/>} />
-        <Route path="/paymentmethod" element={<PaymentMethod/>} />
-        <Route path="/banktransfer" element={<BankTransfer/>} />
-        <Route path="/cardtransfer" element={<CardTransfer/>} />
+        <Route path="/payment-method" element={<PaymentMethod/>} />
+        <Route path="/bank-transfer" element={<BankTransfer/>} />
+        <Route path="/card-transfer" element={<CardTransfer/>} />
       </Routes>
     </ThemeProvider>
   );

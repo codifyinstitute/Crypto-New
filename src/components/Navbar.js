@@ -1,8 +1,10 @@
 import styled from "styled-components";
 import { NavLink, useNavigate, useLocation } from "react-router-dom";
+import { useDispatch, useSelector } from 'react-redux';
+import { changeCountry } from '../features/country/countrySlice';
 import logo1 from "../assets/logoM1.png";
 import { UserRound, CircleUser, CirclePlus } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { GiWallet } from "react-icons/gi";
 import { RiHome5Fill } from "react-icons/ri";
@@ -13,12 +15,12 @@ import { CgProfile } from "react-icons/cg";
 
 
 // Import country flags
-import usaFlag from "../assets/USD AMERICA.jpg";
-import dubaiFlag from "../assets/AED DUBAI.jpg";
-import indiaFlag from "../assets/INR INDIA.jpg";
-import BrazilFlag from "../assets/BRL BRAZIL.jpg";
-import ukFlag from "../assets/GBP UK.jpg";
-import EuropeFlag from "../assets/EURO  EUROPEAN UNION.jpg";
+import USA from "../assets/USD AMERICA.jpg";
+import Dubai from "../assets/AED DUBAI.jpg";
+import India from "../assets/INR INDIA.jpg";
+import Brazil from "../assets/BRL BRAZIL.jpg";
+import UK from "../assets/GBP UK.jpg";
+import Euro from "../assets/EURO  EUROPEAN UNION.jpg";
 import Tether from "../assets/tether2.png";
 
 // Main Navbar container
@@ -278,21 +280,43 @@ img{
     top: 69px;
   }
 `;
+
+const countryFlags = {
+  India: India,
+  Brazil: Brazil,
+  UK: UK,
+  Euro: Euro,
+  Dubai: Dubai,
+  USA: USA,
+};
+
+
 // Navbar component
 const Navbar = () => {
+  const selectedCountryStore = useSelector((state) => state.country.value);
+  const dispatch = useDispatch();
+  const [selectedCountry, setSelectedCountry] = useState({
+    name: selectedCountryStore,
+    flag: countryFlags[selectedCountryStore] || '', // Set initial flag based on store value
+  });
   const navigate = useNavigate();
   const location = useLocation();
   const token = localStorage.getItem("token");
 
-  const [selectedCountry, setSelectedCountry] = useState({
-    name: "India",
-    flag: indiaFlag,
-  });
+  useEffect(() => {
+    const data = localStorage.getItem("Country");
+    dispatch(changeCountry(data));
+    setSelectedCountry({
+        name: selectedCountryStore,
+        flag: countryFlags[selectedCountryStore] || '', // Update flag when selected country changes
+    });
+}, [selectedCountryStore]);
+
 
   const handleDepositClick = () => {
     navigate("/deposit");
   };
-  const handleWalletClick=()=>{
+  const handleWalletClick = () => {
     navigate("/wallet")
   }
 
@@ -309,6 +333,11 @@ const Navbar = () => {
   const toggleDropdown = () => {
     setDropdownOpen((prev) => !prev);
   };
+
+  const handelCountryChange = (country) =>{
+    dispatch(changeCountry(country));
+    localStorage.setItem("Country", country);
+  }
   return (
     <>
       <NavbarContainer>
@@ -362,18 +391,18 @@ const Navbar = () => {
             }}
           >
           </NavLink>
-            <DepositButton2 onClick={handleWalletClick}>
+          <DepositButton2 onClick={handleWalletClick}>
             <img src={Tether} alt="logo" />
 
-             
-              <span style={{ textAlign: "center", fontWeight: "bold" }}>
-                0
-              </span>{" "}
-              &nbsp;
-              &nbsp;
-              <GiWallet style={{ fontSize: "18px", color: "black" }} />
-              {/* Balance display below avatar */}
-            </DepositButton2>
+
+            <span style={{ textAlign: "center", fontWeight: "bold" }}>
+              0
+            </span>{" "}
+            &nbsp;
+            &nbsp;
+            <GiWallet style={{ fontSize: "18px", color: "black" }} />
+            {/* Balance display below avatar */}
+          </DepositButton2>
           {/* <NavLink to="/deposit" style={{ textDecoration: 'none' }}>
             <DepositButton onClick={handleDepositClick}>
                 <CirclePlus size={20}/>DEPOSIT
@@ -381,7 +410,7 @@ const Navbar = () => {
           </NavLink> */}
 
           <DepositButton onClick={toggleDropdown}>
-            {selectedCountry.flag && (
+            {selectedCountry && (
               <img
                 src={selectedCountry.flag}
                 alt={`${selectedCountry.name} Flag`}
@@ -397,65 +426,71 @@ const Navbar = () => {
           </DepositButton>
 
           {isDropdownOpen && (
-  <DropdownMenu isVisible={isDropdownOpen}>
-    <div
-      onClick={() => {
-        setSelectedCountry({ name: "India", flag: indiaFlag });
-        setDropdownOpen(false); // Close dropdown
-      }}
-    >
-      <img src={indiaFlag} alt="India Flag" /> 
-      <p style={{ fontWeight: "bold" }}>India <p style={{ color: "gray" }}>INR</p></p>
-    </div>
-    <div
-      onClick={() => {
-        setSelectedCountry({ name: "Brazil", flag: BrazilFlag });
-        setDropdownOpen(false); // Close dropdown
-      }}
-    >
-      <img src={BrazilFlag} alt="Brazil Flag" /> 
-      <p style={{ fontWeight: "bold" }}>Brazil <p style={{ color: "gray" }}>BRL</p></p>
-    </div>
-   
-    <div
-      onClick={() => {
-        setSelectedCountry({ name: "UK", flag: ukFlag });
-        setDropdownOpen(false); // Close dropdown
-      }}
-    >
-      <img src={ukFlag} alt="UK Flag" /> 
-      <p style={{ fontWeight: "bold" }}>United Kingdom<p style={{ color: "gray" }}>GBP</p></p>
-    </div>
-    <div
-      onClick={() => {
-        setSelectedCountry({ name: "Euro", flag: EuropeFlag });
-        setDropdownOpen(false); // Close dropdown
-      }}
-    >
-      <img src={EuropeFlag} alt="Europe Flag" /> 
-      <p style={{ fontWeight: "bold" }}>European Union <p style={{ color: "gray" }}>EUR</p></p>
-    </div>
-    <div
-      onClick={() => {
-        setSelectedCountry({ name: "Dubai", flag: dubaiFlag });
-        setDropdownOpen(false); // Close dropdown
-      }}
-    >
-      <img src={dubaiFlag} alt="Dubai Flag" /> 
-      <p style={{ fontWeight: "bold" }}>United Arab Emirates <p style={{ color: "gray" }}>AED</p></p>
-    </div>
-    <div
-      onClick={() => {
-        setSelectedCountry({ name: "USA", flag: usaFlag });
-        setDropdownOpen(false); // Close dropdown
-      }}
-    >
-      <img src={usaFlag} alt="USA Flag" /> 
-      <p style={{ fontWeight: "bold" }}>United State of America<p style={{ color: "gray" }}>USD</p></p>
-    </div>
-  
-  </DropdownMenu>
-)}
+            <DropdownMenu isVisible={isDropdownOpen}>
+              <div
+                onClick={() => {
+                  handelCountryChange("India")
+                  setSelectedCountry({ name: "India", flag: India });
+                  setDropdownOpen(false); // Close dropdown
+                }}
+              >
+                <img src={India} alt="India Flag" />
+                <p style={{ fontWeight: "bold" }}>India <p style={{ color: "gray" }}>INR</p></p>
+              </div>
+              <div
+                onClick={() => {
+                  handelCountryChange("Brazil")
+                  setSelectedCountry({ name: "Brazil", flag: Brazil });
+                  setDropdownOpen(false); // Close dropdown
+                }}
+              >
+                <img src={Brazil} alt="Brazil Flag" />
+                <p style={{ fontWeight: "bold" }}>Brazil <p style={{ color: "gray" }}>BRL</p></p>
+              </div>
+
+              <div
+                onClick={() => {
+                  handelCountryChange("UK")
+                  setSelectedCountry({ name: "UK", flag: UK });
+                  setDropdownOpen(false); // Close dropdown
+                }}
+              >
+                <img src={UK} alt="UK Flag" />
+                <p style={{ fontWeight: "bold" }}>United Kingdom<p style={{ color: "gray" }}>GBP</p></p>
+              </div>
+              <div
+                onClick={() => {
+                  handelCountryChange("Euro")
+                  setSelectedCountry({ name: "Euro", flag: Euro });
+                  setDropdownOpen(false); // Close dropdown
+                }}
+              >
+                <img src={Euro} alt="Europe Flag" />
+                <p style={{ fontWeight: "bold" }}>European Union <p style={{ color: "gray" }}>EUR</p></p>
+              </div>
+              <div
+                onClick={() => {
+                  handelCountryChange("Dubai")
+                  setSelectedCountry({ name: "Dubai", flag: Dubai });
+                  setDropdownOpen(false); // Close dropdown
+                }}
+              >
+                <img src={Dubai} alt="Dubai Flag" />
+                <p style={{ fontWeight: "bold" }}>United Arab Emirates <p style={{ color: "gray" }}>AED</p></p>
+              </div>
+              <div
+                onClick={() => {
+                  handelCountryChange("USA")
+                  setSelectedCountry({ name: "USA", flag: USA });
+                  setDropdownOpen(false); // Close dropdown
+                }}
+              >
+                <img src={USA} alt="USA Flag" />
+                <p style={{ fontWeight: "bold" }}>United State of America<p style={{ color: "gray" }}>USD</p></p>
+              </div>
+
+            </DropdownMenu>
+          )}
 
         </div>
       </NavbarContainer>
@@ -464,8 +499,7 @@ const Navbar = () => {
       <NavbarWrapper>
         <NavLinksMobile>
           <li>
-            <NavLink exact to="/" activeClassName="active"><RiHome5Fill style={{fontSize:"25px"}} /><br></br>
-
+            <NavLink exact to="/" activeClassName="active"><RiHome5Fill style={{ fontSize: "25px" }} /><br></br>
               Home
             </NavLink>
           </li>
@@ -475,7 +509,7 @@ const Navbar = () => {
               className={isExchangeActive ? "active" : ""}
               onClick={handleExchangeClick}
             >
-              <RiExchangeFill style={{fontSize:"25px"}}/><br></br>
+              <RiExchangeFill style={{ fontSize: "25px" }} /><br></br>
 
               Exchange
             </NavLink>
@@ -487,7 +521,7 @@ const Navbar = () => {
           <li>
             {token ? (
               <NavLink to="/Profile" activeClassName="active">
-                <CgProfile style={{fontSize:"25px"}}/><br></br>
+                <CgProfile style={{ fontSize: "25px" }} /><br></br>
 
                 Profile
               </NavLink>
