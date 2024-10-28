@@ -40,6 +40,9 @@ import DepositHistory from './components/DepositHistory';
 import Withdraw from './components/Withdraw';
 import SellHistory from './components/SellHistory';
 import Wallet from './components/Wallet';
+import PaymentMethod from './components/PaymentMethod';
+import BankTransfer from './components/BankTransfer';
+import CardTransfer from './components/CardTransfer';
 
 
 function App() {
@@ -78,6 +81,9 @@ function App() {
         <Route path="/admin/query" element={<AdminQueries />} />
         <Route path="/star" element={<Starreview />} />
         <Route path="/wallet" element={<Wallet/>} />
+        <Route path="/paymentmethod" element={<PaymentMethod/>} />
+        <Route path="/banktransfer" element={<BankTransfer/>} />
+        <Route path="/cardtransfer" element={<CardTransfer/>} />
       </Routes>
     </ThemeProvider>
   );
