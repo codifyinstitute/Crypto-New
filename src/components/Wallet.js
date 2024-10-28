@@ -36,6 +36,8 @@ const FormWrapper = styled.div`
 const Part = styled.div`
   background-color: orange;
   width: 100%;
+  border-top-right-radius: 0.5rem;
+  border-top-left-radius: 0.5rem;
   margin-bottom: 20px;
 `;
 
@@ -45,27 +47,11 @@ const FormContainer = styled.div`
   /* padding: 2rem; */
   border-radius: 0.5rem;
   width: 380px;
-  height: 610px;
   max-width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  overflow-y: auto;
-  &::-webkit-scrollbar {
-    width: 10px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: #f1f1f1;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: lightgray;
-  }
-
-  &::-webkit-scrollbar-thumb:hover {
-    background: #555;
-  }
+ 
   @media (max-width: 380px) {
     /* padding: 1rem; */
     margin: 0px 15px;
@@ -75,10 +61,10 @@ const FormContainer = styled.div`
 
 const BackButton = styled.button`
   background-color: transparent;
-  color: white;
+  color: black;
   border: none;
   cursor: pointer;
-  font-size: 22px;
+  font-size: 18px;
   font-weight: bold;
   align-self: flex-start;
   display: flex;
@@ -95,8 +81,8 @@ const WalletIcon = styled.div`
   flex-direction: column;
   align-items: center;
   img {
-    width: 80px;
-    height: 80px;
+    width: 65px;
+    height: 65px;
   }
 `;
 
@@ -104,19 +90,23 @@ const Balance = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 2.5rem;
-  font-weight: bold;
-  color: white;
+  flex-direction: column;
+  font-size: 22px;
+  color: black;
   margin-bottom: 1rem;
+  p{
+  display: flex;
+  align-items: center;
+  }
   img {
     margin-left: 5px;
-    width: 30px;
-    height: 30px;
+    width: 25px;
+    height: 25px;
   }
 `;
 
 const LoginButton = styled.button`
-  background-color: #f7a600;
+  background-color: black;
   color: white;
   font-size: 1.2rem;
   padding: 0.5rem 1rem;
@@ -126,9 +116,12 @@ const LoginButton = styled.button`
   cursor: pointer;
   width: 100%;
   max-width: 300px;
+  border: 1px solid black;
+
 
   &:hover {
-    background-color: #e69500;
+    background-color: white;
+    color: black;
   }
 `;
 
@@ -284,7 +277,7 @@ const Table = styled.table`
 const Subtext = styled.p`
   text-align: center;
   margin-bottom: 16px;
-  color: white;
+  color: black;
   font-size: 14px;
 `;
 const Center = styled.div`
@@ -320,6 +313,7 @@ const TableFooter = styled.p`
 const PriceDisplay = styled.div`
   text-align: center;
   margin-bottom: 16px;
+  color: black;
 `;
 
 const Wallet = () => {
@@ -364,7 +358,7 @@ const dataEntries = [
                   style={{
                     width: "100%",
                     textAlign: "center",
-                    fontSize: "30px",
+                    fontSize: "23px",
                   }}
                 >
                   {" "}
@@ -375,7 +369,8 @@ const dataEntries = [
                 <img src={wallet} alt="wallet"></img>
               </WalletIcon>
               <Balance>
-                400 <img src={coin} alt="coin" />
+               <p style={{fontWeight:"bold"}}> 400 <img src={coin} alt="coin" /></p>
+               <p style={{fontSize:"11px"}}>Total balance</p>
               </Balance>
             </Part>
 
