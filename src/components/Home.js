@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
+import { changeCountry } from '../features/country/countrySlice';
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -34,6 +36,7 @@ import ukFlag from "../assets/GBP UK.jpg";
 import EuropeFlag from "../assets/EURO  EUROPEAN UNION.jpg";
 
 const Home = () => {
+  const selectedCountry = useSelector((state) => state.country.value); 
   const [usdt, setUsdt] = useState(1);
   const [isValid, setIsValid] = useState(true);
   const [currencies, setCurrencies] = useState([]);
@@ -72,6 +75,7 @@ const Home = () => {
   };
 
   useEffect(() => {
+    console.log(selectedCountry)
     fetchTransactionFee();
   }, []);
 
