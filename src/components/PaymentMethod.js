@@ -8,6 +8,7 @@ import { ChevronLeft, Menu } from "lucide-react";
 import { FaUniversity, FaCreditCard } from "react-icons/fa"; // For bank and card icons
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useSelector } from "react-redux";
 
 const PageContainer = styled.div`
   display: flex;
@@ -122,6 +123,7 @@ const ProceedButton = styled.button`
 `;
 
 const PaymentMethod = () => {
+  const selectedCountry = useSelector((state) => state.country.value);
   const navigate = useNavigate();
 
   return (
@@ -158,7 +160,7 @@ const PaymentMethod = () => {
               </button>
             </TabContainer>
 
-            <PaymentOption>
+            <PaymentOption onClick={() => navigate('/bank-transfer')}>
               <IconWrapper>
                 <FaUniversity />
               </IconWrapper>
@@ -169,19 +171,18 @@ const PaymentMethod = () => {
                 </OptionDescription>
               </OptionText>
             </PaymentOption>
-
-            <PaymentOption>
-              <IconWrapper>
-                <FaCreditCard />
-              </IconWrapper>
-              <OptionText>
-                <OptionTitle>Card</OptionTitle>
-                <OptionDescription>
-                  Processing time can take up to 15 min
-                </OptionDescription>
-              </OptionText>
-            </PaymentOption>
-
+            {selectedCountry === "Euro" || selectedCountry === "USA" ?
+              <PaymentOption onClick={() => navigate('/card-transfer')}>
+                <IconWrapper>
+                  <FaCreditCard />
+                </IconWrapper>
+                <OptionText>
+                  <OptionTitle>Card</OptionTitle>
+                  <OptionDescription>
+                    Processing time can take up to 15 min
+                  </OptionDescription>
+                </OptionText>
+              </PaymentOption> : null}
             <ProceedButton>Proceed</ProceedButton>
           </FormContainer>
         </FormWrapper>

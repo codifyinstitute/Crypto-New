@@ -304,6 +304,8 @@ const Navbar = () => {
   const token = localStorage.getItem("token");
 
   useEffect(() => {
+    const data = localStorage.getItem("Country");
+    dispatch(changeCountry(data));
     setSelectedCountry({
         name: selectedCountryStore,
         flag: countryFlags[selectedCountryStore] || '', // Update flag when selected country changes
@@ -331,6 +333,11 @@ const Navbar = () => {
   const toggleDropdown = () => {
     setDropdownOpen((prev) => !prev);
   };
+
+  const handelCountryChange = (country) =>{
+    dispatch(changeCountry(country));
+    localStorage.setItem("Country", country);
+  }
   return (
     <>
       <NavbarContainer>
@@ -422,7 +429,7 @@ const Navbar = () => {
             <DropdownMenu isVisible={isDropdownOpen}>
               <div
                 onClick={() => {
-                  dispatch(changeCountry("India"));
+                  handelCountryChange("India")
                   setSelectedCountry({ name: "India", flag: India });
                   setDropdownOpen(false); // Close dropdown
                 }}
@@ -432,7 +439,7 @@ const Navbar = () => {
               </div>
               <div
                 onClick={() => {
-                  dispatch(changeCountry("Brazil"));
+                  handelCountryChange("Brazil")
                   setSelectedCountry({ name: "Brazil", flag: Brazil });
                   setDropdownOpen(false); // Close dropdown
                 }}
@@ -443,7 +450,7 @@ const Navbar = () => {
 
               <div
                 onClick={() => {
-                  dispatch(changeCountry("UK"));
+                  handelCountryChange("UK")
                   setSelectedCountry({ name: "UK", flag: UK });
                   setDropdownOpen(false); // Close dropdown
                 }}
@@ -453,7 +460,7 @@ const Navbar = () => {
               </div>
               <div
                 onClick={() => {
-                  dispatch(changeCountry("Euro"));
+                  handelCountryChange("Euro")
                   setSelectedCountry({ name: "Euro", flag: Euro });
                   setDropdownOpen(false); // Close dropdown
                 }}
@@ -463,7 +470,7 @@ const Navbar = () => {
               </div>
               <div
                 onClick={() => {
-                  dispatch(changeCountry("Dubai"));
+                  handelCountryChange("Dubai")
                   setSelectedCountry({ name: "Dubai", flag: Dubai });
                   setDropdownOpen(false); // Close dropdown
                 }}
@@ -473,7 +480,7 @@ const Navbar = () => {
               </div>
               <div
                 onClick={() => {
-                  dispatch(changeCountry("USA"));
+                  handelCountryChange("USA")
                   setSelectedCountry({ name: "USA", flag: USA });
                   setDropdownOpen(false); // Close dropdown
                 }}
@@ -493,7 +500,6 @@ const Navbar = () => {
         <NavLinksMobile>
           <li>
             <NavLink exact to="/" activeClassName="active"><RiHome5Fill style={{ fontSize: "25px" }} /><br></br>
-
               Home
             </NavLink>
           </li>
