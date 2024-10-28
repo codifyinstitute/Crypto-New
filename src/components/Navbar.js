@@ -257,9 +257,10 @@ img{
     font-size: 14px;
     cursor: pointer;
     display: flex;
+    text-align: right;
     align-items: center;
-    /* justify-content: space-between; */
-    gap:2rem;
+    justify-content: space-between;
+    /* gap:2rem; */
     transition: background-color 0.2s ease, color 0.2s ease;
     @media (max-width: 769px) {
       font-size: 12px;

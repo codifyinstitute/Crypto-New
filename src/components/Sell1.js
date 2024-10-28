@@ -797,7 +797,7 @@ const Sell1 = () => {
       );
       const token = localStorage.getItem("token");
       if (token) {
-        navigate("/Sell3", {
+        navigate("/payment-method", {
           state: { amount: usdt, symbol: selectedCurrency.Symbol },
         });
       } else {
