@@ -306,12 +306,19 @@ const Navbar = () => {
 
   useEffect(() => {
     const data = localStorage.getItem("Country");
-    dispatch(changeCountry(data));
-    setSelectedCountry({
+    if (data) {
+      dispatch(changeCountry(data));
+      setSelectedCountry({
         name: selectedCountryStore,
-        flag: countryFlags[selectedCountryStore] || '', // Update flag when selected country changes
-    });
-}, [selectedCountryStore]);
+        flag: countryFlags[selectedCountryStore] || '',
+      });
+    }else{
+      setSelectedCountry({
+        name: "India",
+        flag: India,
+      });
+    }
+  }, [selectedCountryStore]);
 
 
   const handleDepositClick = () => {
@@ -335,7 +342,7 @@ const Navbar = () => {
     setDropdownOpen((prev) => !prev);
   };
 
-  const handelCountryChange = (country) =>{
+  const handelCountryChange = (country) => {
     dispatch(changeCountry(country));
     localStorage.setItem("Country", country);
   }

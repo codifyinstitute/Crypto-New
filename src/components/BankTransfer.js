@@ -6,6 +6,7 @@ import Footer from "./Footer";
 import HomeContact from "./HomeContact";
 import { ChevronLeft, Menu } from "lucide-react";
 import { IoArrowForwardOutline } from "react-icons/io5";
+import { useSelector } from "react-redux";
 
 const PageContainer = styled.div`
   display: flex;
@@ -118,6 +119,8 @@ const FormButton = styled.button`
 `;
 
 const BankTransfer = () => {
+  const selectedCountry = useSelector((state) => state.country.value);
+
   const navigate = useNavigate();
 
   return (
@@ -159,9 +162,16 @@ const BankTransfer = () => {
                 <FormInput placeholder="Please enter your First name" />
 
                 <FormLabel>Last Name</FormLabel>
-                <FormInput placeholder="Please enter your Last name" readOnly />
+                <FormInput placeholder="Please enter your Last name" />
+
+                <FormLabel>Bank Name</FormLabel>
+                <FormInput placeholder="Enter Your Bank Name" />
+
+                <FormLabel>Account Number</FormLabel>
+                <FormInput placeholder="Enter Your Account Number" />
+                {selectedCountry === "India" || selectedCountry === "Brazil" || selectedCountry === "UK" || selectedCountry === "Euro" || selectedCountry === "Dubai" || selectedCountry === "USA"}
                 <FormLabel>City</FormLabel>
-                <FormInput placeholder="Please enter City" readOnly />
+                <FormInput placeholder="Please enter City" />
 
                 <FormLabel>State</FormLabel>
                 <FormInput placeholder="Enter Your State" />
@@ -172,9 +182,6 @@ const BankTransfer = () => {
                 <FormLabel>Zip Code</FormLabel>
                 <FormInput placeholder="Enter Your ZipCode" />
 
-                <FormLabel>Bank Name</FormLabel>
-                <FormInput placeholder="Enter Your Bank Name" readOnly />
-
                 <FormLabel>Account Type</FormLabel>
                 <Select>
                   <option value="">Select Account Type</option>
@@ -182,8 +189,7 @@ const BankTransfer = () => {
                   <option value="checking">Checking</option>
                   <option value="deposit">Deposit</option>
                 </Select>
-                <FormLabel>Account Number</FormLabel>
-                <FormInput placeholder="Enter Your Account Number" readOnly />
+
 
                 <FormLabel>ABA Code</FormLabel>
                 <FormInput placeholder="9 Digit" />
