@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { changeCountry } from '../features/country/countrySlice';
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
@@ -35,8 +35,41 @@ import BrazilFlag from "../assets/BRL BRAZIL.jpg";
 import ukFlag from "../assets/GBP UK.jpg";
 import EuropeFlag from "../assets/EURO  EUROPEAN UNION.jpg";
 
+const countryObject = {
+  India: {
+    urlName: "india",
+    symbol: "₹",
+    name: "India"
+  },
+  Brazil: {
+    urlName: "brl",
+    symbol: "R$",
+    name: "Brazil"
+  },
+  UK: {
+    urlName: "uk",
+    symbol: "£",
+    name: "United Kingdom"
+  },
+  Euro: {
+    urlName: "euro",
+    symbol: "€",
+    name: "European Union"
+  },
+  Dubai: {
+    urlName: "aed",
+    symbol: "د.إ",
+    name: "Dubai"
+  },
+  USA: {
+    urlName: "usa",
+    symbol: "$",
+    name: "United States of America"
+  }
+}
+
 const Home = () => {
-  const selectedCountry = useSelector((state) => state.country.value); 
+  const selectedCountry = useSelector((state) => state.country.value);
   const [usdt, setUsdt] = useState(1);
   const [isValid, setIsValid] = useState(true);
   const [currencies, setCurrencies] = useState([]);
@@ -53,11 +86,12 @@ const Home = () => {
   const [isDetailsExpanded, setIsDetailsExpanded] = useState(false);
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const fetchTransactionFee = async () => {
     try {
       const response = await fetch(
-        "https://api.moonpayx.com/static/get/66c445a358802d46d5d70dd4"
+        "http://localhost:8000/static/get/66c445a358802d46d5d70dd4"
       );
       if (!response.ok) {
         throw new Error("Network response was not ok");
@@ -81,7 +115,7 @@ const Home = () => {
 
   useEffect(() => {
     axios
-      .get("https://api.moonpayx.com/currencies/all")
+      .get(`http://localhost:8000/currencies/${countryObject[selectedCountry].urlName}/all`)
       .then((response) => {
         setCurrencies(response.data);
         setSelectedCurrency(response.data[0] || null);
@@ -91,20 +125,34 @@ const Home = () => {
         console.error("Error fetching currencies:", error);
         setLoading(false);
       });
-  }, []);
+  }, [selectedCountry]);
 
   useEffect(() => {
     const fiatCurrencies = [
-      { name: "India", symbol: "INR", image: indiaFlag, short:"India" },
-      { name: "United States of America", symbol: "USD", image: usaFlag, short:"USA" },
-      { name: "United Kingdom", symbol: "GBP", image: ukFlag, short:"UK"},
-      { name: "European Union", symbol: "EUR", image: EuropeFlag, short:"EU" },
-      { name: "Dubai", symbol: "AED", image: dubaiFlag , short:"Dubai"},
-      { name: "Brazil", symbol: "BRL", image: BrazilFlag , short:"Brazil"},
+      { name: "India", symbol: "INR", image: indiaFlag, short: "India" },
+      { name: "United States of America", symbol: "USD", image: usaFlag, short: "USA" },
+      { name: "United Kingdom", symbol: "GBP", image: ukFlag, short: "UK" },
+      { name: "European Union", symbol: "EUR", image: EuropeFlag, short: "EU" },
+      { name: "Dubai", symbol: "AED", image: dubaiFlag, short: "Dubai" },
+      { name: "Brazil", symbol: "BRL", image: BrazilFlag, short: "Brazil" },
     ];
     setFilteredFiatCurrencies(fiatCurrencies);
-    setSelectedFiatCurrency(fiatCurrencies[0] || null); // Set default fiat currency
+
+    // Set default fiat currency based on selectedCountry
+    const defaultFiatCurrency = fiatCurrencies.find(currency =>
+      currency.name === countryObject[selectedCountry].name
+    );
+
+    setSelectedFiatCurrency(defaultFiatCurrency || fiatCurrencies[0]);
   }, []);
+
+  useEffect(() => {
+    const defaultFiatCurrency = filteredFiatCurrencies.find(currency =>
+      currency.name === countryObject[selectedCountry].name
+    );
+
+    setSelectedFiatCurrency(defaultFiatCurrency || filteredFiatCurrencies[0]); // Fallback to the first currency
+  }, [selectedCountry, filteredFiatCurrencies]);
 
   const handleUsdtChange = (e) => {
     const value = e.target.value;
@@ -119,6 +167,11 @@ const Home = () => {
   };
 
   const handleFiatCurrencySelect = (currency) => {
+    // console.log(currency.name)
+    const selectedKey = Object.keys(countryObject).find(key => countryObject[key].name === currency.name);
+    // console.log(selectedKey);
+    dispatch(changeCountry(selectedKey));
+    localStorage.setItem("Country", selectedKey);
     setSelectedFiatCurrency(currency);
     setIsFiatDropdownOpen(false);
   };
@@ -200,10 +253,10 @@ const Home = () => {
           <Newcomp />
           <ExchangeRateBox>
             <RateValue>
-              ₹ {selectedCurrency ? selectedCurrency.Rate : "N/A"}{" "}
+              {countryObject[selectedCountry].symbol} {selectedCurrency ? selectedCurrency.Rate : "N/A"}{" "}
             </RateValue>
             <RateLabel>
-              1 USDT = ₹ {selectedCurrency ? selectedCurrency.Rate : "N/A"}{" "}
+              1 USDT = {countryObject[selectedCountry].symbol} {selectedCurrency ? selectedCurrency.Rate : "N/A"}{" "}
             </RateLabel>
           </ExchangeRateBox>
         </motion.div>
@@ -291,7 +344,7 @@ const Home = () => {
               <InputLabel>Receive</InputLabel>
               <InputContainer>
                 <InputWrapper>
-                  <Input type="text" value={`₹ ${inr.toFixed(2)}`} readOnly />
+                  <Input type="text" value={`${countryObject[selectedCountry].symbol} ${inr.toFixed(2)}`} readOnly />
                   <CurrencyToggle
                     onClick={() => setIsFiatDropdownOpen(!isFiatDropdownOpen)}
                   >
@@ -346,8 +399,8 @@ const Home = () => {
               </InputContainer>
               {/* <OrderSummary>
                 <OrderTitle>Order Summary</OrderTitle>
-                <OrderDetail>Transaction Fee: ₹ {transactionFee}</OrderDetail>
-                <OrderDetail>Network Fee: ₹ {networkFee}</OrderDetail>
+                <OrderDetail>Transaction Fee: ${countryObject[selectedCountry].symbol} {transactionFee}</OrderDetail>
+                <OrderDetail>Network Fee: ${countryObject[selectedCountry].symbol} {networkFee}</OrderDetail>
               </OrderSummary> */}
 
               <OrderSummary>

@@ -854,8 +854,8 @@ const Deposit = () => {
   //   const fetchData = async () => {
   //     try {
   //       const [currenciesResponse, feesResponse] = await Promise.all([
-  //         axios.get('https://api.moonpayx.com/currencies/all'),
-  //         fetch('https://api.moonpayx.com/static/get/66c445a358802d46d5d70dd4')
+  //         axios.get('http://localhost:8000/currencies/all'),
+  //         fetch('http://localhost:8000/static/get/66c445a358802d46d5d70dd4')
   //       ]);
 
   //       setCurrencies(currenciesResponse.data);

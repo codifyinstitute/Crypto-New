@@ -176,7 +176,7 @@ const Component = () => {
 
   const fetchReviews = async () => {
     try {
-        const response = await axios.get('https://api.moonpayx.com/reviews/all');
+        const response = await axios.get('http://localhost:8000/reviews/all');
         setReviews(response.data);
     } catch (error) {
         console.error('Error fetching reviews:', error);
@@ -221,7 +221,7 @@ useEffect(() => {
             {reviews.map((testimonial, index) => (
               <TestimonialCard key={index}>
                 <Avatar>
-                  { <img src={`https://api.moonpayx.com/uploads/${testimonial.Image}`} alt={testimonial.Name} />}
+                  { <img src={`http://localhost:8000/uploads/${testimonial.Image}`} alt={testimonial.Name} />}
                 </Avatar>
                 <TestimonialContent>
                   <h3>{testimonial.Name}</h3>

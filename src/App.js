@@ -69,7 +69,7 @@ function App() {
         <Route path="/sellhistory" element={<SellHistory />} />
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
-        <Route path="/admin/addCurrency" element={<AdminAddCurrency />} />
+        <Route path="/admin/:country/addCurrency" element={<AdminAddCurrency />} />
         <Route path="/admin/transactions" element={<AdminTransaction />} />
         <Route path="/admin/users" element={<AdminUsers />} />
         <Route path="/admin/review" element={<AdminReview />} />

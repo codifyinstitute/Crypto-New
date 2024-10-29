@@ -84,7 +84,7 @@ const OtherPrice = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('https://api.moonpayx.com/static/get/66c445a358802d46d5d70dd4');
+        const response = await axios.get('http://localhost:8000/static/get/66c445a358802d46d5d70dd4');
         setFormData(response.data);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -106,7 +106,7 @@ const OtherPrice = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.put('https://api.moonpayx.com/static/put/66c445a358802d46d5d70dd4', formData);
+      const response = await axios.put('http://localhost:8000/static/put/66c445a358802d46d5d70dd4', formData);
       alert('Data updated successfully');
       //console.log(response.data);
     } catch (error) {

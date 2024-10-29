@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import Sidebar from './Sidebar';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+
 
 // Styled components for AdminAddCurrency
 const DashboardContainer = styled.div`
@@ -206,8 +207,19 @@ const SearchInput = styled.input`
   margin-bottom: 1rem; /* Space below the search box */
 `;
 
+const countryObject = {
+    India: "india",
+    Brazil: "brl",
+    'United Kingdom': "uk",
+    'European Union': "euro",
+    'United Arab Emirates': "aed",
+    'United State of America': "usa"
+}
+
 const AdminAddCurrency = () => {
+    const { country: con } = useParams();
     const navigate = useNavigate();
+    const [country, setCountry] = useState('');
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [name, setName] = useState('');
     const [symbol, setSymbol] = useState('');
@@ -241,15 +253,14 @@ const AdminAddCurrency = () => {
         }
 
         try {
-            const response = await fetch('https://api.moonpayx.com/currencies/add', {
+            console.log(`http://localhost:8000/currencies/${countryObject[country]}/add`)
+            const response = await fetch(`http://localhost:8000/currencies/${countryObject[country]}/add`, {
                 method: 'POST',
                 body: formData,
             });
-
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
-
             const data = await response.json();
             toast.success('Currency added successfully');
             setName('');
@@ -266,14 +277,13 @@ const AdminAddCurrency = () => {
 
     const fetchCurrencies = async () => {
         try {
-            const response = await fetch('https://api.moonpayx.com/currencies/all');
+            const response = await fetch(`http://localhost:8000/currencies/${countryObject[country]}/all`);
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
-
             const data = await response.json();
             setCurrencies(data.reverse());
-            setFilteredCurrencies(data); // Initialize filtered currencies
+            setFilteredCurrencies(data);
         } catch (error) {
             console.error('Error fetching currencies:', error);
         }
@@ -291,7 +301,7 @@ const AdminAddCurrency = () => {
         }
 
         try {
-            const response = await fetch(`https://api.moonpayx.com/currencies/put/${editingCurrency._id}`, {
+            const response = await fetch(`http://localhost:8000/currencies/${countryObject[country]}/put/${editingCurrency._id}`, {
                 method: 'PUT',
                 body: formData,
             });
@@ -318,7 +328,7 @@ const AdminAddCurrency = () => {
 
     const handleDeleteCurrency = async () => {
         try {
-            const response = await fetch(`https://api.moonpayx.com/currencies/del/${currencyToDelete._id}`, {
+            const response = await fetch(`http://localhost:8000/currencies/${countryObject[country]}/del/${currencyToDelete._id}`, {
                 method: 'DELETE',
             });
 
@@ -371,15 +381,19 @@ const AdminAddCurrency = () => {
     };
 
     useEffect(() => {
-        fetchCurrencies(); // Fetch currencies on component mount
-    }, []);
+        setCountry(con);
+    }, [con]);
+
+    useEffect(() => {
+        fetchCurrencies(); // Fetch currencies when the country state changes
+    }, [country]);
 
     return (
         <DashboardContainer>
             <Sidebar isOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
             <Content>
                 <Section>
-                    <Title>Add New Currency</Title>
+                    <Title>Add New Currency In {country}</Title>
                     <Form onSubmit={handleAddCurrency}>
                         <Input
                             type="text"
@@ -449,7 +463,7 @@ const AdminAddCurrency = () => {
                                         <td>
                                             {currency.QRCode && (
                                                 <img
-                                                    src={`https://api.moonpayx.com/uploads/${currency.QRCode}`}
+                                                    src={`http://localhost:8000/uploads/${currency.QRCode}`}
                                                     alt="QRCode"
                                                     width="50"
                                                 />

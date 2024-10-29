@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Navbar from "./Navbar";
@@ -16,7 +16,6 @@ const PageContainer = styled.div`
   padding-top: 140px;
 
   @media (max-width: 480px) {
-    display: flex;
     align-items: center;
     justify-content: center;
     padding-top: 80px;
@@ -87,6 +86,7 @@ const FormInput = styled.input`
   border-radius: 5px;
   margin-bottom: 1rem;
 `;
+
 const Select = styled.select`
   width: 100%;
   padding: 0.75rem 7px;
@@ -120,8 +120,71 @@ const FormButton = styled.button`
 
 const BankTransfer = () => {
   const selectedCountry = useSelector((state) => state.country.value);
-
   const navigate = useNavigate();
+
+  // State for input fields
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    bankName: "",
+    accountNumber: "",
+    city: "",
+    state: "",
+    address: "",
+    zipCode: "",
+    accountType: "",
+    abaCode: "",
+    swiftCode: "",
+    sortCode: "",
+    idType: "",
+    idNumber: "",
+    bankBranchCode: "",
+    accountOpeningBranch: "",
+    iban: "",
+    ifsc: "",
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    // Construct submission object based on selected country
+    const submissionData = {
+      firstName: formData.firstName,
+      lastName: formData.lastName,
+      bankName: formData.bankName,
+      accountNumber: formData.accountNumber,
+    };
+
+    if (selectedCountry === "USA") {
+      submissionData.city = formData.city;
+      submissionData.state = formData.state;
+      submissionData.address = formData.address;
+      submissionData.zipCode = formData.zipCode;
+    } else if (selectedCountry === "Brazil") {
+      submissionData.accountType = formData.accountType;
+      submissionData.idType = formData.idType;
+      submissionData.idNumber = formData.idNumber;
+      submissionData.bankBranchCode = formData.bankBranchCode;
+    } else if (selectedCountry === "UK") {
+      submissionData.sortCode = formData.sortCode;
+      submissionData.address = formData.address;
+    } else if (selectedCountry === "Euro") {
+      submissionData.abaCode = formData.abaCode;
+      submissionData.swiftCode = formData.swiftCode;
+    } else if (selectedCountry === "Dubai") {
+      submissionData.accountOpeningBranch = formData.accountOpeningBranch;
+      submissionData.iban = formData.iban;
+    } else if (selectedCountry === "India") {
+      submissionData.ifsc = formData.ifsc;
+    }
+
+    console.log("Submitted Data:", submissionData);
+  };
 
   return (
     <>
@@ -156,74 +219,119 @@ const BankTransfer = () => {
               </button>
             </TabContainer>
 
-            <form>
+            <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", justifyContent: "space-between", height: "100%" }}>
               <FormSection>
                 <FormLabel>First Name</FormLabel>
-                <FormInput placeholder="Please enter your First name" />
+                <FormInput name="firstName" value={formData.firstName} onChange={handleChange} placeholder="Please enter your First name" />
 
                 <FormLabel>Last Name</FormLabel>
-                <FormInput placeholder="Please enter your Last name" />
+                <FormInput name="lastName" value={formData.lastName} onChange={handleChange} placeholder="Please enter your Last name" />
 
                 <FormLabel>Bank Name</FormLabel>
-                <FormInput placeholder="Enter Your Bank Name" />
+                <FormInput name="bankName" value={formData.bankName} onChange={handleChange} placeholder="Enter Your Bank Name" />
 
                 <FormLabel>Account Number</FormLabel>
-                <FormInput placeholder="Enter Your Account Number" />
-                {selectedCountry === "India" || selectedCountry === "Brazil" || selectedCountry === "UK" || selectedCountry === "Euro" || selectedCountry === "Dubai" || selectedCountry === "USA"}
-                <FormLabel>City</FormLabel>
-                <FormInput placeholder="Please enter City" />
+                <FormInput name="accountNumber" value={formData.accountNumber} onChange={handleChange} placeholder="Enter Your Account Number" />
 
-                <FormLabel>State</FormLabel>
-                <FormInput placeholder="Enter Your State" />
+                {selectedCountry === "USA" && (
+                  <>
+                    <FormLabel>City</FormLabel>
+                    <FormInput name="city" value={formData.city} onChange={handleChange} placeholder="Please enter City" />
 
-                <FormLabel>Address</FormLabel>
-                <FormInput placeholder="Enter Your Address" />
+                    <FormLabel>State</FormLabel>
+                    <FormInput name="state" value={formData.state} onChange={handleChange} placeholder="Enter Your State" />
+                  </>
+                )}
 
-                <FormLabel>Zip Code</FormLabel>
-                <FormInput placeholder="Enter Your ZipCode" />
+                {(selectedCountry === "UK" || selectedCountry === "USA") && (
+                  <>
+                    <FormLabel>Address</FormLabel>
+                    <FormInput name="address" value={formData.address} onChange={handleChange} placeholder="Enter Your Address" />
+                  </>
+                )}
 
-                <FormLabel>Account Type</FormLabel>
-                <Select>
-                  <option value="">Select Account Type</option>
-                  <option value="Savings">Savings</option>
-                  <option value="checking">Checking</option>
-                  <option value="deposit">Deposit</option>
-                </Select>
+                {selectedCountry === "USA" && (
+                  <>
+                    <FormLabel>Zip Code</FormLabel>
+                    <FormInput name="zipCode" value={formData.zipCode} onChange={handleChange} placeholder="Enter Your ZipCode" />
+                  </>
+                )}
 
+                {(selectedCountry === "Brazil" || selectedCountry === "USA") && (
+                  <>
+                    <FormLabel>Account Type</FormLabel>
+                    <Select name="accountType" value={formData.accountType} onChange={handleChange}>
+                      <option value="">Select Account Type</option>
+                      <option value="Savings">Savings</option>
+                      <option value="checking">Checking</option>
+                      <option value="deposit">Deposit</option>
+                    </Select>
+                  </>
+                )}
 
-                <FormLabel>ABA Code</FormLabel>
-                <FormInput placeholder="9 Digit" />
+                {(selectedCountry === "Euro" || selectedCountry === "USA") && (
+                  <>
+                    <FormLabel>ABA Code</FormLabel>
+                    <FormInput name="abaCode" value={formData.abaCode} onChange={handleChange} placeholder="9 Digit" />
+                  </>
+                )}
 
-                <FormLabel>Swift Code</FormLabel>
-                <FormInput placeholder="Enter Your Swift Code" />
+                {selectedCountry === "Euro" && (
+                  <>
+                    <FormLabel>Swift Code</FormLabel>
+                    <FormInput name="swiftCode" value={formData.swiftCode} onChange={handleChange} placeholder="Enter Your Swift Code" />
+                  </>
+                )}
 
-                <FormLabel>Sort Code</FormLabel>
-                <FormInput placeholder="Enter Your IFSC" />
+                {selectedCountry === "UK" && (
+                  <>
+                    <FormLabel>Sort Code</FormLabel>
+                    <FormInput name="sortCode" value={formData.sortCode} onChange={handleChange} placeholder="Enter Your Sort Code" />
+                  </>
+                )}
 
-                <FormLabel>ID Type</FormLabel>
-                <FormInput placeholder="Enter Your Id Type" />
+                {selectedCountry === "Brazil" && (
+                  <>
+                    <FormLabel>ID Type</FormLabel>
+                    <FormInput name="idType" value={formData.idType} onChange={handleChange} placeholder="Enter Your Id Type" />
 
-                <FormLabel>Id Number</FormLabel>
-                <FormInput placeholder="Enter Your Id Number" />
+                    <FormLabel>Id Number</FormLabel>
+                    <FormInput name="idNumber" value={formData.idNumber} onChange={handleChange} placeholder="Enter Your Id Number" />
 
-                <FormLabel>Bank Branch Code</FormLabel>
-                <FormInput placeholder="Enter Your Code" />
+                    <FormLabel>Bank Branch Code</FormLabel>
+                    <FormInput name="bankBranchCode" value={formData.bankBranchCode} onChange={handleChange} placeholder="Enter Your Code" />
+                  </>
+                )}
 
-                <FormLabel>Account opening branch</FormLabel>
-                <FormInput placeholder="Enter Your Branch" />
-                <FormLabel>IBAN</FormLabel>
-                <FormInput placeholder="Enter Your IBAN" />
+                {selectedCountry === "Dubai" && (
+                  <>
+                    <FormLabel>Account opening branch</FormLabel>
+                    <FormInput name="accountOpeningBranch" value={formData.accountOpeningBranch} onChange={handleChange} placeholder="Enter Your Branch" />
+
+                    <FormLabel>IBAN</FormLabel>
+                    <FormInput name="iban" value={formData.iban} onChange={handleChange} placeholder="Enter Your IBAN" />
+                  </>
+                )}
+
+                {selectedCountry === "India" && (
+                  <>
+                    <FormLabel>IFSC</FormLabel>
+                    <FormInput name="ifsc" value={formData.ifsc} onChange={handleChange} placeholder="Enter Your IFSC" />
+                  </>
+                )}
               </FormSection>
 
-              <FormWarning>
-                Attention: Please ensure the bank account belongs to you and the
-                information is accurate.
-              </FormWarning>
+              <div>
+                <FormWarning>
+                  Attention: Please ensure the bank account belongs to you and the
+                  information is accurate.
+                </FormWarning>
 
-              <FormButton type="button">
-                Confirm
-                <IoArrowForwardOutline />
-              </FormButton>
+                <FormButton type="submit">
+                  Confirm
+                  <IoArrowForwardOutline />
+                </FormButton>
+              </div>
             </form>
           </FormContainer>
         </FormWrapper>

@@ -1,5 +1,4 @@
-// Sidebar.js
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 
@@ -67,48 +66,85 @@ const SidebarButton = styled.button`
   text-align: left;
   cursor: pointer;
   transition: background-color 0.2s ease;
+  width: 100%;
 
   &:hover {
     background-color: #495057;
   }
 `;
 
+const SubmenuButton = styled(SidebarButton)`
+  padding-left: 2rem; // Indent for submenu items
+`;
+
+const Submenu = styled.div`
+  display: ${({ isOpen }) => (isOpen ? 'block' : 'none')};
+  margin-left: 1rem;
+`;
+
 const Sidebar = ({ isOpen, setIsSidebarOpen }) => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
+  const [isCurrencyMenuOpen, setCurrencyMenuOpen] = useState(false);
 
-    const handleNavigation = (path) => {
-        navigate(path);
-        if (window.innerWidth < 768) {
-            setIsSidebarOpen(false); // Close sidebar on mobile after navigation
-        }
-    };
+  const handleNavigation = (path) => {
+    navigate(path);
+    if (window.innerWidth < 768) {
+      setIsSidebarOpen(false); // Close sidebar on mobile after navigation
+    }
+  };
 
-    const handleLogOut = (path) => {
-        localStorage.removeItem("Login")
-        navigate(path);
-    };
+  const handleLogOut = (path) => {
+    localStorage.removeItem("Login");
+    navigate(path);
+  };
 
-    return (
-        <>
-            <HeaderContainer>
-                <span>Admin Dashboard</span>
-                <ToggleButton onClick={() => setIsSidebarOpen(prev => !prev)}>
-                    ☰
-                </ToggleButton>
-            </HeaderContainer>
-            <SidebarContainer isOpen={isOpen}>
-                <SidebarButton onClick={() => handleNavigation('/admin/dashboard')}>Dashboard</SidebarButton>
-                <SidebarButton onClick={() => handleNavigation('/admin/addCurrency')}>Add Currency</SidebarButton>
-                <SidebarButton onClick={() => handleNavigation('/admin/transactionFee')}>Transaction Management</SidebarButton>
-                <SidebarButton onClick={() => handleNavigation('/admin/otherprice')}>Other Price</SidebarButton>
-                <SidebarButton onClick={() => handleNavigation('/admin/transactions')}>Transaction</SidebarButton>
-                <SidebarButton onClick={() => handleNavigation('/admin/users')}>Users</SidebarButton>
-                <SidebarButton onClick={() => handleNavigation('/admin/review')}>Review</SidebarButton>
-                <SidebarButton onClick={() => handleNavigation('/admin/query')}>Queries</SidebarButton>
-                <SidebarButton onClick={() => handleLogOut('/admin/login')}>Logout</SidebarButton>
-            </SidebarContainer>
-        </>
-    );
+  return (
+    <>
+      <HeaderContainer>
+        <span>Admin Dashboard</span>
+        <ToggleButton onClick={() => setIsSidebarOpen((prev) => !prev)}>
+          ☰
+        </ToggleButton>
+      </HeaderContainer>
+      <SidebarContainer isOpen={isOpen}>
+        <SidebarButton onClick={() => handleNavigation('/admin/dashboard')}>Dashboard</SidebarButton>
+        <SidebarButton onClick={() => setCurrencyMenuOpen((prev) => !prev)}>
+          Add Currency
+        </SidebarButton>
+        <Submenu isOpen={isCurrencyMenuOpen}>
+          <SubmenuButton onClick={() => handleNavigation('/admin/India/addCurrency')}>India</SubmenuButton>
+          <SubmenuButton onClick={() => handleNavigation('/admin/Brazil/addCurrency')}>Brazil</SubmenuButton>
+          <SubmenuButton onClick={() => handleNavigation('/admin/United Kingdom/addCurrency')}>United Kingdom</SubmenuButton>
+          <SubmenuButton onClick={() => handleNavigation('/admin/European Union/addCurrency')}>European Union</SubmenuButton>
+          <SubmenuButton onClick={() => handleNavigation('/admin/United Arab Emirates/addCurrency')}>United Arab Emirates</SubmenuButton>
+          <SubmenuButton onClick={() => handleNavigation('/admin/United State of America/addCurrency')}>United State of America</SubmenuButton>
+        </Submenu>
+        <SidebarButton onClick={() => handleNavigation('/admin/transactionFee')}>Transaction Fee</SidebarButton>
+        <SidebarButton onClick={() => handleNavigation('/admin/transactions')}>View Transaction</SidebarButton>
+        <SidebarButton onClick={() => handleNavigation('/admin/otherprice')}>Other Price</SidebarButton>
+        <SidebarButton onClick={() => handleNavigation('/admin/users')}>Users</SidebarButton>
+        <SidebarButton onClick={() => handleNavigation('/admin/review')}>Review</SidebarButton>
+        <SidebarButton onClick={() => handleNavigation('/admin/query')}>Queries</SidebarButton>
+        <SidebarButton onClick={() => handleLogOut('/admin/login')}>Logout</SidebarButton>
+      </SidebarContainer>
+    </>
+  );
 };
 
 export default Sidebar;
+
+
+{/* <SidebarButton onClick={() => handleNavigation('/admin/dashboard')}>Dashboard</SidebarButton>
+<SidebarButton onClick={() => handleNavigation('/admin/addCurrency')}>Add Currency</SidebarButton>
+<SidebarButton onClick={() => handleNavigation('/admin/otherprice')}>Other Price</SidebarButton>
+<SidebarButton onClick={() => handleNavigation('/admin/users')}>Users</SidebarButton>
+<SidebarButton onClick={() => handleNavigation('/admin/review')}>Review</SidebarButton>
+<SidebarButton onClick={() => handleNavigation('/admin/query')}>Queries</SidebarButton>
+<SidebarButton onClick={() => handleLogOut('/admin/login')}>Logout</SidebarButton> */}
+{/* <Submenu isOpen={isTransactionMenuOpen}>
+  <SubmenuButton onClick={() => handleNavigation('/admin/transactionFee')}>Transaction Fee</SubmenuButton>
+  <SubmenuButton onClick={() => handleNavigation('/admin/transactions')}>View Transactions</SubmenuButton>
+  </Submenu> */}
+{/* <SidebarButton onClick={() => setTransactionMenuOpen((prev) => !prev)}>
+    Transaction Management
+  </SidebarButton> */}
