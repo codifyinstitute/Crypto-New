@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 // import { Hourglass } from 'react-loader-spinner';
 import styled from "styled-components";
+import { changeCountry } from '../features/country/countrySlice';
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import {
@@ -32,6 +33,7 @@ import indiaFlag from "../assets/INR INDIA.jpg";
 import BrazilFlag from "../assets/BRL BRAZIL.jpg";
 import ukFlag from "../assets/GBP UK.jpg";
 import EuropeFlag from "../assets/EURO  EUROPEAN UNION.jpg";
+import { useDispatch, useSelector } from "react-redux";
 
 const TradingEnvironment = styled.div`
   display: flex;
@@ -667,7 +669,41 @@ const InputWrapper = styled.div`
   padding: 0.5rem 1rem;
 `;
 
+const countryObject = {
+  India: {
+    urlName: "india",
+    symbol: "₹",
+    name: "India"
+  },
+  Brazil: {
+    urlName: "brl",
+    symbol: "R$",
+    name: "Brazil"
+  },
+  UK: {
+    urlName: "uk",
+    symbol: "£",
+    name: "United Kingdom"
+  },
+  Euro: {
+    urlName: "euro",
+    symbol: "€",
+    name: "European Union"
+  },
+  Dubai: {
+    urlName: "aed",
+    symbol: "د.إ",
+    name: "Dubai"
+  },
+  USA: {
+    urlName: "usa",
+    symbol: "$",
+    name: "United States of America"
+  }
+}
+
 const Sell1 = () => {
+  const selectedCountry = useSelector((state) => state.country.value);
   const location = useLocation();
   const navigate = useNavigate();
   const [usdt, setUsdt] = useState(location.state?.amount || "1");
@@ -689,6 +725,9 @@ const Sell1 = () => {
   const [selectedFiatCurrency, setSelectedFiatCurrency] = useState(null);
   const [filteredFiatCurrencies, setFilteredFiatCurrencies] = useState([]);
 
+  const dispatch = useDispatch();
+
+
   useEffect(() => {
     const countdown = setInterval(() => {
       setTimer((prev) => (prev > 0 ? prev - 1 : 30));
@@ -706,19 +745,19 @@ const Sell1 = () => {
     setTimer(30);
     // Implement your refresh logic here
   };
-  
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const [currenciesResponse, feesResponse] = await Promise.all([
-          axios.get("https://crypto-backend-main.onrender.com/currencies/all"),
+          axios.get(`https://crypto-backend-main.onrender.com/currencies/${countryObject[selectedCountry].urlName}/all`),
           fetch("https://crypto-backend-main.onrender.com/static/get/66c445a358802d46d5d70dd4"),
         ]);
 
         setCurrencies(currenciesResponse.data);
         setSelectedCurrency(
           currenciesResponse.data.find((c) => c.Symbol === "ACH") ||
-            currenciesResponse.data[0]
+          currenciesResponse.data[0]
         );
 
         if (feesResponse.ok) {
@@ -736,7 +775,7 @@ const Sell1 = () => {
     };
 
     fetchData();
-  }, []);
+  }, [selectedCountry]);
 
   useEffect(() => {
     const fiatCurrencies = [
@@ -752,11 +791,28 @@ const Sell1 = () => {
       { name: "Dubai", symbol: "AED", image: dubaiFlag, short: "Dubai" },
       { name: "Brazil", symbol: "BRL", image: BrazilFlag, short: "Brazil" },
     ];
+
     setFilteredFiatCurrencies(fiatCurrencies);
-    setSelectedFiatCurrency(fiatCurrencies[0] || null); // Set default fiat currency
+
+    const defaultFiatCurrency = fiatCurrencies.find(currency =>
+      currency.name === countryObject[selectedCountry].name
+    );
+
+    setSelectedFiatCurrency(defaultFiatCurrency || fiatCurrencies[0]);
   }, []);
 
+  useEffect(() => {
+    const defaultFiatCurrency = filteredFiatCurrencies.find(currency =>
+      currency.name === countryObject[selectedCountry].name
+    );
+
+    setSelectedFiatCurrency(defaultFiatCurrency || filteredFiatCurrencies[0]); // Fallback to the first currency
+  }, [selectedCountry, filteredFiatCurrencies]);
+
   const handleFiatCurrencySelect = (currency) => {
+    const selectedKey = Object.keys(countryObject).find(key => countryObject[key].name === currency.name);
+    dispatch(changeCountry(selectedKey));
+    localStorage.setItem("Country", selectedKey);
     setSelectedFiatCurrency(currency);
     setIsFiatDropdownOpen(false);
   };
@@ -1009,10 +1065,10 @@ const Sell1 = () => {
                       key={currency.symbol}
                       onClick={() => handleFiatCurrencySelect(currency)}
                     >
-                       <CurrencyIcon
-                          src={currency.image}
-                          alt={currency.Symbol}
-                        />
+                      <CurrencyIcon
+                        src={currency.image}
+                        alt={currency.Symbol}
+                      />
                       <CurrencyInfo>
                         <Buddy>
                           <CurrencyName>{currency.name}</CurrencyName>
@@ -1036,7 +1092,7 @@ const Sell1 = () => {
                       <b>
                         {usdt} {selectedCurrency.Name}{" "}
                       </b>
-                      to <b>{isValid ? inr.toFixed(2) : 0} INR </b>
+                      to <b>{isValid ? inr.toFixed(2) : 0} {selectedFiatCurrency.symbol} </b>
                     </p>
                   )}
                   {isDetailsExpanded ? (
@@ -1052,7 +1108,7 @@ const Sell1 = () => {
                     <span>1 {selectedCurrency?.Name}</span>
                     <span>
                       ≈ {selectedCurrency?.Rate} {extra ? `+ ${extra}` : null}{" "}
-                      INR
+                      {selectedFiatCurrency?.symbol}
                     </span>
                   </OrderDetail>
                   <OrderDetail>

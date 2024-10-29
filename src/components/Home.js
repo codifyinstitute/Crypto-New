@@ -109,7 +109,6 @@ const Home = () => {
   };
 
   useEffect(() => {
-    console.log(selectedCountry)
     fetchTransactionFee();
   }, []);
 
@@ -412,7 +411,7 @@ const Home = () => {
                         <b>
                           {usdt} {selectedCurrency.Name}{" "}
                         </b>
-                        to <b>{isValid ? inr.toFixed(2) : 0} INR </b>
+                        to <b>{isValid ? inr.toFixed(2) : 0} {selectedFiatCurrency.symbol} </b>
                       </p>
                     )}
                     {isDetailsExpanded ? (

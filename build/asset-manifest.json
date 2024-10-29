@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.5ee97a00.css",
-    "main.js": "/static/js/main.e4805e81.js",
+    "main.js": "/static/js/main.bbcd1cc8.js",
     "static/media/wallet3.png": "/static/media/wallet3.7846247921f6bef8c683.png",
     "static/media/mobil.png": "/static/media/mobil.7f700e5d489faad97b25.png",
     "static/media/tether2.png": "/static/media/tether2.23be6d0da0e3004792db.png",
@@ -49,10 +49,10 @@
     "static/media/image12.png": "/static/media/image12.31e92b2759244d9dafd2.png",
     "index.html": "/index.html",
     "main.5ee97a00.css.map": "/static/css/main.5ee97a00.css.map",
-    "main.e4805e81.js.map": "/static/js/main.e4805e81.js.map"
+    "main.bbcd1cc8.js.map": "/static/js/main.bbcd1cc8.js.map"
   },
   "entrypoints": [
     "static/css/main.5ee97a00.css",
-    "static/js/main.e4805e81.js"
+    "static/js/main.bbcd1cc8.js"
   ]
 }
