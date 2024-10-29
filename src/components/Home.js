@@ -91,7 +91,7 @@ const Home = () => {
   const fetchTransactionFee = async () => {
     try {
       const response = await fetch(
-        "https://crypto-tusv.onrender.com/static/get/66c445a358802d46d5d70dd4"
+        "https://crypto-backend-main.onrender.com/static/get/66c445a358802d46d5d70dd4"
       );
       if (!response.ok) {
         throw new Error("Network response was not ok");
@@ -115,7 +115,7 @@ const Home = () => {
 
   useEffect(() => {
     axios
-      .get(`https://crypto-tusv.onrender.com/currencies/${countryObject[selectedCountry].urlName}/all`)
+      .get(`https://crypto-backend-main.onrender.com/currencies/${countryObject[selectedCountry].urlName}/all`)
       .then((response) => {
         setCurrencies(response.data);
         setSelectedCurrency(response.data[0] || null);

@@ -122,7 +122,7 @@ const AdminUsers = () => {
     useEffect(() => {
         const fetchUsers = async () => {
             try {
-                const response = await fetch('https://crypto-tusv.onrender.com/users/all');
+                const response = await fetch('https://crypto-backend-main.onrender.com/users/all');
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }

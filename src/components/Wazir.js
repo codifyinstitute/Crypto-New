@@ -162,7 +162,7 @@ const CryptoPriceGrid = () => {
 
   const fetchTransactionFee = async () => {
     try {
-      const response = await fetch('https://crypto-tusv.onrender.com/static/get/66c445a358802d46d5d70dd4');
+      const response = await fetch('https://crypto-backend-main.onrender.com/static/get/66c445a358802d46d5d70dd4');
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }

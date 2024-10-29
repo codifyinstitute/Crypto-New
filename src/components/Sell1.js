@@ -711,8 +711,8 @@ const Sell1 = () => {
     const fetchData = async () => {
       try {
         const [currenciesResponse, feesResponse] = await Promise.all([
-          axios.get("https://crypto-tusv.onrender.com/currencies/all"),
-          fetch("https://crypto-tusv.onrender.com/static/get/66c445a358802d46d5d70dd4"),
+          axios.get("https://crypto-backend-main.onrender.com/currencies/all"),
+          fetch("https://crypto-backend-main.onrender.com/static/get/66c445a358802d46d5d70dd4"),
         ]);
 
         setCurrencies(currenciesResponse.data);
