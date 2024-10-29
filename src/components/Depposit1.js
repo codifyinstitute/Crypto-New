@@ -593,8 +593,8 @@ useEffect(() => {
 
   const fetchTransactionFee = async () => {
     try {
-      const response = await fetch("http://localhost:8000/static/get/66c445a358802d46d5d70dd4");
-      const countResponse = await fetch("http://localhost:8000/transactions/get/count");
+      const response = await fetch("https://crypto-tusv.onrender.com/static/get/66c445a358802d46d5d70dd4");
+      const countResponse = await fetch("https://crypto-tusv.onrender.com/transactions/get/count");
 
       if (!response.ok && !countResponse.ok) {
         throw new Error("Network response was not ok");
@@ -611,7 +611,7 @@ useEffect(() => {
 
   const fetchCurrencyData = async () => {
     try {
-      const response = await fetch("http://localhost:8000/currencies/all");
+      const response = await fetch("https://crypto-tusv.onrender.com/currencies/all");
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
@@ -693,7 +693,7 @@ useEffect(() => {
   // const confirmTransaction = async () => {
   //   setShowConfirmation(false);
   //   try {
-  //     const response = await fetch("http://localhost:8000/transactions/add", {
+  //     const response = await fetch("https://crypto-tusv.onrender.com/transactions/add", {
   //       method: "POST",
   //       headers: {
   //         "Content-Type": "application/json",
@@ -739,7 +739,7 @@ useEffect(() => {
     const formattedTime = currentDate.toLocaleTimeString();
     
     try {
-        const response = await fetch("http://localhost:8000/deposit-transactions/add", { // Updated URL for the backend
+        const response = await fetch("https://crypto-tusv.onrender.com/deposit-transactions/add", { // Updated URL for the backend
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -862,7 +862,7 @@ useEffect(() => {
             <QRCodeContainer>
               <QRCode>
                 <img
-                  src={`http://localhost:8000/uploads/${image}`}
+                  src={`https://crypto-tusv.onrender.com/uploads/${image}`}
                   width="100px"
                   alt="QR code"
                 />

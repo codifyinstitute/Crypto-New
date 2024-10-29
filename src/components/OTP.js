@@ -226,7 +226,7 @@ const OTPPage = () => {
     if (isFormValid) {
       setLoading(true);
       try {
-        const response = await axios.post('http://localhost:8000/users/login/verify', {
+        const response = await axios.post('https://crypto-tusv.onrender.com/users/login/verify', {
           Email: location.state.email,
           OTP: otp.join('') // Concatenate OTP array into a single string
         });

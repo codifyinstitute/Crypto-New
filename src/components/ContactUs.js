@@ -270,7 +270,7 @@ const ContactUs = () => {
     if (validateForm()) {
       setIsSubmitting(true);
       try {
-        const response = await fetch("http://localhost:8000/contacts/add", {
+        const response = await fetch("https://crypto-tusv.onrender.com/contacts/add", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

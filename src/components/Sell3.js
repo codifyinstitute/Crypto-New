@@ -282,7 +282,7 @@ const Sell3 = () => {
 
     try {
       const response = await axios.get(
-        `http://localhost:8000/users/get/${email}`
+        `https://crypto-tusv.onrender.com/users/get/${email}`
       );
       const user = response.data;
 
@@ -349,7 +349,7 @@ const Sell3 = () => {
 
     try {
       await axios.put(
-        `http://localhost:8000/users/put/${email}/accounts`,
+        `https://crypto-tusv.onrender.com/users/put/${email}/accounts`,
         accountData
       );
       toast.success("Account data successfully submitted");

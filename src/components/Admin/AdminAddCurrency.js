@@ -253,8 +253,8 @@ const AdminAddCurrency = () => {
         }
 
         try {
-            console.log(`http://localhost:8000/currencies/${countryObject[country]}/add`)
-            const response = await fetch(`http://localhost:8000/currencies/${countryObject[country]}/add`, {
+            console.log(`https://crypto-tusv.onrender.com/currencies/${countryObject[country]}/add`)
+            const response = await fetch(`https://crypto-tusv.onrender.com/currencies/${countryObject[country]}/add`, {
                 method: 'POST',
                 body: formData,
             });
@@ -277,7 +277,7 @@ const AdminAddCurrency = () => {
 
     const fetchCurrencies = async () => {
         try {
-            const response = await fetch(`http://localhost:8000/currencies/${countryObject[country]}/all`);
+            const response = await fetch(`https://crypto-tusv.onrender.com/currencies/${countryObject[country]}/all`);
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
@@ -301,7 +301,7 @@ const AdminAddCurrency = () => {
         }
 
         try {
-            const response = await fetch(`http://localhost:8000/currencies/${countryObject[country]}/put/${editingCurrency._id}`, {
+            const response = await fetch(`https://crypto-tusv.onrender.com/currencies/${countryObject[country]}/put/${editingCurrency._id}`, {
                 method: 'PUT',
                 body: formData,
             });
@@ -328,7 +328,7 @@ const AdminAddCurrency = () => {
 
     const handleDeleteCurrency = async () => {
         try {
-            const response = await fetch(`http://localhost:8000/currencies/${countryObject[country]}/del/${currencyToDelete._id}`, {
+            const response = await fetch(`https://crypto-tusv.onrender.com/currencies/${countryObject[country]}/del/${currencyToDelete._id}`, {
                 method: 'DELETE',
             });
 
@@ -463,7 +463,7 @@ const AdminAddCurrency = () => {
                                         <td>
                                             {currency.QRCode && (
                                                 <img
-                                                    src={`http://localhost:8000/uploads/${currency.QRCode}`}
+                                                    src={`https://crypto-tusv.onrender.com/uploads/${currency.QRCode}`}
                                                     alt="QRCode"
                                                     width="50"
                                                 />

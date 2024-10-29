@@ -1,14 +1,24 @@
 {
   "files": {
     "main.css": "/static/css/main.5ee97a00.css",
-    "main.js": "/static/js/main.aa0d9dee.js",
+    "main.js": "/static/js/main.e4805e81.js",
+    "static/media/wallet3.png": "/static/media/wallet3.7846247921f6bef8c683.png",
     "static/media/mobil.png": "/static/media/mobil.7f700e5d489faad97b25.png",
+    "static/media/tether2.png": "/static/media/tether2.23be6d0da0e3004792db.png",
+    "static/media/BRL BRAZIL.jpg": "/static/media/BRL BRAZIL.3f3735d92bcbc60b8231.jpg",
     "static/media/Binancee2.png": "/static/media/Binancee2.c96f9d60c35288f0c3d5.png",
     "static/media/contact.png": "/static/media/contact.27dbee46d21c5032117c.png",
     "static/media/Deposit.jpg": "/static/media/Deposit.3090117399f38043fb52.jpg",
+    "static/media/USD AMERICA.jpg": "/static/media/USD AMERICA.dcd5ab5223035cd524db.jpg",
     "static/media/trc20.png": "/static/media/trc20.7e566b7f22c9dadded77.png",
+    "static/media/EURO  EUROPEAN UNION.jpg": "/static/media/EURO  EUROPEAN UNION.9d0e0595c88eb43bf715.jpg",
+    "static/media/INR INDIA.jpg": "/static/media/INR INDIA.35625e065899048f2e0f.jpg",
     "static/media/ReferEarn.png": "/static/media/ReferEarn.d40f2f505c1bc8d71155.png",
+    "static/media/GBP UK.jpg": "/static/media/GBP UK.55e4ec3dd87f97ce0f60.jpg",
+    "static/media/AED DUBAI.jpg": "/static/media/AED DUBAI.17065cf585048964a4cf.jpg",
     "static/media/bg2.jpg": "/static/media/bg2.ca4179a50bc6bccad0ae.jpg",
+    "static/media/withdraw.jpg": "/static/media/withdraw.c9800912078aee73e394.jpg",
+    "static/media/depositimg.jpg": "/static/media/depositimg.94757d7e2f3c8f8fdb3f.jpg",
     "static/media/kucoin.png": "/static/media/kucoin.c42dcf84ec0e2dd75af1.png",
     "static/media/usdtt.png": "/static/media/usdtt.25d56bbdf83735f64fc0.png",
     "static/media/Wazirx.webp": "/static/media/Wazirx.f30d6e174d5f27af53e4.webp",
@@ -39,10 +49,10 @@
     "static/media/image12.png": "/static/media/image12.31e92b2759244d9dafd2.png",
     "index.html": "/index.html",
     "main.5ee97a00.css.map": "/static/css/main.5ee97a00.css.map",
-    "main.aa0d9dee.js.map": "/static/js/main.aa0d9dee.js.map"
+    "main.e4805e81.js.map": "/static/js/main.e4805e81.js.map"
   },
   "entrypoints": [
     "static/css/main.5ee97a00.css",
-    "static/js/main.aa0d9dee.js"
+    "static/js/main.e4805e81.js"
   ]
 }
