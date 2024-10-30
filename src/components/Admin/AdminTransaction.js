@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Sidebar from './Sidebar';
+import { MdOutlineRemoveRedEye } from "react-icons/md";
 
 // Styled components for AdminTransaction
 const DashboardContainer = styled.div`
@@ -20,10 +21,10 @@ const Content = styled.div`
   margin: 0;
   padding: 2rem;
   background: white;
-  margin-top: 4rem; /* Space for header on mobile */
+  margin-top: 4rem;
 
   @media (min-width: 768px) {
-    margin-top: 0; /* No top margin needed for larger screens */
+    margin-top: 0;
   }
 `;
 
@@ -34,29 +35,28 @@ const Section = styled.section`
 const Title = styled.h2`
   margin-bottom: 0.5rem;
   color: #333;
-  text-align: center; /* Center align the title */
+  text-align: center;
 `;
 
 const Paragraph = styled.p`
   color: #666;
   font-size: 1rem;
-  text-align: center; /* Center align the paragraph */
+  text-align: center;
 `;
 
 const TableContainer = styled.div`
-  overflow-x: auto; /* Enable horizontal scroll */
+  overflow-x: auto;
   overflow-y: auto; 
   max-width: calc(100vw - 250px);
   margin-top: 1.5rem;
-  -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
-  max-height: 70vh; /* Limit the height of the container */
+  -webkit-overflow-scrolling: touch;
+  max-height: 70vh;
 `;
 
 const Table = styled.table`
   width: 100%;
   border-collapse: collapse;
-  min-width: 1200px; /* Ensure the table has a minimum width for scrolling */
-  table-layout: auto; /* Adjust column width automatically */
+  min-width: 1200px;
 
   thead {
     background-color: #f1f1f1;
@@ -88,13 +88,13 @@ const Table = styled.table`
 const FiltersContainer = styled.div`
   margin-top: 2.5rem;
   display: flex;
-  flex-wrap: wrap; /* Allows the filters to wrap on smaller screens */
-  gap: 1rem; /* Space between filter elements */
+  flex-wrap: wrap;
+  gap: 1rem;
   margin-bottom: 1rem;
 `;
 
 const Select = styled.select`
-  flex: 1; /* Allows the select elements to grow and fill the available space */
+  flex: 1;
   padding: 0.5rem;
   border: 1px solid #ddd;
   border-radius: 4px;
@@ -102,7 +102,7 @@ const Select = styled.select`
 `;
 
 const InputDate = styled.input`
-  flex: 1; /* Allows the date input to grow and fill the available space */
+  flex: 1;
   padding: 0.5rem;
   border: 1px solid #ddd;
   border-radius: 4px;
@@ -123,8 +123,56 @@ const Button = styled.button`
   }
 `;
 
+const ModalBackground = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+`;
+
+const ModalContent = styled.div`
+  background-color: white;
+  color: black;
+  padding: 20px;
+  border-radius: 10px;
+  width: 400px;
+`;
+
+const CloseButton = styled.button`
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  float: right;
+`;
+
+const TablePop = styled.table`
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+
+  th,
+  td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: left;
+  }
+
+  th {
+    background-color: #f2f2f2;
+  }
+`;
+
 const AdminTransaction = () => {
   const navigate = useNavigate();
+  const [modalVisible, setModalVisible] = useState(false);
+  const [accountDetails, setAccountDetails] = useState(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [transactions, setTransactions] = useState([]);
   const [filteredTransactions, setFilteredTransactions] = useState([]);
@@ -133,7 +181,9 @@ const AdminTransaction = () => {
   const [filterDate, setFilterDate] = useState('');
   const [filterStatus, setFilterStatus] = useState('');
   const [filterToken, setFilterToken] = useState('');
+  const [filterCountry, setFilterCountry] = useState(''); // New state for country filter
   const [tokens, setTokens] = useState([]);
+  const [countries, setCountries] = useState([]); // New state for country list
 
   useEffect(() => {
     const Id = localStorage.getItem("Login");
@@ -151,12 +201,15 @@ const AdminTransaction = () => {
         }
         const data = await response.json();
         
-        // console.log(data.reverse())
         setTransactions(data.reverse());
         setFilteredTransactions(data);
-        // Extract unique tokens
+
+        // Extract unique tokens and countries
         const uniqueTokens = [...new Set(data.map(transaction => transaction.Token).filter(token => token))];
+        const uniqueCountries = [...new Set(data.map(transaction => transaction.Country).filter(country => country))];
+
         setTokens(uniqueTokens);
+        setCountries(uniqueCountries); // Set unique countries
       } catch (error) {
         console.error('Error fetching transactions:', error);
       }
@@ -169,8 +222,7 @@ const AdminTransaction = () => {
     let filtered = transactions;
 
     if (filterDate) {
-      var temp = filterDate.split("-").reverse().join("-");
-      console.log(temp)
+      const temp = filterDate.split("-").reverse().join("-");
       filtered = filtered.filter(transaction => transaction.Date === temp);
     }
     if (filterStatus) {
@@ -179,9 +231,12 @@ const AdminTransaction = () => {
     if (filterToken) {
       filtered = filtered.filter(transaction => transaction.Token === filterToken);
     }
+    if (filterCountry) { // Add country filter
+      filtered = filtered.filter(transaction => transaction.Country === filterCountry);
+    }
 
     setFilteredTransactions(filtered);
-  }, [filterDate, filterStatus, filterToken, transactions]);
+  }, [filterDate, filterStatus, filterToken, filterCountry, transactions]); // Include filterCountry
 
   const handleUpdateStatus = async () => {
     if (!selectedTransactionId || !status) {
@@ -206,12 +261,23 @@ const AdminTransaction = () => {
       alert(data.message);
       setStatus('');
       setSelectedTransactionId('');
+      
       // Refetch transactions
       const updatedTransactions = await fetch('http://localhost:8000/transactions/all').then(res => res.json());
       setTransactions(updatedTransactions);
     } catch (error) {
       console.error('Error updating transaction status:', error);
     }
+  };
+
+  const handleIconClick = (accountDetail) => {
+    setAccountDetails(accountDetail);
+    setModalVisible(true);
+  };
+
+  const closeModal = () => {
+    setModalVisible(false);
+    setAccountDetails(null);
   };
 
   return (
@@ -243,6 +309,13 @@ const AdminTransaction = () => {
                 <option key={token} value={token}>{token}</option>
               ))}
             </Select>
+
+            <Select onChange={(e) => setFilterCountry(e.target.value)} value={filterCountry}>
+              <option value="">Select Country</option>
+              {countries.map(country => (
+                <option key={country} value={country}>{country}</option>
+              ))}
+            </Select>
           </FiltersContainer>
 
           <TableContainer>
@@ -250,16 +323,13 @@ const AdminTransaction = () => {
               <thead>
                 <tr>
                   <th>Order ID</th>
-                  <th>Transaction Id</th>
                   <th>Email</th>
-                  <th>Name</th>
+                  <th>Account Detail</th>
                   <th>Country</th>
-                  <th>Bank Name</th>
-                  <th>Account Number</th>
-                  <th>IFSC</th>
                   <th>Token</th>
                   <th>USDT Amount</th>
                   <th>Processing Fee</th>
+                  <th>Network Fee</th>
                   <th>Received Amount</th>
                   <th>Status</th>
                   <th>Date</th>
@@ -272,16 +342,15 @@ const AdminTransaction = () => {
                 {filteredTransactions.map(transaction => (
                   <tr key={transaction._id}>
                     <td>{transaction.OrderId}</td>
-                    <td>{transaction.TransactionId}</td>
                     <td>{transaction.Email}</td>
-                    <td>{transaction.Name}</td>
+                    <td>
+                      <MdOutlineRemoveRedEye onClick={() => handleIconClick(transaction.AccountDetail)} />
+                    </td>
                     <td>{transaction.Country}</td>
-                    <td>{transaction.BankName}</td>
-                    <td>{transaction.AccountNumber}</td>
-                    <td>{transaction.IFSC}</td>
                     <td>{transaction.Token}</td>
                     <td>{transaction.USDTAmount}</td>
                     <td>{transaction.ProcessingFee}</td>
+                    <td>{transaction.NetworkFee}</td>
                     <td>{transaction.ReceivedAmount}</td>
                     <td>{transaction.Status}</td>
                     <td>{transaction.Date}</td>
@@ -303,7 +372,6 @@ const AdminTransaction = () => {
                         <option value="In Transit">In Transit</option>
                         <option value="Decline">Decline</option>
                         <option value="Completed">Completed</option>
-
                       </Select>
                     </td>
                     <td>
@@ -316,6 +384,30 @@ const AdminTransaction = () => {
           </TableContainer>
         </Section>
       </Content>
+      {modalVisible && (
+        <ModalBackground onClick={closeModal}>
+          <ModalContent onClick={(e) => e.stopPropagation()}>
+            <CloseButton onClick={closeModal}>&times;</CloseButton>
+            <h2>Account Details</h2>
+            <TablePop>
+              <thead>
+                <tr>
+                  <th>Field</th>
+                  <th>Value</th>
+                </tr>
+              </thead>
+              <tbody>
+                {accountDetails && Object.entries(accountDetails).map(([key, value]) => (
+                  <tr key={key}>
+                    <td>{key}</td>
+                    <td>{value}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </TablePop>
+          </ModalContent>
+        </ModalBackground>
+      )}
     </DashboardContainer>
   );
 };

@@ -10,6 +10,7 @@ import { MdContentCopy } from "react-icons/md";
 import copy from "copy-to-clipboard";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useSelector } from "react-redux";
 
 const PageContainer = styled.div`
   display: flex;
@@ -241,7 +242,41 @@ const SubmitAnimation = styled.div`
   }
 `;
 
+const countryObject = {
+  India: {
+    urlName: "india",
+    symbol: "₹",
+    name: "India"
+  },
+  Brazil: {
+    urlName: "brl",
+    symbol: "R$",
+    name: "Brazil"
+  },
+  UK: {
+    urlName: "uk",
+    symbol: "£",
+    name: "United Kingdom"
+  },
+  Euro: {
+    urlName: "euro",
+    symbol: "€",
+    name: "European Union"
+  },
+  Dubai: {
+    urlName: "aed",
+    symbol: "د.إ",
+    name: "Dubai"
+  },
+  USA: {
+    urlName: "usa",
+    symbol: "$",
+    name: "United States of America"
+  }
+}
+
 const Sell4 = () => {
+  const selectedCountry = useSelector((state) => state.country.value);
   const textRef = useRef();
   const textTransactionRef = useRef();
   const [localData, setLocalData] = useState({});
@@ -315,7 +350,7 @@ const Sell4 = () => {
 
   const fetchCurrencyData = async () => {
     try {
-      const response = await fetch("http://localhost:8000/currencies/all");
+      const response = await fetch(`http://localhost:8000/currencies/${countryObject[selectedCountry].urlName}/all`);
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
@@ -340,7 +375,7 @@ const Sell4 = () => {
     if (localData.symbol) {
       fetchCurrencyData();
     }
-  }, [localData.symbol]);
+  }, [localData.symbol,selectedCountry]);
 
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem("transactionDetails"));
@@ -370,11 +405,7 @@ const Sell4 = () => {
   };
 
   const handleProceedClick = () => {
-    if (transaction === "") {
-      toast.error("Please Enter TxID");
-    } else {
       setShowConfirmation(true);
-    }
   };
 
   const confirmTransaction = async () => {
@@ -387,12 +418,8 @@ const Sell4 = () => {
         },
         body: JSON.stringify({
           Email: localStorage.getItem("token"),
-          Name: localData.Name,
-          TransactionId: transaction,
-          Country: localData.Country,
-          BankName: localData.BankName,
-          AccountNumber: localData.AccountNumber,
-          IFSC: localData.IFSC,
+          Country: selectedCountry,
+          AccountDetail:localData.AccountDetail,
           USDTAmount: localData.amountPay,
           Token: localData.symbol,
           ProcessingFee: transactionFee,
@@ -469,7 +496,7 @@ const Sell4 = () => {
               </BackButton>
               <Tab active>How to Complete Your Sell</Tab>
             </TabContainer>
-            <div style={{display:"flex",flexDirection:"column", justifyContent:"space-between"}}>
+            <div style={{display:"flex",flexDirection:"column", justifyContent:"space-between",height:"100%"}}>
               <div>
                 <div>
                   <InfoRow>
@@ -626,7 +653,7 @@ const Sell4 = () => {
                   within 1-2 hours max.
                 </Text>
               </div>
-              <Button onClick={handleProceedClick} disabled={!submited}>
+              <Button onClick={handleProceedClick}>
                 Deposit Sent
               </Button>
             </div>

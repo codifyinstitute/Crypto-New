@@ -362,7 +362,7 @@ const Sell5 = () => {
             </InfoText>
           </InfoBox>
 
-          <Button onClick={()=>navigate('/Transaction')}>
+          <Button onClick={()=>navigate('/sellhistory')}>
             Transaction Status
             <ChevronRight size={24} />
           </Button>

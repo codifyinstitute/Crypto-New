@@ -253,7 +253,7 @@ const AdminAddCurrency = () => {
         }
 
         try {
-            console.log(`http://localhost:8000/currencies/${countryObject[country]}/add`)
+            // console.log(`http://localhost:8000/currencies/${countryObject[country]}/add`)
             const response = await fetch(`http://localhost:8000/currencies/${countryObject[country]}/add`, {
                 method: 'POST',
                 body: formData,

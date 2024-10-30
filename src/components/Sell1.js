@@ -673,32 +673,38 @@ const countryObject = {
   India: {
     urlName: "india",
     symbol: "₹",
-    name: "India"
+    name: "India",
+    fait:"INR"
   },
   Brazil: {
     urlName: "brl",
     symbol: "R$",
-    name: "Brazil"
+    name: "Brazil",
+    fait:"BRL"
   },
   UK: {
     urlName: "uk",
     symbol: "£",
-    name: "United Kingdom"
+    name: "United Kingdom",
+    fait:"GBP"
   },
   Euro: {
     urlName: "euro",
     symbol: "€",
-    name: "European Union"
+    name: "European Union",
+    fait:"EUR"
   },
   Dubai: {
     urlName: "aed",
     symbol: "د.إ",
-    name: "Dubai"
+    name: "Dubai",
+    fait:"AED"
   },
   USA: {
     urlName: "usa",
     symbol: "$",
-    name: "United States of America"
+    name: "United States of America",
+    fait:"USD"
   }
 }
 
@@ -849,6 +855,7 @@ const Sell1 = () => {
         JSON.stringify({
           amountPay: usdt,
           symbol: selectedCurrency.Symbol,
+          ReceiveCurrency:countryObject[selectedCountry].fait
         })
       );
       const token = localStorage.getItem("token");

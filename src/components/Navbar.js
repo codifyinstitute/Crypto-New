@@ -419,7 +419,8 @@ const Navbar = () => {
                 <CirclePlus size={20}/>DEPOSIT
             </DepositButton>
           </NavLink> */}
-          {path === "/payment-method" || path === "/bank-transfer" || path === "/card-transfer"? null:<DepositButton onClick={toggleDropdown}>
+          {path === "/payment-method" || path === "/bank-transfer" || path === "/card-transfer" || path === "/sell4"? null
+          :<DepositButton onClick={toggleDropdown}>
             {selectedCountry && (
               <img
                 src={selectedCountry.flag}
