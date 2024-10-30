@@ -255,7 +255,7 @@ const BankTransfer = () => {
   useEffect(()=>{
     const email = localStorage.getItem("token");
     axios
-      .get(`http://localhost:8000/account-details/${countryObject[selectedCountry].urlName}/${email}`)
+      .get(`https://crypto-backend-main.onrender.com/account-details/${countryObject[selectedCountry].urlName}/${email}`)
       .then((response) => {
         console.log(response.data)
         setAccounts(response.data);
@@ -329,7 +329,7 @@ const BankTransfer = () => {
     }
 
     // API call to save data
-    const url = `http://localhost:8000/account-details/${countryObject[selectedCountry].urlName}/add`;
+    const url = `https://crypto-backend-main.onrender.com/account-details/${countryObject[selectedCountry].urlName}/add`;
 
     try {
       await axios.post(url, submissionData);

@@ -274,7 +274,7 @@
 //     const fetchAccounts = async () => {
 //       try {
 //         const token = localStorage.getItem('token');
-//         const response = await axios.get(`http://localhost:8000/users/get/${token}`);
+//         const response = await axios.get(`https://crypto-backend-main.onrender.com/users/get/${token}`);
 //         setAccounts(response.data.Accounts);
 //       } catch (error) {
 //         console.error('Error fetching accounts:', error);
@@ -287,7 +287,7 @@
 //   const handleDelete = async (accountNumber) => {
 //     try {
 //       const token = localStorage.getItem('token');
-//       await axios.delete(`http://localhost:8000/users/del/${token}/accounts/${accountNumber}`);
+//       await axios.delete(`https://crypto-backend-main.onrender.com/users/del/${token}/accounts/${accountNumber}`);
 
 //       setAccounts((prevAccounts) =>
 //         prevAccounts.filter((account) => account.AccountNumber !== accountNumber)
@@ -701,7 +701,7 @@ const Bank = () => {
     const fetchAccounts = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get(`http://localhost:8000/users/get/${token}`);
+        const response = await axios.get(`https://crypto-backend-main.onrender.com/users/get/${token}`);
         setAccounts(response.data.Accounts);
       } catch (error) {
         console.error('Error fetching accounts:', error);
@@ -719,7 +719,7 @@ const Bank = () => {
   const handleDelete = async (accountNumber) => {
     try {
       const token = localStorage.getItem('token');
-      await axios.delete(`http://localhost:8000/users/del/${token}/accounts/${accountNumber}`);
+      await axios.delete(`https://crypto-backend-main.onrender.com/users/del/${token}/accounts/${accountNumber}`);
 
       setAccounts((prevAccounts) =>
         prevAccounts.filter((account) => account.AccountNumber !== accountNumber)
