@@ -296,6 +296,7 @@ const countryFlags = {
 const Navbar = () => {
   const selectedCountryStore = useSelector((state) => state.country.value);
   const dispatch = useDispatch();
+  const [path, setPath] = useState("");
   const [selectedCountry, setSelectedCountry] = useState({
     name: selectedCountryStore,
     flag: countryFlags[selectedCountryStore] || '', // Set initial flag based on store value
@@ -305,6 +306,7 @@ const Navbar = () => {
   const token = localStorage.getItem("token");
 
   useEffect(() => {
+
     const data = localStorage.getItem("Country");
     if (data) {
       dispatch(changeCountry(data));
@@ -312,12 +314,13 @@ const Navbar = () => {
         name: selectedCountryStore,
         flag: countryFlags[selectedCountryStore] || '',
       });
-    }else{
+    } else {
       setSelectedCountry({
         name: "India",
         flag: India,
       });
     }
+    setPath(window.location.pathname)
   }, [selectedCountryStore]);
 
 
@@ -416,8 +419,7 @@ const Navbar = () => {
                 <CirclePlus size={20}/>DEPOSIT
             </DepositButton>
           </NavLink> */}
-
-          <DepositButton onClick={toggleDropdown}>
+          {path === "/payment-method" || path === "/bank-transfer" || path === "/card-transfer"? null:<DepositButton onClick={toggleDropdown}>
             {selectedCountry && (
               <img
                 src={selectedCountry.flag}
@@ -431,7 +433,8 @@ const Navbar = () => {
               />
             )}
             <IoMdArrowDropdown />
-          </DepositButton>
+          </DepositButton>}
+
 
           {isDropdownOpen && (
             <DropdownMenu isVisible={isDropdownOpen}>

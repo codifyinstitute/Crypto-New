@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Navbar from "./Navbar";
@@ -126,6 +126,10 @@ const PaymentMethod = () => {
   const selectedCountry = useSelector((state) => state.country.value);
   const navigate = useNavigate();
 
+  // useEffect(()=>{
+  //   console.log(window.location.pathname)
+  // },[])
+
   return (
     <>
       <Navbar />
@@ -183,7 +187,7 @@ const PaymentMethod = () => {
                   </OptionDescription>
                 </OptionText>
               </PaymentOption> : null}
-            <ProceedButton>Proceed</ProceedButton>
+            {/* <ProceedButton>Proceed</ProceedButton> */}
           </FormContainer>
         </FormWrapper>
       </PageContainer>
