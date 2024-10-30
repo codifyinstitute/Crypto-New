@@ -111,7 +111,7 @@ const AdminTransactionFee = () => {
 
     const fetchTransactionFee = async () => {
         try {
-            const response = await fetch('https://crypto-backend-main.onrender.com/static/get/66c445a358802d46d5d70dd4');
+            const response = await fetch('http://localhost:8000/static/get/66c445a358802d46d5d70dd4');
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
@@ -141,7 +141,7 @@ const AdminTransactionFee = () => {
         setLoading(true);
 
         try {
-            const response = await fetch('https://crypto-backend-main.onrender.com/static/put/66c445a358802d46d5d70dd4', {
+            const response = await fetch('http://localhost:8000/static/put/66c445a358802d46d5d70dd4', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -167,7 +167,7 @@ const AdminTransactionFee = () => {
         setLoading(true);
 
         try {
-            const response = await fetch('https://crypto-backend-main.onrender.com/static/put/66c445a358802d46d5d70dd4', {
+            const response = await fetch('http://localhost:8000/static/put/66c445a358802d46d5d70dd4', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -193,7 +193,7 @@ const AdminTransactionFee = () => {
         setLoading(true);
 
         try {
-            const response = await fetch('https://crypto-backend-main.onrender.com/static/put/66c445a358802d46d5d70dd4', {
+            const response = await fetch('http://localhost:8000/static/put/66c445a358802d46d5d70dd4', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

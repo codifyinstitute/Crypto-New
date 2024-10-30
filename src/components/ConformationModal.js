@@ -89,7 +89,7 @@ const ModalContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 90%;
+  width: 380px;
   max-width: 500px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 `;
@@ -105,7 +105,7 @@ const Button = styled.button`
   color: black;
   font-weight: 700;
   border: none;
-  padding: 10px;
+  padding: 9px 57px;
   border-radius: 5px;
   cursor: pointer;
   margin-right: 10px;

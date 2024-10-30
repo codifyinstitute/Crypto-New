@@ -46,7 +46,7 @@ const Card = styled.div`
   padding: 1.5rem;
   border-radius: 0.5rem;
   width: 380px;
-  height: 100%;
+  height: 650px;
   display: flex;
   flex-direction: column;
   overflow-y: auto;
@@ -297,8 +297,8 @@ const Sell4 = () => {
 
   const fetchTransactionFee = async () => {
     try {
-      const response = await fetch("https://crypto-backend-main.onrender.com/static/get/66c445a358802d46d5d70dd4");
-      const countResponse = await fetch("https://crypto-backend-main.onrender.com/transactions/get/count");
+      const response = await fetch("http://localhost:8000/static/get/66c445a358802d46d5d70dd4");
+      const countResponse = await fetch("http://localhost:8000/transactions/get/count");
 
       if (!response.ok && !countResponse.ok) {
         throw new Error("Network response was not ok");
@@ -315,7 +315,7 @@ const Sell4 = () => {
 
   const fetchCurrencyData = async () => {
     try {
-      const response = await fetch("https://crypto-backend-main.onrender.com/currencies/all");
+      const response = await fetch("http://localhost:8000/currencies/all");
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
@@ -380,7 +380,7 @@ const Sell4 = () => {
   const confirmTransaction = async () => {
     setShowConfirmation(false);
     try {
-      const response = await fetch("https://crypto-backend-main.onrender.com/transactions/add", {
+      const response = await fetch("http://localhost:8000/transactions/add", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -469,53 +469,54 @@ const Sell4 = () => {
               </BackButton>
               <Tab active>How to Complete Your Sell</Tab>
             </TabContainer>
-
-            <div>
-              <InfoRow>
-                <Label>Order ID</Label>
-                <Value>
-                  <input
-                    style={{
-                      width: "150px",
-                      backgroundColor: "transparent",
-                      border: "none",
-                      fontSize: "16px",
-                      fontWeight: "bold",
-                      textAlign: "right",
-                      color: "rgb(123 119 119)",
-                    }}
-                    value={orderId}
-                    disabled
-                    type="text"
-                    ref={textRef}
-                  />
-                  <MdContentCopy
-                    style={{ cursor: "pointer" }}
-                    onClick={copyToClipboard}
-                  />
-                </Value>
-              </InfoRow>
-              <Heading>Transaction Summary</Heading>
-              <InfoRow>
-                <Label1>You're Selling</Label1>
-                <Value>
-                  {localData.amountPay} {coinName}{" "}
-                </Value>
-              </InfoRow>
-              <InfoRow>
-                <Label1>Transaction Fee</Label1>
-                <Value>₹{transactionFee}</Value>
-              </InfoRow>
-              <InfoRow>
-                <Label1>Network Fee</Label1>
-                <Value>₹{networkFee}</Value>
-              </InfoRow>
-              <InfoRow>
-                <Label1>You'll Receive</Label1>
-                <Value>₹{calculateReceivedAmount()}</Value>
-              </InfoRow>
-            </div>
-            <hr />
+            <div style={{display:"flex",flexDirection:"column", justifyContent:"space-between"}}>
+              <div>
+                <div>
+                  <InfoRow>
+                    <Label>Order ID</Label>
+                    <Value>
+                      <input
+                        style={{
+                          width: "150px",
+                          backgroundColor: "transparent",
+                          border: "none",
+                          fontSize: "16px",
+                          fontWeight: "bold",
+                          textAlign: "right",
+                          color: "rgb(123 119 119)",
+                        }}
+                        value={orderId}
+                        disabled
+                        type="text"
+                        ref={textRef}
+                      />
+                      <MdContentCopy
+                        style={{ cursor: "pointer" }}
+                        onClick={copyToClipboard}
+                      />
+                    </Value>
+                  </InfoRow>
+                  <Heading>Transaction Summary</Heading>
+                  <InfoRow>
+                    <Label1>You're Selling</Label1>
+                    <Value>
+                      {localData.amountPay} {coinName}{" "}
+                    </Value>
+                  </InfoRow>
+                  <InfoRow>
+                    <Label1>Transaction Fee</Label1>
+                    <Value>₹{transactionFee}</Value>
+                  </InfoRow>
+                  <InfoRow>
+                    <Label1>Network Fee</Label1>
+                    <Value>₹{networkFee}</Value>
+                  </InfoRow>
+                  <InfoRow>
+                    <Label1>You'll Receive</Label1>
+                    <Value>₹{calculateReceivedAmount()}</Value>
+                  </InfoRow>
+                </div>
+                {/* <hr />
             <BoxPara>
               Please Transfer USDT to the address within{" "}
               <span style={{ color: "red" }}>{timeLeft}</span> after that time,
@@ -568,7 +569,7 @@ const Sell4 = () => {
             <QRCodeContainer>
               <QRCode>
                 <img
-                  src={`https://crypto-backend-main.onrender.com/uploads/${image}`}
+                  src={`http://localhost:8000/uploads/${image}`}
                   width="150px"
                   alt="QR code"
                 />
@@ -618,15 +619,17 @@ const Sell4 = () => {
             {showSubmitAnimation && (
               <SubmitAnimation>TxID submitted successfully!</SubmitAnimation>
             )}
-            <hr />
-            <Heading style={{ marginTop: "15px" }}>What Happens Next?</Heading>
-            <Text>
-              Once We've received your crypto deposit, we'll send the pay-out
-              within 1-2 hours max.
-            </Text>
-            <Button onClick={handleProceedClick} disabled={!submited}>
-              Deposit Sent
-            </Button>
+            <hr /> */}
+                <Heading style={{ marginTop: "15px" }}>What Happens Next?</Heading>
+                <Text>
+                  Once We've received your crypto deposit, we'll send the pay-out
+                  within 1-2 hours max.
+                </Text>
+              </div>
+              <Button onClick={handleProceedClick} disabled={!submited}>
+                Deposit Sent
+              </Button>
+            </div>
           </Card>
         </Center>
       </PageContainer>

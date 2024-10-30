@@ -85,6 +85,7 @@ const Submenu = styled.div`
 const Sidebar = ({ isOpen, setIsSidebarOpen }) => {
   const navigate = useNavigate();
   const [isCurrencyMenuOpen, setCurrencyMenuOpen] = useState(false);
+  const [isTransactionFeeMenuOpen, setTransactionFeeMenuOpen] = useState(false);
 
   const handleNavigation = (path) => {
     navigate(path);
@@ -119,7 +120,19 @@ const Sidebar = ({ isOpen, setIsSidebarOpen }) => {
           <SubmenuButton onClick={() => handleNavigation('/admin/United Arab Emirates/addCurrency')}>United Arab Emirates</SubmenuButton>
           <SubmenuButton onClick={() => handleNavigation('/admin/United State of America/addCurrency')}>United State of America</SubmenuButton>
         </Submenu>
-        <SidebarButton onClick={() => handleNavigation('/admin/transactionFee')}>Transaction Fee</SidebarButton>
+
+        <SidebarButton onClick={() => setTransactionFeeMenuOpen((prev) => !prev)}>
+          Transaction Fee
+        </SidebarButton>
+        <Submenu isOpen={isTransactionFeeMenuOpen}>
+          <SubmenuButton onClick={() => handleNavigation('/admin/India/transactionFee')}>India</SubmenuButton>
+          <SubmenuButton onClick={() => handleNavigation('/admin/Brazil/transactionFee')}>Brazil</SubmenuButton>
+          <SubmenuButton onClick={() => handleNavigation('/admin/United Kingdom/transactionFee')}>United Kingdom</SubmenuButton>
+          <SubmenuButton onClick={() => handleNavigation('/admin/European Union/transactionFee')}>European Union</SubmenuButton>
+          <SubmenuButton onClick={() => handleNavigation('/admin/United Arab Emirates/transactionFee')}>United Arab Emirates</SubmenuButton>
+          <SubmenuButton onClick={() => handleNavigation('/admin/United State of America/transactionFee')}>United State of America</SubmenuButton>
+        </Submenu>
+        {/* <SidebarButton onClick={() => handleNavigation('/admin/transactionFee')}>Transaction Fee</SidebarButton> */}
         <SidebarButton onClick={() => handleNavigation('/admin/transactions')}>View Transaction</SidebarButton>
         <SidebarButton onClick={() => handleNavigation('/admin/otherprice')}>Other Price</SidebarButton>
         <SidebarButton onClick={() => handleNavigation('/admin/users')}>Users</SidebarButton>

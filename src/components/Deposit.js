@@ -132,10 +132,10 @@ const UpdateText = styled.div`
 `;
 
 //  const WrapperProceedButton = styled.button`
- 
+
 //  `
 
-  const ProceedButton = styled.button`
+const ProceedButton = styled.button`
     width: 100%;
     padding: 1rem;
     background-color: orange;
@@ -161,7 +161,7 @@ const UpdateText = styled.div`
     }
   `;
 
-  const PaymentMethods = styled.div`
+const PaymentMethods = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
@@ -173,7 +173,7 @@ const UpdateText = styled.div`
     }
   `;
 
-  const PaymentIcon = styled.div`
+const PaymentIcon = styled.div`
   width: 210px;
     height: 35px;
     background-color: white;
@@ -552,7 +552,7 @@ const Card = styled.div`
   right: 10px;
   background-color: white;
   border: 1px solid #ddd;
-  padding: 10px;FFA500
+  padding: 10px;
   z-index: 2;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   width: 300px;
@@ -694,7 +694,7 @@ const InactiveButton = styled(Button)`
 
 
 const AmountHeading = styled.div`
-font-size = 16px;
+font-size : 16px;
 margin-top: 0.8rem;
   font-weight: bold;
 `;
@@ -734,6 +734,7 @@ font-size : 5rem;
 const BalanceWrapper = styled.div`
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
   align-items: center;
   margin-top: 15px;
   gap: 5px;
@@ -750,20 +751,20 @@ const BalanceText = styled.div`
 
 
 const IconValueWrapper = styled.div`
-    background-color: #e5e5e5;
-  color: black;
-  padding: 8px 16px;
-  border-radius: 10px;
-  border: none;
-  font-size: 14px; /* Slightly smaller font for better scaling */
-  font-weight: 700;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  height : 40px;
-  gap: 2px; /* Reduce gap slightly */
- width: auto; /* Prevent the button from getting too narrow */
-  transition: background-color 0.3s;
+    background-color: rgb(251 251 251);
+    color: black;
+    padding: 5px 13px;
+    border-radius: 10px;
+    border: none;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    /* height: 40px; */
+    gap: 2px;
+    width: auto;
+    transition: background-color 0.3s;
 `
 
 const BalanceIcon = styled.img`
@@ -775,7 +776,7 @@ const AvailableBalanceValue = styled.div`
   font-size: 1rem;
   font-weight: bold;
 //  background-color: #e1e1e1;
-  padding: 8px 2px; /* Spacing for a button-like look */
+  /* padding: 8px 2px; Spacing for a button-like look */
   // border-radius: 20px; /* Rounded corners */
   // display: inline-block;
   cursor: pointer; /* Gives the impression that it can be clicked */
@@ -828,10 +829,10 @@ const Deposit = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [timer, setTimer] = useState(30);
   const [isCardVisible, setIsCardVisible] = useState(false);
-  const [BalanceValue, setBalanceValue] = useState(500000);  
-  const [TRCValue, setTRVvalue] =  useState()
+  const [BalanceValue, setBalanceValue] = useState(500000);
+  const [TRCValue, setTRVvalue] = useState()
   const [selectNetwork, setSelectNetwork] = useState('TRC20');
-  
+
 
   useEffect(() => {
     const countdown = setInterval(() => {
@@ -854,8 +855,8 @@ const Deposit = () => {
   //   const fetchData = async () => {
   //     try {
   //       const [currenciesResponse, feesResponse] = await Promise.all([
-  //         axios.get('https://crypto-backend-main.onrender.com/currencies/all'),
-  //         fetch('https://crypto-backend-main.onrender.com/static/get/66c445a358802d46d5d70dd4')
+  //         axios.get('http://localhost:8000/currencies/all'),
+  //         fetch('http://localhost:8000/static/get/66c445a358802d46d5d70dd4')
   //       ]);
 
   //       setCurrencies(currenciesResponse.data);
@@ -881,14 +882,14 @@ const Deposit = () => {
 
   const handleUsdtChange = (e) => {
     const value = e.target.value;
-    if(value>=1075 && value<2150){
+    if (value >= 1075 && value < 2150) {
       setExtra(0.25);
       //console.log(0.25)
-    }else if(value>=2150 && value<3255){
+    } else if (value >= 2150 && value < 3255) {
       setExtra(0.5);
-    }else if(value>=3255){
+    } else if (value >= 3255) {
       setExtra(1);
-    }else{
+    } else {
       setExtra(0);
     }
     setUsdt(value);
@@ -903,7 +904,7 @@ const Deposit = () => {
   // const inr = selectedCurrency ? usdt * (selectedCurrency.Rate + extra): 0;
 
   const handleDepositNowClick = () => {
-    if (isValid ) {
+    if (isValid) {
       const networkData = {
         network: selectNetwork,
         depositamount: usdt,
@@ -973,44 +974,44 @@ const Deposit = () => {
           fontWeight: "bold",
           color: "#333",
           border: "1px solid #f0a500",
-          borderRadius: "8px", 
-          backgroundColor: "#fffdf5", 
-          padding: "10px", 
+          borderRadius: "8px",
+          backgroundColor: "#fffdf5",
+          padding: "10px",
           width: "90vw", // Full width on mobile
-          maxWidth: "300px", 
+          maxWidth: "300px",
           boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
         },
       });
     }, 1000); // 1-second delay
   };
-  
+
   const handleBepClick = () => {
     setSelectNetwork('BEP20');
     setTimeout(() => {
       toast.success("Network changed to BEP20", {
         position: "top-left",
         style: {
-          fontSize: "14px", 
-          fontWeight: "bold", 
-          color: "#333", 
-          border: "1px solid #f0a500", 
-          borderRadius: "8px", 
+          fontSize: "14px",
+          fontWeight: "bold",
+          color: "#333",
+          border: "1px solid #f0a500",
+          borderRadius: "8px",
           backgroundColor: "#fffdf5",
-          padding: "10px", 
-          width: "90vw", 
+          padding: "10px",
+          width: "90vw",
           maxWidth: "300px", // Cap max width for larger screens
           boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
         },
       });
     }, 1000);
   };
-  
-  
+
+
   return (
     <>
       <Navbar />
-      <TradingEnvironment>  
-      <ToastContainer />
+      <TradingEnvironment>
+        <ToastContainer />
         <ExchangeCard>
           <div>
 
@@ -1019,65 +1020,64 @@ const Deposit = () => {
                 <ChevronLeft />
               </BackButton>
               <Tab active> USDT Deposit </Tab>
-              <AiOutlineHistory style={{ color: '#FFA500', fontSize: '30px' }}/>
+              <AiOutlineHistory onClick={()=>navigate("/depositHistory")} style={{ color: '#FFA500', fontSize: '30px' }} />
             </TabContainer>
 
             <InputLabel>You Deposit</InputLabel>
             <DepositImageContainer>
-            <DepositImgIcon />
+              <DepositImgIcon />
             </DepositImageContainer>
             <DepositText>  Network   </DepositText>
-           
+
             <NetworkWrapper>
-      {selectNetwork === 'TRC20' ? (
-        <ActiveButton onClick={handleTrcClick}>TRC20</ActiveButton>
-      ) : (
-        <InactiveButton onClick={handleTrcClick}>TRC20</InactiveButton>
-      )}
-      {selectNetwork === 'BEP20' ? (
-        <ActiveButton onClick={handleBepClick}>BEP20</ActiveButton>
-      ) : (
-        <InactiveButton onClick={handleBepClick}>BEP20</InactiveButton>
-      )}
-      {/* <div>Selected Network: {selectNetwork}</div> */}
-    </NetworkWrapper>
+              {selectNetwork === 'TRC20' ? (
+                <ActiveButton onClick={handleTrcClick}>TRC20</ActiveButton>
+              ) : (
+                <InactiveButton onClick={handleTrcClick}>TRC20</InactiveButton>
+              )}
+              {selectNetwork === 'BEP20' ? (
+                <ActiveButton onClick={handleBepClick}>BEP20</ActiveButton>
+              ) : (
+                <InactiveButton onClick={handleBepClick}>BEP20</InactiveButton>
+              )}
+              {/* <div>Selected Network: {selectNetwork}</div> */}
+            </NetworkWrapper>
 
 
-              <AmountHeading>  Enter Amount   </AmountHeading>
- <DepositInput>
-  <InputField 
-    placeholder='Enter USDT amount' 
-    type='number' 
-    value={usdt} 
-    onChange={(e) => setUsdt(e.target.value)}
-  />
-  <DepsitCurrencyIcon src={usdtt} alt={"currncy"}/>
-  {/* <currencyText>USDT</currencyText> */}
-</DepositInput>
-
+            <AmountHeading>  Enter Amount   </AmountHeading>
+            <DepositInput>
+              <InputField
+                placeholder='Enter USDT amount'
+                type='number'
+                value={usdt}
+                onChange={(e) => setUsdt(e.target.value)}
+              />
+              <DepsitCurrencyIcon src={usdtt} alt={"currncy"} />
+              {/* <currencyText>USDT</currencyText> */}
+            </DepositInput>
             <BalanceWrapper>
               <BalanceText>
                 Available
               </BalanceText>
-              
-              <IconValueWrapper>
-              <BalanceIcon src={usdtt} alt={"currency"} >
-              </BalanceIcon>
 
-            <AvailableBalanceValue>
-             {BalanceValue}
-            </AvailableBalanceValue>
-            </IconValueWrapper>
+              <IconValueWrapper>
+                <BalanceIcon src={usdtt} alt={"currency"} >
+                </BalanceIcon>
+
+                <AvailableBalanceValue>
+                  {BalanceValue}
+                </AvailableBalanceValue>
+              </IconValueWrapper>
             </BalanceWrapper>
-          
+
 
           </div>
           <div>
-            
+
             <ProceedButton onClick={handleDepositNowClick} disabled={!isValid}>
-              Proceed · Deposit { null ?.Name} <ChevronRight />
+              Proceed · Deposit {null?.Name} <ChevronRight />
             </ProceedButton>
-          
+
             {/* <PaymentMethods>
               <PaymentIcon />
             </PaymentMethods> */}
@@ -1088,12 +1088,12 @@ const Deposit = () => {
           </div>
           <div>
             <Disclaimer>
-            <DisclaimerIcon>
-            <TriangleAlert size={20} color="#e5a50a" />
-            </DisclaimerIcon>
+              <DisclaimerIcon>
+                <TriangleAlert size={20} color="#e5a50a" />
+              </DisclaimerIcon>
               <DisclaimerText>
-                  For the safety of your funds please ensure that the network
-                  selected and amount entered is appropriate
+                For the safety of your funds please ensure that the network
+                selected and amount entered is appropriate
               </DisclaimerText>
             </Disclaimer>
           </div>
@@ -1106,7 +1106,7 @@ const Deposit = () => {
             </Card>
           )}
         </ExchangeCard>
-      
+
       </TradingEnvironment>
       <HomeContact />
       <Footer />

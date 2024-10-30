@@ -118,9 +118,26 @@ const FormButton = styled.button`
   gap: 0.5rem;
 `;
 
+const Button = styled.button`
+  background-color: #f7a600;
+  color: white;
+  border: none;
+  padding: 10px;
+  font-size: .7rem;
+  border-radius: 4px;
+  cursor: pointer;
+  opacity: ${({ disabled }) => (disabled ? 0.5 : 1)};
+  pointer-events: ${({ disabled }) => (disabled ? "none" : "auto")};
+
+  &:hover {
+    background-color: #e69500;
+  }
+`;
+
 const BankTransfer = () => {
   const selectedCountry = useSelector((state) => state.country.value);
   const navigate = useNavigate();
+  const [form, setForm] = useState(true);
 
   // State for input fields
   const [formData, setFormData] = useState({
@@ -186,6 +203,10 @@ const BankTransfer = () => {
     console.log("Submitted Data:", submissionData);
   };
 
+  const AddAccount = () => {
+    setForm(!form);
+  }
+
   return (
     <>
       <Navbar />
@@ -207,19 +228,13 @@ const BankTransfer = () => {
                 </button>
                 <Tab>Fill in the Information</Tab>
               </Left>
-              <button
-                style={{
-                  border: "none",
-                  background: "transparent",
-                  cursor: "pointer",
-                  color: "black",
-                }}
-              >
-                <Menu />
-              </button>
+              {form ? (
+                <Button onClick={AddAccount}>Choose Account</Button>
+              ) : (
+                <Button onClick={AddAccount}>Add Account +</Button>
+              )}
             </TabContainer>
-
-            <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", justifyContent: "space-between", height: "100%" }}>
+            {form ? <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", justifyContent: "space-between", height: "100%" }}>
               <FormSection>
                 <FormLabel>First Name</FormLabel>
                 <FormInput name="firstName" value={formData.firstName} onChange={handleChange} placeholder="Please enter your First name" />
@@ -332,7 +347,7 @@ const BankTransfer = () => {
                   <IoArrowForwardOutline />
                 </FormButton>
               </div>
-            </form>
+            </form> :null}
           </FormContainer>
         </FormWrapper>
       </PageContainer>

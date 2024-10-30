@@ -13,6 +13,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { TriangleAlert } from 'lucide-react';
 import moneyIcon from '../assets/usdtt.png';
 import networkIcon from '../assets/usdtt.png';
+import { useSelector } from "react-redux";
 
 const PageContainer = styled.div`
   // display: flex;
@@ -36,7 +37,7 @@ const PageContainer = styled.div`
   /* padding-top: 140 px; */
   @media (max-width: 480px) {
   padding-top: 80px;
- 
+  }
 `;
 
 const TabContainer = styled.div`
@@ -368,7 +369,7 @@ gap : 5px;
 
 `;
 
-const DepositNetworkHeading = styled.div `
+const DepositNetworkHeading = styled.div`
  color : black;
  font-size : 16px;
  font-weight : 700;
@@ -377,12 +378,11 @@ const DepositNetworkHeading = styled.div `
 
 const DepositNetworkvalues = styled.div`
  display : flex;
- flex-direction : row
+ flex-direction : row;
  align-items:  center;
  color : black;
  margin-top : 5px;
  gap : 5px;
-
   background-color: #e5e5e5;
   color: black;
   padding: 8px 16px;
@@ -422,7 +422,7 @@ flex-direction : column;
 gap : 5px;
 `;
 
-const DepositAmountHeading = styled.div `
+const DepositAmountHeading = styled.div`
  color : black;
  font-size : 16px;
  font-weight : 700;
@@ -430,7 +430,7 @@ const DepositAmountHeading = styled.div `
 
 const DepositAmountvalues = styled.div`
  display : flex;
- flex-direction : row
+ flex-direction : row;
  align-items:  center;
  color : black;
  margin-top : 5px;
@@ -468,8 +468,41 @@ const DepositAmountvalues2 = styled.div`
 `;
 
 // const CountDownWrapper = Styled.div 
+const countryObject = {
+  India: {
+    urlName: "india",
+    symbol: "₹",
+    name: "India"
+  },
+  Brazil: {
+    urlName: "brl",
+    symbol: "R$",
+    name: "Brazil"
+  },
+  UK: {
+    urlName: "uk",
+    symbol: "£",
+    name: "United Kingdom"
+  },
+  Euro: {
+    urlName: "euro",
+    symbol: "€",
+    name: "European Union"
+  },
+  Dubai: {
+    urlName: "aed",
+    symbol: "د.إ",
+    name: "Dubai"
+  },
+  USA: {
+    urlName: "usa",
+    symbol: "$",
+    name: "United States of America"
+  }
+}
 
 const Depposit1 = () => {
+  const selectedCountry = useSelector((state) => state.country.value);
   const textRef = useRef();
   const textTransactionRef = useRef();
   const [localData, setLocalData] = useState({});
@@ -503,15 +536,15 @@ const Depposit1 = () => {
     } else {
       return 'TRC20'; // default network if no data in local storage
     }
-  }); 
-  
+  });
 
-const networkDetails = JSON.parse(localStorage.getItem('networkDetails'));
-const network = networkDetails.network;
-const amount = networkDetails.depositAmount;
 
-// console.log();
-// console.log(amount);
+  const networkDetails = JSON.parse(localStorage.getItem('networkDetails'));
+  const network = networkDetails.network;
+  const amount = networkDetails.depositAmount;
+
+  // console.log();
+  // console.log(amount);
 
   const navigate = useNavigate();
 
@@ -520,7 +553,7 @@ const amount = networkDetails.depositAmount;
     // Set the created time when the component loads or when the transaction is started.
     setCreatedTime(new Date().toLocaleString()); // You can format this as needed
   }, []);
-  
+
 
   useEffect(() => {
     const fetchNetworkDetails = async () => {
@@ -528,7 +561,7 @@ const amount = networkDetails.depositAmount;
         const response = await fetch('http://localhost:3001/network-details');
         const data = await response.json();
 
-        if(!localStorage.getItem('networkDetails')) {
+        if (!localStorage.getItem('networkDetails')) {
           setSelectedNetwork(data.network);
           setEnteredAmount(data.depositamount);
         }
@@ -539,26 +572,26 @@ const amount = networkDetails.depositAmount;
         console.error('Error fetching network details:', error);
       }
     };
-    
-  
 
 
-  const storedNetworkDetails = localStorage.getItem('networkDetails');
-  if (storedNetworkDetails) {
-    const networkDetails = JSON.parse(storedNetworkDetails);
-    setSelectedNetwork(networkDetails.network);
-    setEnteredAmount(networkDetails.depositamount);
-  } else {
-    fetchNetworkDetails(); // fetch from API if no data in local storage
-  }
-}, []);
 
 
-// Optional: Update local storage when network details change
-useEffect(() => {
-  const networkDetails = { network: selectedNetwork, depositAmount: enteredAmount };
-  localStorage.setItem('networkDetails', JSON.stringify(networkDetails));
-}, [selectedNetwork, enteredAmount]);
+    const storedNetworkDetails = localStorage.getItem('networkDetails');
+    if (storedNetworkDetails) {
+      const networkDetails = JSON.parse(storedNetworkDetails);
+      setSelectedNetwork(networkDetails.network);
+      setEnteredAmount(networkDetails.depositamount);
+    } else {
+      fetchNetworkDetails(); // fetch from API if no data in local storage
+    }
+  }, []);
+
+
+  // Optional: Update local storage when network details change
+  useEffect(() => {
+    const networkDetails = { network: selectedNetwork, depositAmount: enteredAmount };
+    localStorage.setItem('networkDetails', JSON.stringify(networkDetails));
+  }, [selectedNetwork, enteredAmount]);
 
 
 
@@ -593,15 +626,15 @@ useEffect(() => {
 
   const fetchTransactionFee = async () => {
     try {
-      const response = await fetch("https://crypto-backend-main.onrender.com/static/get/66c445a358802d46d5d70dd4");
-      const countResponse = await fetch("https://crypto-backend-main.onrender.com/transactions/get/count");
+      const response = await fetch("http://localhost:8000/static/get/66c445a358802d46d5d70dd4");
+      /* const countResponse = await fetch("http://localhost:8000/transactions/get/count"); */
 
-      if (!response.ok && !countResponse.ok) {
+      if (!response.ok) {
         throw new Error("Network response was not ok");
       }
       const data = await response.json();
-      const countData = await countResponse.json();
-      setOrderId(`15300990${countData.Count + 1}`);
+      /* const countData = await countResponse.json(); */
+      /* setOrderId(`15300990${countData.Count + 1}`); */
       setTransactionFee(data.TransactionFee);
       setNetworkFee(data.NetworkFee);
     } catch (error) {
@@ -611,12 +644,13 @@ useEffect(() => {
 
   const fetchCurrencyData = async () => {
     try {
-      const response = await fetch("https://crypto-backend-main.onrender.com/currencies/all");
+      const response = await fetch(`http://localhost:8000/currencies/${countryObject[selectedCountry].urlName}/all`);
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
       const data = await response.json();
-      const currency = data.find((curr) => curr.Symbol === localData.symbol);
+      console.log(data, network)
+      const currency = data.find((curr) => curr.Symbol === network);
       if (currency) {
         setImage(currency.QRCode);
         setTransactionId(currency.TransactionId);
@@ -633,10 +667,9 @@ useEffect(() => {
   };
 
   useEffect(() => {
-    if (localData.symbol) {
-      fetchCurrencyData();
-    }
-  }, [localData.symbol]);
+
+    fetchCurrencyData();
+  }, [network]);
 
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem("transactionDetails"));
@@ -681,9 +714,9 @@ useEffect(() => {
           maxWidth: "300px", // Cap max width for larger screens
           boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
         },
-        
+
       }
-        
+
       );
     } else {
       setShowConfirmation(true);
@@ -693,7 +726,7 @@ useEffect(() => {
   // const confirmTransaction = async () => {
   //   setShowConfirmation(false);
   //   try {
-  //     const response = await fetch("https://crypto-backend-main.onrender.com/transactions/add", {
+  //     const response = await fetch("http://localhost:8000/transactions/add", {
   //       method: "POST",
   //       headers: {
   //         "Content-Type": "application/json",
@@ -729,7 +762,7 @@ useEffect(() => {
 
 
 
-  
+
   // api
 
   const confirmTransaction = async () => {
@@ -737,39 +770,44 @@ useEffect(() => {
     const currentDate = new Date();
     const formattedDate = currentDate.toLocaleDateString();
     const formattedTime = currentDate.toLocaleTimeString();
-    
+
     try {
-        const response = await fetch("https://crypto-backend-main.onrender.com/deposit-transactions/add", { // Updated URL for the backend
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                OrderId: orderId,
-                Email: localStorage.getItem("token"),
-                Amount: localData.amountPay,
-                Network: selectedNetwork,
-                ProcessingFee: transactionFee,
-                AddedAmount: calculateReceivedAmount(),
-                Status: "Pending",
-                Date: formattedDate,
-                Time: formattedTime,
-            }),
-        });
+      /* console.log({
+        Email: localStorage.getItem("token"),
+        Amount: localData.amountPay,
+        Network: network,
+        Status: "Pending",
+        Date: formattedDate,
+        Time: formattedTime,
+      }) */
+      const response = await fetch("http://localhost:8000/deposit-transactions/add", { // Updated URL for the backend
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          Email: localStorage.getItem("token"),
+          Amount: localData.amountPay,
+          Network: network,
+          Status: "Pending",
+          Date: formattedDate,
+          Time: formattedTime,
+        }),
+      });
 
-        if (!response.ok) {
-            throw new Error("Failed to submit transaction");
+      if (!response.ok) {
+        throw new Error("Failed to submit transaction");
 
-        }
+      }
 
-        const result = await response.json();
-        setSavedData(result);
-        setShowSuccess(true);
-        navigate("/sell5", { state: { data: result } });
+      const result = await response.json();
+      setSavedData(result);
+      setShowSuccess(true);
+      navigate("/sell6", { state: { data: result } });
     } catch (error) {
-        alert("Error submitting transaction: " + error.message);
+      alert("Error submitting transaction: " + error.message);
     }
-};
+  };
 
 
   const cancelConfirmation = () => {
@@ -837,7 +875,7 @@ useEffect(() => {
   const handleBepClick = () => {
     setSelectNetwork('BEP20');
   };
-  
+
   return (
     <>
       <Navbar />
@@ -851,27 +889,27 @@ useEffect(() => {
               </BackButton>
               <Tab active>USDT Deposit</Tab>
             </TabContainer>
-            
+
             <div>
-            <QRcodeHeading>
-              <QRcodeHeadingText>
-                Scan the Qrcode and Deposit
-              </QRcodeHeadingText>
-            </QRcodeHeading>
+              <QRcodeHeading>
+                <QRcodeHeadingText>
+                  Scan the Qrcode and Deposit
+                </QRcodeHeadingText>
+              </QRcodeHeading>
             </div>
             <QRCodeContainer>
               <QRCode>
                 <img
-                  src={`https://crypto-backend-main.onrender.com/uploads/${image}`}
+                  src={`http://localhost:8000/uploads/${image}`}
                   width="100px"
                   alt="QR code"
                 />
               </QRCode>
             </QRCodeContainer>
 
-         
 
-            <FaintText> Deposit Address ({localData.symbol})</FaintText>
+
+            <FaintText> Deposit Address ({network})</FaintText>
             <InfoRow
               style={{
                 color: "black",
@@ -910,21 +948,21 @@ useEffect(() => {
                 Copy
               </p>
             </InfoRow>
-     
-{/* Timer started */}
+
+            {/* Timer started */}
 
 
-{/* Add countdown timer below the deposit address */}
-<InfoRow style={{ marginTop: "10px", textAlign: "center" }}>
-  <Label1>Time Remaining</Label1>
-  <Value>{timeLeft}</Value>
-</InfoRow>
+            {/* Add countdown timer below the deposit address */}
+            <InfoRow style={{ marginTop: "10px", textAlign: "center" }}>
+              <Label1>Time Remaining</Label1>
+              <Value>{timeLeft}</Value>
+            </InfoRow>
 
 
 
-{/* Timer ended */}
-              
-            <InfoRow style={{marginTop : "15px"}}>
+            {/* Timer ended */}
+
+            <InfoRow style={{ marginTop: "15px" }}>
               <Label>TxID:</Label>
               {submited ? (
                 <input
@@ -935,7 +973,7 @@ useEffect(() => {
                     flexGrow: 1,
                     border: "black solid 1px",
                     borderRadius: "5px",
-                    
+
                   }}
                   type="text"
                   value={transaction}
@@ -969,71 +1007,71 @@ useEffect(() => {
             {showSubmitAnimation && (
               <SubmitAnimation>TxID submitted successfully!</SubmitAnimation>
             )}
-                       <TxidDisclaimerWrapper>
-            <TxidDisclaimer>
-           
-            Please ensure that TxId you have entered is correct
-            </TxidDisclaimer>
+            <TxidDisclaimerWrapper>
+              <TxidDisclaimer>
+
+                Please ensure that TxId you have entered is correct
+              </TxidDisclaimer>
             </TxidDisclaimerWrapper>
 
             <hr style={{ marginTop: '10px' }} />
 
             <DeposiWrapper>
-            <DepositAmountWrapper>
-              <DepositAmountHeading>
-                Deposit Amount
-              </DepositAmountHeading>
-              <DepositAmountvalues>
-                <DepositAmountvalues1 src={moneyIcon} alt="image" />
-                <DepositAmountvalues2>
-                  <span>
+              <DepositAmountWrapper>
+                <DepositAmountHeading>
+                  Deposit Amount
+                </DepositAmountHeading>
+                <DepositAmountvalues>
+                  <DepositAmountvalues1 src={moneyIcon} alt="image" />
+                  <DepositAmountvalues2>
+                    <span>
                       {amount}
-                  </span>
-                </DepositAmountvalues2>
-              </DepositAmountvalues>
-            </DepositAmountWrapper>
+                    </span>
+                  </DepositAmountvalues2>
+                </DepositAmountvalues>
+              </DepositAmountWrapper>
 
 
 
-            <DepositNetworkWrapper>
-              <DepositNetworkHeading>
-                Deposit Network
-              </DepositNetworkHeading>
+              <DepositNetworkWrapper>
+                <DepositNetworkHeading>
+                  Deposit Network
+                </DepositNetworkHeading>
 
-              <DepositNetworkvalues>
-                <DepositNetworkvalues1 src={moneyIcon} alt="image" />
-                <DepositNetworkvalues2>
-                  <span>
+                <DepositNetworkvalues>
+                  <DepositNetworkvalues1 src={moneyIcon} alt="image" />
+                  <DepositNetworkvalues2>
+                    <span>
                       {network}
-                  </span>
-                </DepositNetworkvalues2>
-              </DepositNetworkvalues>
-            </DepositNetworkWrapper>
+                    </span>
+                  </DepositNetworkvalues2>
+                </DepositNetworkvalues>
+              </DepositNetworkWrapper>
             </DeposiWrapper>
             <hr style={{ marginTop: '10px' }} />
-          
+
             {/* <CountDownWrapper>
 
             </CountDownWrapper> */}
 
-<InfoRow style={{ marginTop: "10px", textAlign: "center" }}>
-  <Label1>Created Time</Label1>
-  <Value>{createdTime}</Value>
-</InfoRow>
-           
+            <InfoRow style={{ marginTop: "10px", textAlign: "center" }}>
+              <Label1>Created Time</Label1>
+              <Value>{createdTime}</Value>
+            </InfoRow>
+
             <div>
-            <Disclaimer>
-            <DisclaimerIcon>
-            <TriangleAlert size={20} color="#e5a50a" />
-            </DisclaimerIcon>
-              <DisclaimerText>
+              <Disclaimer>
+                <DisclaimerIcon>
+                  <TriangleAlert size={20} color="#e5a50a" />
+                </DisclaimerIcon>
+                <DisclaimerText>
                   For the safety of your funds please ensure that the network
                   selected and amount entered is appropriate
-              </DisclaimerText>
-            </Disclaimer>
-          </div>
- 
-          
+                </DisclaimerText>
+              </Disclaimer>
+            </div>
+
+
             <Button onClick={handleProceedClick} disabled={!submited}>
               Deposit Sent
             </Button>

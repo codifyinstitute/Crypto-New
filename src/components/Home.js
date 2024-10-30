@@ -91,7 +91,7 @@ const Home = () => {
   const fetchTransactionFee = async () => {
     try {
       const response = await fetch(
-        "https://crypto-backend-main.onrender.com/static/get/66c445a358802d46d5d70dd4"
+        "http://localhost:8000/static/get/66c445a358802d46d5d70dd4"
       );
       if (!response.ok) {
         throw new Error("Network response was not ok");
@@ -114,7 +114,7 @@ const Home = () => {
 
   useEffect(() => {
     axios
-      .get(`https://crypto-backend-main.onrender.com/currencies/${countryObject[selectedCountry].urlName}/all`)
+      .get(`http://localhost:8000/currencies/${countryObject[selectedCountry].urlName}/all`)
       .then((response) => {
         setCurrencies(response.data);
         setSelectedCurrency(response.data[0] || null);
@@ -411,7 +411,7 @@ const Home = () => {
                         <b>
                           {usdt} {selectedCurrency.Name}{" "}
                         </b>
-                        to <b>{isValid ? inr.toFixed(2) : 0} {selectedFiatCurrency.symbol} </b>
+                        to <b>{isValid ? inr.toFixed(2) : 0} {selectedFiatCurrency?.symbol} </b>
                       </p>
                     )}
                     {isDetailsExpanded ? (

@@ -137,7 +137,7 @@ const WithdrawUSDT = () => {
           </FormGroup>
           <BalanceInfo>
             <Available>Available: 0 <BoldText>USDT</BoldText></Available>
-            <Fee>Refund Fee: 1 <BoldText>USDT</BoldText></Fee>
+            {/* <Fee>Refund Fee: 1 <BoldText>USDT</BoldText></Fee> */}
           </BalanceInfo>
           <ProceedButton disabled={!isFormValid}>Confirm</ProceedButton>
         </ExchangeCard>

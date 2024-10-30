@@ -6,7 +6,7 @@ import styled from "styled-components";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import { useNavigate } from "react-router-dom";
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeft, Weight } from "lucide-react";
 import HomeContact from "./HomeContact";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -161,12 +161,9 @@ const StatusValue = styled(Value)`
 `;
 
 const AmountContainer = styled.div`
-  display: flex;
-  align-items: center;
-
-   background-color: #e5e5e5;
+   background-color: rgb(251,251,251);
   color: black;
-  padding: 8px 16px;
+  padding: 5px 13px;
   border-radius: 10px;
   border: none;
   font-size: 14px; /* Slightly smaller font for better scaling */
@@ -174,7 +171,7 @@ const AmountContainer = styled.div`
   cursor: pointer;
   display: flex;
   align-items: center;
-  height : 40px;
+  /* height : 40px; */
   gap: 2px; /* Reduce gap slightly */
  width: auto; /* Prevent the button from getting too narrow */
   transition: background-color 0.3s;
@@ -192,14 +189,14 @@ const AmountContainer = styled.div`
 //   const fetchDepositHistory = async () => {
 //     const email = localStorage.getItem("token");    
 //     try {
-//       const response = await fetch(`https://crypto-backend-main.onrender.com/deposit-transactions/get/email/${email}`);
-//       // https://crypto-backend-main.onrender.com/deposit-transactions/get/email/
+//       const response = await fetch(`http://localhost:8000/deposit-transactions/get/email/${email}`);
+//       // http://localhost:8000/deposit-transactions/get/email/
 //       if (!response.ok) throw new Error('Network response was not ok');
 //       const data = await response.json();
 //       console.log(data);
 //       // For now, set dummy data
 //       setDepositHistory(data.reverse());
-      
+
 //     } catch (error) {
 //       toast.error("Error fetching deposit history");
 //     }
@@ -272,9 +269,9 @@ const DepositHistory = () => {
   const [depositHistory, setDepositHistory] = useState([]);
 
   const fetchDepositHistory = async () => {
-    const email = localStorage.getItem("token");    
+    const email = localStorage.getItem("token");
     try {
-      const response = await fetch(`https://crypto-backend-main.onrender.com/deposit-transactions/get/email/${email}`);
+      const response = await fetch(`http://localhost:8000/deposit-transactions/get/email/${email}`);
       if (!response.ok) throw new Error('Network response was not ok');
       const data = await response.json();
       console.log(data); // Log the entire data to check its structure
@@ -282,6 +279,20 @@ const DepositHistory = () => {
     } catch (error) {
       toast.error("Error fetching deposit history");
     }
+  };
+
+  const StatusValue = ({ status, children }) => {
+    let style;
+
+    if (status === 'Pending') {
+      style = { color: 'red', fontWeight:"bold" };
+    } else if (status === 'Successful') {
+      style = { color: 'green', fontWeight:"bold" };
+    } else {
+      style = { color: 'black', fontWeight:"bold" }; // Default color
+    }
+
+    return <span style={style}>{children}</span>;
   };
 
   useEffect(() => {
