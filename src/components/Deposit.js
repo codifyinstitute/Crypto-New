@@ -1179,7 +1179,7 @@ const Deposit = () => {
             </DepositInput>
             <BalanceWrapper>
               <BalanceText>
-                Available
+              Available  :
               </BalanceText>
 
               <IconValueWrapper>

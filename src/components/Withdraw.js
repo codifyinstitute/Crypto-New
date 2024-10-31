@@ -16,6 +16,7 @@ import { Check } from 'lucide-react';
 import usdtimg from "./../assets/usdt1-removebg-preview(2).png";
 import Bepimg from "./../assets/bep21(1).png";
 import trcimg from "./../assets/trc20(1).png";
+
 const WithdrawUSDT = () => {
   const [login, setLogin] = useState(false);
   const [walletAddress, setWalletAddress] = useState('');
@@ -26,6 +27,7 @@ const WithdrawUSDT = () => {
   const [networkFee, setNetworkFee] = useState(0);
   const [selectNetwork, setSelectNetwork] = useState('TRC20');
   const [isValid, setIsValid] = useState(true);
+  const [BalanceValue, setBalanceValue] = useState(500000);
   const [walletAmount, setWalletAmount] = useState("0");
   const location = useLocation();
   const navigate = useNavigate();
@@ -336,9 +338,9 @@ const WithdrawUSDT = () => {
             {amountError && <ErrorText>{amountError}</ErrorText>}
           </FormGroup>
           {/* <BalanceInfo> */}
-          {/* <Available>Available: 0 
+          {/* <Available>Available: 0  */}
               
-               <BoldText>USDT</BoldText>
+               {/* <BoldText>USDT</BoldText> */}
          
             </Available> */}
           {/* <Fee>Refund Fee: 1 <BoldText>USDT</BoldText></Fee> */}
@@ -665,4 +667,64 @@ const ActiveButton = styled(Button)`
 const InactiveButton = styled(Button)`
   color: black;
   background-color: #e5e5e5;
+`;
+const BalanceWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 15px;
+  gap: 5px;
+  padding-left: 5px;
+
+
+  
+`;
+
+const BalanceText = styled.div`
+  font-size: 1.1rem;
+  font-weight: bold;
+`;
+
+
+const IconValueWrapper = styled.div`
+    background-color: rgb(251 251 251);
+    color: black;
+    padding: 5px 13px;
+    border-radius: 10px;
+    border: none;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    /* height: 40px; */
+    gap: 2px;
+    width: auto;
+    transition: background-color 0.3s;
+`
+
+const BalanceIcon = styled.img`
+  width: 18px;
+  height: 18px;
+`;
+
+const AvailableBalanceValue = styled.div`
+  font-size: 1.1rem;
+  font-weight: bold;
+//  background-color: #e1e1e1;
+  /* padding: 8px 2px; Spacing for a button-like look */
+  // border-radius: 20px; /* Rounded corners */
+  // display: inline-block;
+  cursor: pointer; /* Gives the impression that it can be clicked */
+  // border: 1px solid #ccc; /* Border to make it look like a button */
+  transition: background-color 0.3s ease; /* Smooth hover transition */
+
+  &:hover {
+     /* Darken on hover for effect */
+  }
+
+  &:active {
+    background-color: #d1d1d1; /* Slightly darker on click */
+  }
 `;

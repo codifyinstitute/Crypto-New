@@ -1,4 +1,5 @@
-import React, { useEffect } from "react";
+
+import React, { useState } from "react"; // Import useState
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Navbar from "./Navbar";
@@ -10,6 +11,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useSelector } from "react-redux";
 
+// Styled components
 const PageContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -111,7 +113,8 @@ const OptionDescription = styled.div`
 
 const ProceedButton = styled.button`
   background-color: #f7a600;
-  color: white;
+  color: black;
+  font-weight : 700;
   padding: 0.75rem;
   border: none;
   border-radius: 5px;
@@ -125,10 +128,21 @@ const ProceedButton = styled.button`
 const PaymentMethod = () => {
   const selectedCountry = useSelector((state) => state.country.value);
   const navigate = useNavigate();
+  const [selectedOption, setSelectedOption] = useState(null); // State to track the selected payment option
 
-  // useEffect(()=>{
-  //   console.log(window.location.pathname)
-  // },[])
+  const handleOptionClick = (option) => {
+    setSelectedOption(option); // Set the selected option
+  };
+
+  const handleProceedClick = () => {
+    if (selectedOption === "bank") {
+      navigate('/bank-transfer'); // Navigate to bank transfer route
+    } else if (selectedOption === "card") {
+      navigate('/card-transfer'); // Navigate to card transfer route
+    } else {
+      toast.error("Please select a payment option."); // Show an error if no option is selected
+    }
+  };
 
   return (
     <>
@@ -164,7 +178,10 @@ const PaymentMethod = () => {
               </button>
             </TabContainer>
 
-            <PaymentOption onClick={() => navigate('/bank-transfer')}>
+            <PaymentOption
+              onClick={() => handleOptionClick("bank")}
+              style={{ border: selectedOption === "bank" ? "2px solid #f7a600" : "1px solid #ddd" }}
+            >
               <IconWrapper>
                 <FaUniversity />
               </IconWrapper>
@@ -175,8 +192,12 @@ const PaymentMethod = () => {
                 </OptionDescription>
               </OptionText>
             </PaymentOption>
-            {selectedCountry === "Euro" || selectedCountry === "USA" ?
-              <PaymentOption onClick={() => navigate('/card-transfer')}>
+
+            {selectedCountry === "Euro" || selectedCountry === "USA" ? (
+              <PaymentOption
+                onClick={() => handleOptionClick("card")}
+                style={{ border: selectedOption === "card" ? "2px solid #f7a600" : "1px solid #ddd" }}
+              >
                 <IconWrapper>
                   <FaCreditCard />
                 </IconWrapper>
@@ -186,8 +207,14 @@ const PaymentMethod = () => {
                     Processing time can take up to 15 min
                   </OptionDescription>
                 </OptionText>
-              </PaymentOption> : null}
-            {/* <ProceedButton>Proceed</ProceedButton> */}
+              </PaymentOption>
+            ) : null}
+
+            {selectedOption && ( // Show the Proceed button only if an option is selected
+              <ProceedButton onClick={handleProceedClick}>
+                Proceed
+              </ProceedButton>
+            )}
           </FormContainer>
         </FormWrapper>
       </PageContainer>
@@ -198,3 +225,4 @@ const PaymentMethod = () => {
 };
 
 export default PaymentMethod;
+
