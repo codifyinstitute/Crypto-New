@@ -168,6 +168,16 @@ const MakeDepositButton = styled.button`
     background-color: #ff8c00;
   }
 `;
+//   const fetchDepositHistory = async () => {
+//     const email = localStorage.getItem("token");    
+//     try {
+//       const response = await fetch(`http://localhost:8000/deposit-transactions/get/email/${email}`);
+//       // http://localhost:8000/deposit-transactions/get/email/
+//       if (!response.ok) throw new Error('Network response was not ok');
+//       const data = await response.json();
+//       console.log(data);
+//       // For now, set dummy data
+//       setDepositHistory(data.reverse());
 
 // for lock-plus icon
 const IconContainer = styled.div`

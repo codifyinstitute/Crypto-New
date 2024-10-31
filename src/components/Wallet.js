@@ -13,6 +13,7 @@ import deposit from "../assets/depositimg.jpg";
 import withdraw from "../assets/withdraw.jpg";
 import { AiOutlineHistory } from "react-icons/ai";
 import { PiSpeakerHighFill } from "react-icons/pi";
+import { useSelector } from "react-redux";
 
 const PageContainer = styled.div`
   display: flex;
@@ -319,24 +320,65 @@ const PriceDisplay = styled.div`
   color: black;
 `;
 
-const Wallet = () => {
-  const navigate = useNavigate();
-  const [login, setLogin] = useState(false);
-  const handleDepositclick=()=>{
-    navigate('/deposit')
+const countryObject = {
+  India: {
+    urlName: "india",
+    symbol: "₹",
+    name: "India",
+    fait: "INR"
+  },
+  Brazil: {
+    urlName: "brl",
+    symbol: "R$",
+    name: "Brazil",
+    fait: "BRL"
+  },
+  UK: {
+    urlName: "uk",
+    symbol: "£",
+    name: "United Kingdom",
+    fait: "GBP"
+  },
+  Euro: {
+    urlName: "euro",
+    symbol: "€",
+    name: "European Union",
+    fait: "EUR"
+  },
+  Dubai: {
+    urlName: "aed",
+    symbol: "د.إ",
+    name: "Dubai",
+    fait: "AED"
+  },
+  USA: {
+    urlName: "usa",
+    symbol: "$",
+    name: "United States of America",
+    fait: "USD"
   }
-const handleWithdrawclick=()=>{
-  navigate('/withdraw')
 }
 
-const dataEntries = [
-  "13:00 98***1233 sold for $388",
-  "13:02 88***1234 sold for $400",
-  "13:05 77***5678 sold for $290",
-  "13:08 66***6789 sold for $310",
-  "13:10 55***7890 sold for $450",
-  "13:12 44***8901 sold for $320"
-];
+const Wallet = () => {
+  const selectedCountry = useSelector((state) => state.country.value);
+  const navigate = useNavigate();
+  const [walletAmount, setWalletAmount] = useState("0");
+  const [login, setLogin] = useState(false);
+  const handleDepositclick = () => {
+    navigate('/deposit')
+  }
+  const handleWithdrawclick = () => {
+    navigate('/withdraw')
+  }
+
+  const dataEntries = [
+    "13:00 98***1233 sold for $388",
+    "13:02 88***1234 sold for $400",
+    "13:05 77***5678 sold for $290",
+    "13:08 66***6789 sold for $310",
+    "13:10 55***7890 sold for $450",
+    "13:12 44***8901 sold for $320"
+  ];
 
   const [index, setIndex] = useState(0);
 
@@ -348,6 +390,24 @@ const dataEntries = [
     return () => clearInterval(interval);
   }, []);
 
+  const token = localStorage.getItem("token");
+  const fetchWallet = async () => {
+    try {
+      const response = await fetch(`http://localhost:8000/wallet/get/${token}`);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data = await response.json();
+      setWalletAmount(data.Amount);
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchWallet();
+  }, [])
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -355,14 +415,14 @@ const dataEntries = [
   }, [])
 
 
-  const handleBackClick = () => { 
+  const handleBackClick = () => {
     const token = localStorage.getItem('token');
     if (token) {
       navigate('/wallet');
     } else {
       navigate('/');
     }
-};
+  };
 
   return (
     <>
@@ -389,40 +449,39 @@ const dataEntries = [
                 <img src={wallet} alt="wallet"></img>
               </WalletIcon>
               <Balance>
-               <p style={{fontWeight:"bold"}}> 400 <img src={coin} alt="coin" /></p>
-               <p style={{fontSize:"11px"}}>Total balance</p>
+                <p style={{ fontWeight: "bold" }}> {walletAmount} <img src={coin} alt="coin" /></p>
+                <p style={{ fontSize: "11px" }}>Total balance</p>
               </Balance>
             </Part>
-
-            <LoginButton>Login to Deposit</LoginButton>
+            {login ? null : <LoginButton>Login to Deposit</LoginButton>}
             <ActionButtons>
-  <Deposit onClick={handleDepositclick}>
-    <div><img src={deposit} alt="Deposit" /></div> 
-    Deposit
-  </Deposit>
-  <Deposit  onClick={handleWithdrawclick}>
-    <div><img src={withdraw} alt="Withdraw" /></div> 
-    Withdraw
-  </Deposit>
-</ActionButtons>
+              <Deposit onClick={handleDepositclick}>
+                <div><img src={deposit} alt="Deposit" /></div>
+                Deposit
+              </Deposit>
+              <Deposit onClick={handleWithdrawclick}>
+                <div><img src={withdraw} alt="Withdraw" /></div>
+                Withdraw
+              </Deposit>
+            </ActionButtons>
 
-<Banner>
-      <PiSpeakerHighFill
-        style={{
-          borderRight: "1px solid",
-          marginRight: "13px",
-          paddingRight: "4px",
-          fontSize: "19px",
-        }}
-      />
-      <Text>{dataEntries[index]}</Text>
-    </Banner>
+            <Banner>
+              <PiSpeakerHighFill
+                style={{
+                  borderRight: "1px solid",
+                  marginRight: "13px",
+                  paddingRight: "4px",
+                  fontSize: "19px",
+                }}
+              />
+              <Text>{dataEntries[index]}</Text>
+            </Banner>
             <Part2>
               <Container>
                 <PriceDisplay>
-                  <Price> ₹ 90</Price>
+                  <Price> {countryObject[selectedCountry].symbol} 90</Price>
                 </PriceDisplay>
-                <Subtext>1 USDT = ₹ 1111</Subtext>
+                <Subtext>1 USDT = {countryObject[selectedCountry].symbol} 1111</Subtext>
                 <Center>
                   <TableContainer>
                     <Table>
