@@ -123,7 +123,7 @@ const QRCodeCard = () => {
 
     const fetchTransactionFee = async () => {
         try {
-            const response = await fetch('https://crypto-backend-main.onrender.com/static/get/66c445a358802d46d5d70dd4');
+            const response = await fetch('http://localhost:8000/static/get/66c445a358802d46d5d70dd4');
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
@@ -136,7 +136,7 @@ const QRCodeCard = () => {
 
     const fetchCurrencyData = async () => {
         try {
-            const response = await fetch('https://crypto-backend-main.onrender.com/currencies/all');
+            const response = await fetch('http://localhost:8000/currencies/all');
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
@@ -188,7 +188,7 @@ const QRCodeCard = () => {
                         <Title>Sell {localData.symbol}</Title>
                         <div>
                             <QRCodeContainer>
-                                <QRCode><img src={`https://crypto-backend-main.onrender.com/uploads/${image}`} width='150px' alt="QR code" /></QRCode>
+                                <QRCode><img src={`http://localhost:8000/uploads/${image}`} width='150px' alt="QR code" /></QRCode>
                             </QRCodeContainer>
                             <TransactionLabel>Transaction ID: {transactionId}</TransactionLabel>
                         </div>

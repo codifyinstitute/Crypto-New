@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 // Styled components for Sidebar
 const SidebarContainer = styled.nav`
+  overflow-y: auto;
   width: 100%;
   max-width: 250px;
   background-color: #343a40;
@@ -86,6 +87,7 @@ const Sidebar = ({ isOpen, setIsSidebarOpen }) => {
   const navigate = useNavigate();
   const [isCurrencyMenuOpen, setCurrencyMenuOpen] = useState(false);
   const [isTransactionFeeMenuOpen, setTransactionFeeMenuOpen] = useState(false);
+  const [isOtherFeeMenuOpen, setOtherFeeMenuOpen] = useState(false);
 
   const handleNavigation = (path) => {
     navigate(path);
@@ -132,9 +134,22 @@ const Sidebar = ({ isOpen, setIsSidebarOpen }) => {
           <SubmenuButton onClick={() => handleNavigation('/admin/United Arab Emirates/transactionFee')}>United Arab Emirates</SubmenuButton>
           <SubmenuButton onClick={() => handleNavigation('/admin/United State of America/transactionFee')}>United State of America</SubmenuButton>
         </Submenu>
+
+        <SidebarButton onClick={() => setOtherFeeMenuOpen((prev) => !prev)}>
+          Other Price
+        </SidebarButton>
+        <Submenu isOpen={isOtherFeeMenuOpen}>
+          <SubmenuButton onClick={() => handleNavigation('/admin/India/otherprice')}>India</SubmenuButton>
+          <SubmenuButton onClick={() => handleNavigation('/admin/Brazil/otherprice')}>Brazil</SubmenuButton>
+          <SubmenuButton onClick={() => handleNavigation('/admin/United Kingdom/otherprice')}>United Kingdom</SubmenuButton>
+          <SubmenuButton onClick={() => handleNavigation('/admin/European Union/otherprice')}>European Union</SubmenuButton>
+          <SubmenuButton onClick={() => handleNavigation('/admin/United Arab Emirates/otherprice')}>United Arab Emirates</SubmenuButton>
+          <SubmenuButton onClick={() => handleNavigation('/admin/United State of America/otherprice')}>United State of America</SubmenuButton>
+        </Submenu>
         {/* <SidebarButton onClick={() => handleNavigation('/admin/transactionFee')}>Transaction Fee</SidebarButton> */}
         <SidebarButton onClick={() => handleNavigation('/admin/transactions')}>View Transaction</SidebarButton>
-        <SidebarButton onClick={() => handleNavigation('/admin/otherprice')}>Other Price</SidebarButton>
+        <SidebarButton onClick={() => handleNavigation('/admin/deposit')}>View Deposit</SidebarButton>
+        {/* <SidebarButton onClick={() => handleNavigation('/admin/otherprice')}>Other Price</SidebarButton> */}
         <SidebarButton onClick={() => handleNavigation('/admin/users')}>Users</SidebarButton>
         <SidebarButton onClick={() => handleNavigation('/admin/review')}>Review</SidebarButton>
         <SidebarButton onClick={() => handleNavigation('/admin/query')}>Queries</SidebarButton>

@@ -45,6 +45,7 @@ import PaymentMethod from './components/PaymentMethod';
 import BankTransfer from './components/BankTransfer';
 import CardTransfer from './components/CardTransfer';
 import WithdrawHistory from './components/WithdrawHistory';
+import AdminDeposit from './components/Admin/AdminDeposit';
 
 
 function App() {
@@ -75,13 +76,14 @@ function App() {
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
         <Route path="/admin/:country/addCurrency" element={<AdminAddCurrency />} />
         <Route path="/admin/transactions" element={<AdminTransaction />} />
+        <Route path="/admin/deposit" element={<AdminDeposit />} />
         <Route path="/admin/users" element={<AdminUsers />} />
         <Route path="/admin/review" element={<AdminReview />} />
         <Route path="/admin/:country/transactionFee" element={<AdminTransactionFee />} />
         <Route path="/TandC" element={<TandC />} />
         <Route path="/terms" element={<TermsandCondi />} />
         <Route path="/contactus" element={<ContactUs />} />
-        <Route path="/admin/otherprice" element={<OtherPrice />} />
+        <Route path="/admin/:country/otherprice" element={<OtherPrice />} />
         <Route path="/admin/query" element={<AdminQueries />} />
         <Route path="/star" element={<Starreview />} />
         <Route path="/wallet" element={<Wallet/>} />

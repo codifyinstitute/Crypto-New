@@ -656,7 +656,7 @@ const Card1 = styled.div`
 `;
 const InputMessage = styled.p`
   font-size: 0.9rem;
-  color: ${(props) => (props.isValid ? "green" : "red")};
+  color: ${(props) => (props.isValid && !props.inSufficientBalance ? "green" : "red")};
   margin-top: 0.5rem;
 `;
 
@@ -674,37 +674,37 @@ const countryObject = {
     urlName: "india",
     symbol: "₹",
     name: "India",
-    fait:"INR"
+    fait: "INR"
   },
   Brazil: {
     urlName: "brl",
     symbol: "R$",
     name: "Brazil",
-    fait:"BRL"
+    fait: "BRL"
   },
   UK: {
     urlName: "uk",
     symbol: "£",
     name: "United Kingdom",
-    fait:"GBP"
+    fait: "GBP"
   },
   Euro: {
     urlName: "euro",
     symbol: "€",
     name: "European Union",
-    fait:"EUR"
+    fait: "EUR"
   },
   Dubai: {
     urlName: "aed",
     symbol: "د.إ",
     name: "Dubai",
-    fait:"AED"
+    fait: "AED"
   },
   USA: {
     urlName: "usa",
     symbol: "$",
     name: "United States of America",
-    fait:"USD"
+    fait: "USD"
   }
 }
 
@@ -730,9 +730,29 @@ const Sell1 = () => {
   const [isFiatDropdownOpen, setIsFiatDropdownOpen] = useState(false);
   const [selectedFiatCurrency, setSelectedFiatCurrency] = useState(null);
   const [filteredFiatCurrencies, setFilteredFiatCurrencies] = useState([]);
+  const [walletAmount, setWalletAmount] = useState(0);
+  const [inSufficientBalance, setInSufficientBalance] = useState(false);
 
   const dispatch = useDispatch();
 
+  const token = localStorage.getItem("token");
+  const fetchWallet = async () => {
+    try {
+      const response = await fetch(`http://localhost:8000/wallet/get/${token}`);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data = await response.json();
+      setWalletAmount(data.Amount);
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchWallet();
+  }, [])
 
   useEffect(() => {
     const countdown = setInterval(() => {
@@ -756,8 +776,8 @@ const Sell1 = () => {
     const fetchData = async () => {
       try {
         const [currenciesResponse, feesResponse] = await Promise.all([
-          axios.get(`https://crypto-backend-main.onrender.com/currencies/${countryObject[selectedCountry].urlName}/all`),
-          fetch("https://crypto-backend-main.onrender.com/static/get/66c445a358802d46d5d70dd4"),
+          axios.get(`http://localhost:8000/currencies/${countryObject[selectedCountry].urlName}/all`),
+          fetch(`http://localhost:8000/static/${countryObject[selectedCountry]?.urlName}/one`),
         ]);
 
         setCurrencies(currenciesResponse.data);
@@ -825,6 +845,11 @@ const Sell1 = () => {
 
   const handleUsdtChange = (e) => {
     const value = e.target.value;
+    if (value > walletAmount) {
+      setInSufficientBalance(true);
+    } else {
+      setInSufficientBalance(false);
+    }
     if (value >= 1075 && value < 2150) {
       setExtra(0.25);
       //console.log(0.25)
@@ -855,7 +880,7 @@ const Sell1 = () => {
         JSON.stringify({
           amountPay: usdt,
           symbol: selectedCurrency.Symbol,
-          ReceiveCurrency:countryObject[selectedCountry].fait
+          ReceiveCurrency: countryObject[selectedCountry].fait
         })
       );
       const token = localStorage.getItem("token");
@@ -999,10 +1024,11 @@ const Sell1 = () => {
                   ))}
                 </CurrencyList>
               </AnimatedDropdownContainer1>
-              <InputMessage isValid={isValid}>
+              <InputMessage isValid={isValid} inSufficientBalance={inSufficientBalance}>
                 {isValid
-                  ? `You can proceed with this amount.`
-                  : `Minimum sell order is ${minAmount} USDT.`}
+                  ? inSufficientBalance ? "Insufficient Balance" : `You can proceed with this amount.`
+                  : ` Minimum sell order is ${minAmount} USDT.`}
+                {/* -{inSufficientBalance?"Insufficient Balance":null} */}
               </InputMessage>
             </InputContainer>
 
@@ -1128,7 +1154,7 @@ const Sell1 = () => {
                         </TooltipText>
                       </TooltipContainer>
                     </span>
-                    <span>as low as Rs {transactionFee}</span>
+                    <span>as low as {countryObject[selectedCountry].symbol} {transactionFee}</span>
                   </OrderDetail>
                   <OrderDetail>
                     <span>
@@ -1141,16 +1167,22 @@ const Sell1 = () => {
                         </TooltipText>
                       </TooltipContainer>
                     </span>
-                    <span>as low as Rs {networkFee}</span>
+                    <span>as low as {countryObject[selectedCountry].symbol} {networkFee}</span>
                   </OrderDetail>
                 </>
               )}
             </OrderSummary>
           </div>
           <div>
-            <ProceedButton onClick={handleSellNowClick} disabled={!isValid}>
-              Proceed · Sell {selectedCurrency?.Name} <ChevronRight />
-            </ProceedButton>
+            {inSufficientBalance ?
+              <ProceedButton onClick={() => navigate('/deposit')}>
+                Add USDT to Wallet
+              </ProceedButton>
+              :
+              <ProceedButton onClick={handleSellNowClick} disabled={!isValid}>
+                Proceed · Sell {selectedCurrency?.Name} <ChevronRight />
+              </ProceedButton>
+            }
 
             <PaymentMethods>
               <PaymentIcon />
