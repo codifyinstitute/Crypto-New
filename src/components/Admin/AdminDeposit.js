@@ -3,6 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Sidebar from './Sidebar';
 import { MdOutlineRemoveRedEye } from "react-icons/md";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 // Styled components for AdminTransaction
 const DashboardContainer = styled.div`
@@ -185,6 +188,13 @@ const AdminDeposit = () => {
     const [filterCountry, setFilterCountry] = useState(''); // New state for country filter
     const [tokens, setTokens] = useState([]);
     const [countries, setCountries] = useState([]); // New state for country list
+    const [confirmModalVisible, setConfirmModalVisible] = useState(false);
+    const [currentTransaction, setCurrentTransaction] = useState(null);
+    const [paymentAmount, setPaymentAmount] = useState('');
+    const [searchOrderId, setSearchOrderId] = useState('');
+    const [searchEmail, setSearchEmail] = useState('');
+
+
 
     useEffect(() => {
         const Id = localStorage.getItem("Login");
@@ -206,7 +216,7 @@ const AdminDeposit = () => {
                 setFilteredTransactions(data);
 
                 // Extract unique tokens and countries
-                const uniqueTokens = [...new Set(data.map(transaction => transaction.Token).filter(token => token))];
+                const uniqueTokens = [...new Set(data.map(transaction => transaction.Network).filter(token => token))];
                 const uniqueCountries = [...new Set(data.map(transaction => transaction.Country).filter(country => country))];
 
                 setTokens(uniqueTokens);
@@ -230,14 +240,23 @@ const AdminDeposit = () => {
             filtered = filtered.filter(transaction => transaction.Status === filterStatus);
         }
         if (filterToken) {
-            filtered = filtered.filter(transaction => transaction.Token === filterToken);
+            filtered = filtered.filter(transaction => transaction.Network === filterToken);
         }
-        if (filterCountry) { // Add country filter
+        if (filterCountry) {
             filtered = filtered.filter(transaction => transaction.Country === filterCountry);
         }
 
+        // Add search filters
+        if (searchOrderId) {
+            filtered = filtered.filter(transaction => transaction.OrderId.toLowerCase().includes(searchOrderId.toLowerCase()));
+        }
+        if (searchEmail) {
+            filtered = filtered.filter(transaction => transaction.Email.toLowerCase().includes(searchEmail.toLowerCase()));
+        }
+
         setFilteredTransactions(filtered);
-    }, [filterDate, filterStatus, filterToken, filterCountry, transactions]); // Include filterCountry
+    }, [filterDate, filterStatus, filterToken, filterCountry, transactions, searchOrderId, searchEmail]);
+
 
     const handleUpdateStatus = async () => {
         if (!selectedTransactionId || !status) {
@@ -290,11 +309,22 @@ const AdminDeposit = () => {
 
             // Refetch transactions
             const updatedTransactions = await fetch('http://localhost:8000/deposit-transactions/all').then(res => res.json());
-            setTransactions(updatedTransactions.reverse);
+            setTransactions(updatedTransactions.reverse());
         } catch (error) {
             console.error('Error updating transaction status:', error);
         }
     }
+
+    const openConfirmModal = (type, transaction) => {
+        setCurrentTransaction({ type, transaction });
+        setConfirmModalVisible(true);
+    };
+
+    const closeConfirmModal = () => {
+        setConfirmModalVisible(false);
+        setCurrentTransaction(null);
+    };
+
 
     const handleIconClick = (accountDetail) => {
         setAccountDetails(accountDetail);
@@ -306,8 +336,67 @@ const AdminDeposit = () => {
         setAccountDetails(null);
     };
 
+    const handelConfirm = async () => {
+        if (currentTransaction) {
+            const { transaction } = currentTransaction;
+            try {
+                const response = await fetch(`http://localhost:8000/deposit-transactions/paid/${transaction._id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ amount: paymentAmount }),
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                toast.success("Payment processed successfully!");
+                closeConfirmModal();
+                // Refetch transactions
+                const updatedTransactions = await fetch('http://localhost:8000/deposit-transactions/all').then(res => res.json());
+                setTransactions(updatedTransactions.reverse());
+            } catch (error) {
+                console.error('Error processing payment:', error);
+                toast.error("Error processing payment.");
+            }
+        }
+    };
+
+    const handelReject = async () => {
+        if (currentTransaction) {
+            const { transaction } = currentTransaction;
+            try {
+                // Make API call to reject the transaction
+                const response = await fetch(`http://localhost:8000/deposit-transactions/reject/${transaction._id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                const updatedTransaction = await response.json();
+                toast.success("Transaction rejected successfully!");
+                closeConfirmModal();
+                // Refetch transactions
+                const updatedTransactions = await fetch('http://localhost:8000/deposit-transactions/all').then(res => res.json());
+                setTransactions(updatedTransactions.reverse());
+            } catch (error) {
+                console.error('Error rejecting transaction:', error);
+                toast.error("Error rejecting transaction.");
+            }
+        }
+    };
+
+
     return (
         <DashboardContainer>
+            <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
             <Sidebar isOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
             <Content>
                 <Section>
@@ -336,13 +425,20 @@ const AdminDeposit = () => {
                             ))}
                         </Select>
 
-                        {/* <Select onChange={(e) => setFilterCountry(e.target.value)} value={filterCountry}>
-                            <option value="">Select Country</option>
-                            {countries.map(country => (
-                                <option key={country} value={country}>{country}</option>
-                            ))}
-                        </Select> */}
+                        <InputDate
+                            type="text"
+                            placeholder="Search by Order ID"
+                            value={searchOrderId}
+                            onChange={(e) => setSearchOrderId(e.target.value)}
+                        />
+                        <InputDate
+                            type="text"
+                            placeholder="Search by Email"
+                            value={searchEmail}
+                            onChange={(e) => setSearchEmail(e.target.value)}
+                        />
                     </FiltersContainer>
+
 
                     <TableContainer>
                         <Table>
@@ -356,8 +452,9 @@ const AdminDeposit = () => {
                                     <th>Date</th>
                                     <th>Time</th>
                                     <th>Paid</th>
-                                    <th>Update Status</th>
-                                    <th>Update</th>
+                                    {/* <th>Update Status</th> */}
+                                    <th>Approve </th>
+                                    <th>Reject </th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -370,13 +467,10 @@ const AdminDeposit = () => {
                                         <td>{transaction.Status}</td>
                                         <td>{transaction.Date}</td>
                                         <td>{transaction.Time}</td>
-                                        <td style={{ display: "flex" }}>
-                                            {transaction.Paid ?"Paid": <>
-                                                <input type="text" onChange={(e) => setAmount(e.target.value)} />
-                                                <Button onClick={() => PaidWallet(transaction._id)}>Pay</Button>
-                                            </>}
-                                        </td>
                                         <td>
+                                            {transaction.Paid ? "Paid" : transaction.Status === "Failed" ? "Failed" : "Not Paid"}
+                                        </td>
+                                        {/* <td>
                                             <Select
                                                 value={selectedTransactionId === transaction._id ? status : ''}
                                                 onChange={(e) => {
@@ -395,7 +489,15 @@ const AdminDeposit = () => {
                                         </td>
                                         <td>
                                             <Button onClick={handleUpdateStatus}>Update</Button>
+                                        </td> */}
+                                        <td>
+                                            {transaction.Paid ? "Amount Paid" : transaction.Status === "Failed" ? "Failed" : <Button style={{ backgroundColor: "Red" }} onClick={() => openConfirmModal('reject', transaction)}>Reject</Button>}
+
                                         </td>
+                                        <td>
+                                            {transaction.Paid ? "Amount Paid" : transaction.Status === "Failed" ? "Failed" : <Button style={{ backgroundColor: "Green" }} onClick={() => openConfirmModal('accept', transaction)}>Confirm</Button>}
+                                        </td>
+
                                     </tr>
                                 ))}
                             </tbody>
@@ -427,6 +529,29 @@ const AdminDeposit = () => {
                     </ModalContent>
                 </ModalBackground>
             )}
+            {confirmModalVisible && (
+                <ModalBackground onClick={closeConfirmModal}>
+                    <ModalContent onClick={(e) => e.stopPropagation()}>
+                        <CloseButton onClick={closeConfirmModal}>&times;</CloseButton>
+                        <h2>{currentTransaction?.type === 'accept' ? "Confirm Payment" : "Confirm Rejection"}</h2>
+                        {currentTransaction?.type === 'accept' ? (
+                            <>
+                                <Paragraph>Enter the amount to pay:</Paragraph>
+                                <InputDate
+                                    type="number"
+                                    value={paymentAmount}
+                                    onChange={(e) => setPaymentAmount(e.target.value)}
+                                />
+                                <Button onClick={handelConfirm}>Pay</Button>
+                            </>
+                        ) : (
+                            <Paragraph>Are you sure you want to reject this transaction?</Paragraph>
+                        )}
+                        <Button onClick={handelReject}>Yes, Reject</Button>
+                    </ModalContent>
+                </ModalBackground>
+            )}
+
         </DashboardContainer>
     );
 };

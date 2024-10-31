@@ -176,22 +176,22 @@ const WithdrawUSDT = () => {
             WalletAddress: walletAddress,
           }),
         });
-  
+
         if (!response.ok) {
           throw new Error("Failed to submit transaction");
         }
-  
+
         const result = await response.json();
-        
+
         // Show success toast message
         toast.success("Withdrawal request submitted successfully!");
-  
+
         // Clear the form
         setWalletAddress('');
         setWithdrawAmount('');
         setSelectNetwork('TRC20'); // Reset to default or desired network
         setIsFormValid(false); // Reset form validity state if needed
-  
+
         navigate("/", { state: { data: result } });
       } catch (error) {
         alert("Error submitting transaction: " + error.message);
@@ -200,7 +200,7 @@ const WithdrawUSDT = () => {
       toast.error("Please fill in all fields correctly.");
     }
   };
-  
+
 
   const token = localStorage.getItem("token");
   const fetchWallet = async () => {
@@ -339,10 +339,10 @@ const WithdrawUSDT = () => {
           </FormGroup>
           {/* <BalanceInfo> */}
           {/* <Available>Available: 0  */}
-              
-               {/* <BoldText>USDT</BoldText> */}
-         
-            </Available> */}
+
+          {/* <BoldText>USDT</BoldText> */}
+
+          {/* </Available> */}
           {/* <Fee>Refund Fee: 1 <BoldText>USDT</BoldText></Fee> */}
           {/* </BalanceInfo> */}
           <CurrencyRow>
