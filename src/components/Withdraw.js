@@ -7,11 +7,15 @@ import Navbar from './Navbar';
 import Footer from './Footer';
 import HomeContact from './HomeContact';
 import moneyIcon from '../assets/usdtt.png';
+import { AiOutlineHistory } from "react-icons/ai";
 import trc20 from '../assets/trc20.png';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate, useLocation } from 'react-router-dom';
-
+import { Check } from 'lucide-react';
+import usdtimg from "./../assets/usdt1-removebg-preview(2).png";
+import Bepimg from "./../assets/bep21(1).png";
+import trcimg from "./../assets/trc20(1).png";
 const WithdrawUSDT = () => {
   const [login, setLogin] = useState(false);
   const [walletAddress, setWalletAddress] = useState('');
@@ -19,7 +23,9 @@ const WithdrawUSDT = () => {
   const [isFormValid, setIsFormValid] = useState(false);
   const [addressError, setAddressError] = useState('');
   const [amountError, setAmountError] = useState('');
-
+  const [networkFee, setNetworkFee] = useState(0);
+  const [selectNetwork, setSelectNetwork] = useState('TRC20');
+  const [isValid, setIsValid] = useState(true);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -76,6 +82,72 @@ const WithdrawUSDT = () => {
     navigate('/sell2');
   }
 
+
+  const handleDepositNowClick = () => {
+    if (isValid) {
+      const networkData = {
+        network: selectNetwork,
+        // depositamount: usdt,
+      };
+      localStorage.setItem('networkDetails', JSON.stringify(networkData));
+      const depositData = {
+        // depositAmount: usdt,
+        // symbol: selectedCurrency.Symbol,
+        network: selectNetwork,
+      };
+      // localStorage.setItem('depositDetails', JSON.stringify(depositData));
+      const token = localStorage.getItem('token');
+      if (token) {
+        navigate('/deposit2', { state: depositData });
+      } else {
+        navigate('/Sell2');
+      }
+    }
+  };
+
+
+  const handleTrcClick = () => {
+    setSelectNetwork('TRC20');
+    setTimeout(() => {
+      toast.success("Network changed to TRC20", {
+        position: "top-left",
+        style: {
+          fontSize: "14px",
+          fontWeight: "bold",
+          color: "#333",
+          border: "1px solid #f0a500",
+          borderRadius: "8px",
+          backgroundColor: "#fffdf5",
+          padding: "10px",
+          width: "90vw", // Full width on mobile
+          maxWidth: "300px",
+          boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
+        },
+      });
+    }, 1000); // 1-second delay
+  };
+
+  const handleBepClick = () => {
+    setSelectNetwork('BEP20');
+    setTimeout(() => {
+      toast.success("Network changed to BEP20", {
+        position: "top-left",
+        style: {
+          fontSize: "14px",
+          fontWeight: "bold",
+          color: "#333",
+          border: "1px solid #f0a500",
+          borderRadius: "8px",
+          backgroundColor: "#fffdf5",
+          padding: "10px",
+          width: "90vw",
+          maxWidth: "300px", // Cap max width for larger screens
+          boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
+        },
+      });
+    }, 1000);
+  };
+
   return (
     <>
       <Navbar />
@@ -86,16 +158,18 @@ const WithdrawUSDT = () => {
             <BackButton onClick={handleBackClick}>
               <ChevronLeft />
             </BackButton>
+            <TabWrapper>
             <Title>Withdraw USDT</Title>
+            </TabWrapper>
             <RefreshButton>
-              <RefreshCcw />
+            <AiOutlineHistory onClick={()=>navigate("/withdrawhistory")} style={{ color: '#FFA500', fontSize: '30px' }} />
             </RefreshButton>
           </Header>
           <FormGroup>
             <CurrencyRow>
               <InputLabel>Currency</InputLabel>
               <CurrencyButton className="active">
-                <NetworkIcon src={moneyIcon} alt="USDT" />
+                <NetworkIcon src={usdtimg} alt="USDT" />
                 USDT
               </CurrencyButton>
             </CurrencyRow>
@@ -103,10 +177,65 @@ const WithdrawUSDT = () => {
           <FormGroup>
             <NetworkRow>
               <InputLabel>Network</InputLabel>
-              <CurrencyButton className="active">
-                <NetworkIcon src={trc20} alt="TRC20" />
-                TRC20
-              </CurrencyButton>
+              <NetworkWrapper>
+  {selectNetwork === 'TRC20' ? (
+
+    <ActiveButton onClick={handleTrcClick} style={{ position: "relative" }}>
+  <Check strokeWidth={4}
+    style={{ 
+      position: "absolute",
+      bottom: "2px",
+      right: "2px",
+      backgroundColor: "#FFF176",
+      borderRadius: "50%",
+      padding: "2px",
+      // color: "black",
+      color: "#000000",
+      width: "16px",
+      height: "14px" 
+    }} 
+  />
+  <img src={trcimg} alt="TRC20 Icon" style={{ width: "20px", height: "20px", marginRight: "8px" }} />
+  TRC20
+</ActiveButton>
+
+  ) : (
+    <InactiveButton onClick={handleTrcClick}>
+             <img src={trcimg} alt="TRC20 Icon" style={{ width: "20px", height: "20px", marginRight: "8px" }} />
+      TRC20
+    </InactiveButton>
+  )}
+  {selectNetwork === 'BEP20' ? (
+    <ActiveButton onClick={handleBepClick} style={{ position: "relative" }}>
+         <Check strokeWidth={3}
+    style={{ 
+      position: "absolute",
+      bottom: "2px",
+      right: "2px",
+      backgroundColor: "#FFF176",
+      borderRadius: "50%",
+      padding: "2px",
+      // color: "black",
+      color: "#000000",
+      width: "16px",
+      height: "14px" 
+    }} 
+  />
+  {/* <Check color="#f9f06b" strokeWidth={3} /> */}
+      <img src={Bepimg} alt="BEP20 Icon" style={{ width: "20px", height: "20px", marginRight: "8px" }} />
+
+      BEP20
+    </ActiveButton>
+  ) : (
+    <InactiveButton onClick={handleBepClick}>
+          
+          <img src={Bepimg} alt="BEP20 Icon" style={{ width: "20px", height: "20px", marginRight: "8px" }} />
+
+      BEP20
+    </InactiveButton>
+  )}
+</NetworkWrapper>
+            
             </NetworkRow>
           </FormGroup>
           <FormGroup>
@@ -129,16 +258,28 @@ const WithdrawUSDT = () => {
                 onChange={handleAmountChange}
               />
               <CurrencyLabel>
-                <MoneyIcon src={moneyIcon} alt="USDT" />
+                <MoneyIcon src={usdtimg} alt="USDT" />
                 <BoldText>USDT</BoldText>
               </CurrencyLabel>
             </AmountInput>
             {amountError && <ErrorText>{amountError}</ErrorText>}
           </FormGroup>
-          <BalanceInfo>
-            <Available>Available: 0 <BoldText>USDT</BoldText></Available>
+          {/* <BalanceInfo> */}
+            {/* <Available>Available: 0 
+              
+               <BoldText>USDT</BoldText>
+         
+            </Available> */}
             {/* <Fee>Refund Fee: 1 <BoldText>USDT</BoldText></Fee> */}
-          </BalanceInfo>
+          {/* </BalanceInfo> */}
+          <CurrencyRow>
+              <InputLabel>Available</InputLabel>
+              <CurrencyButton className="active">
+                <NetworkIcon src={usdtimg} alt="USDT" />
+                
+                <span> 100 </span> USDT
+              </CurrencyButton>
+            </CurrencyRow>
           <ProceedButton disabled={!isFormValid}>Confirm</ProceedButton>
         </ExchangeCard>
       </TradingEnvironment>
@@ -194,11 +335,20 @@ const BackButton = styled.button`
 
 const RefreshButton = styled(BackButton)``;
 
-const Title = styled.h2`
-  font-size: 1.5rem;
-  font-weight: bold;
-  text-align: center;
+const TabWrapper = styled.div`
   flex: 1;
+  display: flex;
+  justify-content: flex-start;  // Aligns tab content to the left
+`;
+
+const Title = styled.h2`
+font-size: 1.5rem;
+  font-weight: bold;
+  color: orange;
+  display: inline;  // Restrict border to text width
+  text-align: left; // Aligns text to the left
+  border-bottom: 2px solid orange;
+  margin: 0
 `;
 
 const FormGroup = styled.div`
@@ -222,7 +372,41 @@ const NetworkRow = styled.div`
 const InputLabel = styled.label`
   font-size: 18px;
   font-weight: 700;
+  margin-right: 12px;
+
+  @media (max-width: 1200px) { // Adjust for medium tablets
+    font-size: 16px; // Slightly smaller font size
+    margin-right: 12px;
+ // Adjust margin
+  font-weight: 700;
+
+  }
+
+  @media (max-width: 992px) { // Adjust for smaller tablets
+    font-size: 16px; // Same size for consistency
+     margin-right: 12px;
+ // Reduce margin
+  font-weight: 700;
+
+  }
+
+  @media (max-width: 768px) { // Adjust for mobile devices
+    font-size: 14px; // Smaller font size for mobile
+     margin-right: 12px;
+; // Further reduce margin
+  font-weight: 700;
+
+  }
+
+  @media (max-width: 576px) { // Adjust for extra small devices (e.g., phones)
+    font-size: 16px; // Even smaller font size for phones
+      margin-right: 12px;
+// Minimal margin for extra small screens
+  font-weight: 700;
+
+  }
 `;
+
 
 const CurrencyButton = styled.div`
   padding: 0.75rem 1rem;
@@ -245,27 +429,29 @@ const StyledInput = styled.input`
   padding: 0.75rem;
   border: 1px solid #ddd;
   border-radius: 0.5rem;
-  font-size: 1rem;
-  color: #333;
+  font-size: 16px;
+     font-weight: 600;
+  color: black;
   background-color: #f9f9f9;
 `;
 
 const AmountInput = styled.div`
   position: relative;
+  
 `;
 
 const CurrencyLabel = styled.span`
   position: absolute;
   right: 10px;
   top: 50%;
-  transform: translateY(-50%);
+  transform: translateY(-50%);  
   display: flex;
   align-items: center;
 `;
 
 const MoneyIcon = styled.img`
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
   margin-right: 5px; // Space between icon and text
 `;
 
@@ -299,10 +485,10 @@ const ProceedButton = styled.button`
   border: none;
   border-radius: 0.5rem;
   background-color: orange;
-  color: white;
+  color: black;
   cursor: pointer;
-  font-size: 1rem;
-  font-weight: bold;
+  font-size: 16px;
+  font-weight: 700;
   margin-top: 1rem;
 
   &:disabled {
@@ -318,7 +504,92 @@ const ErrorText = styled.p`
 `;
 
 const NetworkIcon = styled.img`
-  width: 18px;
-  height: 18px;
-  margin-right: 0.5rem;
+  width: 22px;
+  height: 22px;
+  // margin-right: 0.5rem;
+`;
+
+
+
+const NetworkWrapper = styled.div`
+  display: flex;
+  flex-direction: row; // Keep buttons in a row
+  align-items: center;
+  width: 100%;
+  height: auto; // Allow height to adjust based on content
+  gap: 10px; // Space between buttons
+  margin-top: 0.5rem;
+  margin-left: 55px; // Margin for larger screens
+
+  @media (max-width: 1200px) { // Adjust for medium tablets
+    margin-left: 25px; // Move margin slightly to the left for medium screens
+  }
+
+  @media (max-width: 992px) { // Adjust for smaller tablets
+    margin-left: 15px; // Move margin slightly to the left for smaller screens
+    justify-content: center; // Center buttons on medium tablets
+  }
+
+  @media (max-width: 768px) { // Adjust for mobile devices
+    margin-left: 55px; // Move buttons slightly to the left on mobile
+    justify-content: flex-start; // Align buttons to the start
+    flex-wrap: wrap; // Allow buttons to wrap on small screens
+    gap: 15px; // Reduce gap between buttons
+
+  }
+
+  @media (max-width: 576px) { // Adjust for extra small devices (e.g., phones)
+    margin-left: 0; // Remove margin for extra small devices
+    gap: 15px; // Reduce gap between buttons
+  }
+`;
+
+const Button = styled.button`
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  background-color: white;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 14px;
+  height: 50px; 
+
+  width: 40%; // Set a default width that allows two buttons in a row for larger screens
+
+  @media (max-width: 1200px) {
+    width: 45%; // Adjust button width for medium tablets
+    gap : 10px;
+  }
+
+  @media (max-width: 992px) {
+    width: 45%; // Adjust button width for smaller tablets
+  }
+
+  @media (max-width: 768px) { // Adjust button styles for mobile
+    width: 45%; // Adjust width for mobile, ensures two buttons fit
+    margin: 0; // Remove margin to fit two buttons side by side
+  }
+
+  @media (max-width: 576px) { // Adjust for extra small devices
+    width: 45%; // Width for extra small devices
+    font-size: 12px; // Optional: Reduce font size for better fit
+    padding: 10px; // Optional: Adjust padding for smaller buttons
+    gap : 10px;
+
+  }
+`;
+
+const ActiveButton = styled(Button)`
+  color: black;
+  font-weight: 700;
+  border: 2px solid orange;
+  border-radius: 0.5rem;
+`;
+
+const InactiveButton = styled(Button)`
+  color: black;
+  background-color: #e5e5e5;
 `;

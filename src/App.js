@@ -44,6 +44,7 @@ import Wallet from './components/Wallet';
 import PaymentMethod from './components/PaymentMethod';
 import BankTransfer from './components/BankTransfer';
 import CardTransfer from './components/CardTransfer';
+import WithdrawHistory from './components/WithdrawHistory';
 import AdminDeposit from './components/Admin/AdminDeposit';
 
 
@@ -62,6 +63,7 @@ function App() {
         <Route path="/deposit2" element={<Depposit1 />} />
         <Route path='/deposithistory' element={<DepositHistory />}/>
         <Route path='/Withdraw' element= {<Withdraw />} />
+        <Route path='/withdrawhistory' element={<WithdrawHistory />}/>
         <Route path="/qr-code" element={<QRCodeCard />} />
         <Route path="/Sell5" element={<Sell5 />} />
         <Route path="/Sell6" element={<Sell6 />} />

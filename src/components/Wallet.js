@@ -11,7 +11,7 @@ import wallet from "../assets/wallet3.png";
 import coin from "../assets/tether2.png";
 import deposit from "../assets/depositimg.jpg";
 import withdraw from "../assets/withdraw.jpg";
-
+import { AiOutlineHistory } from "react-icons/ai";
 import { PiSpeakerHighFill } from "react-icons/pi";
 
 const PageContainer = styled.div`
@@ -25,6 +25,9 @@ const PageContainer = styled.div`
     padding-top: 80px;
   }
 `;
+
+
+
 
 const FormWrapper = styled.div`
   flex: 1;
@@ -318,6 +321,7 @@ const PriceDisplay = styled.div`
 
 const Wallet = () => {
   const navigate = useNavigate();
+  const [login, setLogin] = useState(false);
   const handleDepositclick=()=>{
     navigate('/deposit')
   }
@@ -344,6 +348,22 @@ const dataEntries = [
     return () => clearInterval(interval);
   }, []);
 
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    token ? setLogin(true) : setLogin(false);
+  }, [])
+
+
+  const handleBackClick = () => { 
+    const token = localStorage.getItem('token');
+    if (token) {
+      navigate('/wallet');
+    } else {
+      navigate('/');
+    }
+};
+
   return (
     <>
       <Navbar />
@@ -352,7 +372,7 @@ const dataEntries = [
         <FormWrapper>
           <FormContainer>
             <Part>
-              <BackButton onClick={() => window.history.back()}>
+              <BackButton onClick={handleBackClick}>
                 <ChevronLeft />
                 <p
                   style={{

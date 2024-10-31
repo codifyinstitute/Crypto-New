@@ -281,10 +281,10 @@ const Profile = () => {
             </MenuLink>
           </MenuItem>
           <MenuItem>
-            <MenuLink href="/Withdraw">
+            <MenuLink href="/WithdrawHistory">
               <IconText>
                 <Icon>💸</Icon>
-                Withdraw
+                Withdraw History
               </IconText>
               <ArrowIcon>▶</ArrowIcon>
             </MenuLink>
