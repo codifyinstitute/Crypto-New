@@ -755,6 +755,12 @@ const Sell1 = () => {
   }, [])
 
   useEffect(() => {
+    if (usdt > walletAmount) {
+      setInSufficientBalance(true)
+    }
+  }, [usdt, walletAmount])
+
+  useEffect(() => {
     const countdown = setInterval(() => {
       setTimer((prev) => (prev > 0 ? prev - 1 : 30));
     }, 1000);
@@ -1013,7 +1019,7 @@ const Sell1 = () => {
                       key={currency._id}
                       onClick={() => handleCurrencySelect(currency)}
                     >
-                      <CurrencyIcon src={usdtimg}  style={{ width: "30px", height: "30px" }} alt={currency.Symbol} />
+                      <CurrencyIcon src={usdtimg} style={{ width: "30px", height: "30px" }} alt={currency.Symbol} />
                       <CurrencyInfo>
                         <Buddy>
                           <CurrencyName>{currency.Name}</CurrencyName>

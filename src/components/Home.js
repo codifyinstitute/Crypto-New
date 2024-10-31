@@ -110,6 +110,12 @@ const Home = () => {
     fetchWallet();
   },[])
 
+  useEffect(()=>{
+    if(usdt>walletAmount){
+      setInSufficientBalance(true)
+    }
+  },[usdt,walletAmount])
+
 
   const fetchTransactionFee = async () => {
     try {

@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import Navbar from './Navbar';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { UserRound, CircleUser,CirclePlus } from 'lucide-react';
+import { UserRound, CircleUser, CirclePlus } from 'lucide-react';
 
 
 const Container = styled.div`
@@ -222,6 +222,11 @@ const Profile = () => {
 
   const getInitial = email => email.charAt(0).toUpperCase();
 
+  const logout = () => {
+    localStorage.removeItem('token')
+    navigate("/")
+  }
+
   return (
     <>
       <Navbar />
@@ -240,14 +245,14 @@ const Profile = () => {
           <input
             type="file"
             ref={fileInputRef}
-            onChange={() => {}}
+            onChange={() => { }}
             accept="image/*"
             style={{ display: 'none' }}
           />
           <Username>{userEmail}</Username>
           <Subtitle>Email</Subtitle>
           <WalletBalanceButton onClick={fetchWalletBalance}>
-          <CircleUser size={20} />
+            <CircleUser size={20} />
             {walletBalance !== null ? `Balance: ${walletBalance}` : 'Show Wallet Balance'}
           </WalletBalanceButton>
         </ProfileSection>
@@ -265,7 +270,7 @@ const Profile = () => {
             <MenuLink href="/depositHistory">
               <IconText>
                 <Icon>📥</Icon>
-                
+
                 Your Deposit History
               </IconText>
               <ArrowIcon>▶</ArrowIcon>
@@ -307,7 +312,7 @@ const Profile = () => {
               <ArrowIcon>▶</ArrowIcon>
             </MenuLink>
           </MenuItem>
-          <MenuItem onClick={() => localStorage.removeItem('token')}>
+          <MenuItem onClick={logout}>
             <MenuLink>
               <IconText>
                 <Icon>🚪</Icon>
