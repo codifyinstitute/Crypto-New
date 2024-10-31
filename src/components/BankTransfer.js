@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Navbar from "./Navbar";
@@ -7,6 +7,9 @@ import HomeContact from "./HomeContact";
 import { ChevronLeft, Menu } from "lucide-react";
 import { IoArrowForwardOutline } from "react-icons/io5";
 import { useSelector } from "react-redux";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import axios from 'axios';
 
 const PageContainer = styled.div`
   display: flex;
@@ -136,10 +139,98 @@ const Button = styled.button`
   }
 `;
 
+const CardsSection = styled.div`
+  width: 100%;
+  border-radius: 1rem;
+  margin-top: 1rem;
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2%;
+  justify-content: space-around;
+  flex-wrap: wrap;
+`;
+
+const Card = styled.div`
+  width: 100%;
+  background-color: ${({ selected }) => (selected ? "#f7a600" : "white")};
+  color: ${({ selected }) => (selected ? "white" : "#333")};
+  border: 2px solid ${({ selected }) => (selected ? "#f7a600" : "#ccc")};
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+  font-family: Arial, sans-serif;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s, border 0.3s;
+
+  &:hover {
+    background-color: ${({ selected }) => (selected ? "#e69500" : "#f7a600")};
+    color: ${({ selected }) => (selected ? "white" : "#fff")};
+    border-color: ${({ selected }) => (selected ? "#e69500" : "#e69500")};
+  }
+`;
+
+const CardTitle = styled.h4`
+  display: flex;
+  justify-content: space-between;
+  color: inherit;
+  cursor: pointer;
+  font-size: 18px;
+  padding: 0.3rem 0;
+  border-bottom: 2px solid inherit;
+  font-weight: 500;
+  margin-bottom: 1%;
+  @media (max-Width:480px){
+    font-size: 16px;
+  }
+`;
+
+const Crosss = styled.p`
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  @media (max-Width:480px){
+    font-size: 14px;
+  }
+`;
+
+const countryObject = {
+  India: {
+    urlName: "india",
+    symbol: "₹",
+    name: "India"
+  },
+  Brazil: {
+    urlName: "brl",
+    symbol: "R$",
+    name: "Brazil"
+  },
+  UK: {
+    urlName: "uk",
+    symbol: "£",
+    name: "United Kingdom"
+  },
+  Euro: {
+    urlName: "euro",
+    symbol: "€",
+    name: "European Union"
+  },
+  Dubai: {
+    urlName: "aed",
+    symbol: "د.إ",
+    name: "Dubai"
+  },
+  USA: {
+    urlName: "usa",
+    symbol: "$",
+    name: "United States of America"
+  }
+}
+
 const BankTransfer = () => {
   const selectedCountry = useSelector((state) => state.country.value);
   const navigate = useNavigate();
   const [form, setForm] = useState(true);
+  const [accounts, setAccounts] = useState([]);
 
   // State for input fields
   const [formData, setFormData] = useState({
@@ -163,47 +254,116 @@ const BankTransfer = () => {
     ifsc: "",
   });
 
+  useEffect(()=>{
+    const email = localStorage.getItem("token");
+    axios
+      .get(`https://crypto-backend-main.onrender.com/account-details/${countryObject[selectedCountry].urlName}/${email}`)
+      .then((response) => {
+        console.log(response.data)
+        setAccounts(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching Accounts:", error);
+      });
+  },[selectedCountry])
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleCardClick = (account) => {
+    const existingTransactionDetails =
+      JSON.parse(localStorage.getItem("transactionDetails")) || {};
+
+      const { _id, __v, ...filteredAccount } = account;
+
+      const updatedTransactionDetails = {
+        ...existingTransactionDetails,
+        AccountDetail: { ...filteredAccount }
+      };
+
+    localStorage.setItem(
+      "transactionDetails",
+      JSON.stringify(updatedTransactionDetails)
+    );
+    navigate("/sell4");
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const email = localStorage.getItem("token");
 
     // Construct submission object based on selected country
     const submissionData = {
-      firstName: formData.firstName,
-      lastName: formData.lastName,
-      bankName: formData.bankName,
-      accountNumber: formData.accountNumber,
+      Email: email,
+      FirstName: formData.firstName,
+      LastName: formData.lastName,
+      BankName: formData.bankName,
+      AccountNo: formData.accountNumber,
     };
 
+    // Add country-specific fields
     if (selectedCountry === "USA") {
-      submissionData.city = formData.city;
-      submissionData.state = formData.state;
-      submissionData.address = formData.address;
-      submissionData.zipCode = formData.zipCode;
+      submissionData.City = formData.city;
+      submissionData.State = formData.state;
+      submissionData.Address = formData.address;
+      submissionData.ZipCode = formData.zipCode;
+      submissionData.AccountType = formData.accountType;
     } else if (selectedCountry === "Brazil") {
-      submissionData.accountType = formData.accountType;
-      submissionData.idType = formData.idType;
-      submissionData.idNumber = formData.idNumber;
-      submissionData.bankBranchCode = formData.bankBranchCode;
+      submissionData.AccountType = formData.accountType;
+      submissionData.IDType = formData.idType;
+      submissionData.IDNumber = formData.idNumber;
+      submissionData.BranchCode = formData.bankBranchCode;
+      submissionData.ABACode = formData.abaCode;
     } else if (selectedCountry === "UK") {
-      submissionData.sortCode = formData.sortCode;
-      submissionData.address = formData.address;
+      submissionData.SortCode = formData.sortCode;
+      submissionData.Address = formData.address;
     } else if (selectedCountry === "Euro") {
-      submissionData.abaCode = formData.abaCode;
-      submissionData.swiftCode = formData.swiftCode;
+      submissionData.ABACode = formData.abaCode;
+      submissionData.SwiftCode = formData.swiftCode;
     } else if (selectedCountry === "Dubai") {
-      submissionData.accountOpeningBranch = formData.accountOpeningBranch;
-      submissionData.iban = formData.iban;
+      submissionData.OpeningBranch = formData.accountOpeningBranch;
+      submissionData.IBAN = formData.iban;
     } else if (selectedCountry === "India") {
-      submissionData.ifsc = formData.ifsc;
+      submissionData.IFSC = formData.ifsc;
     }
 
-    console.log("Submitted Data:", submissionData);
+    // API call to save data
+    const url = `https://crypto-backend-main.onrender.com/account-details/${countryObject[selectedCountry].urlName}/add`;
+
+    try {
+      await axios.post(url, submissionData);
+      toast.success("Data saved successfully!"); // Show success notification
+
+      // Reset form data
+      setFormData({
+        firstName: "",
+        lastName: "",
+        bankName: "",
+        accountNumber: "",
+        city: "",
+        state: "",
+        address: "",
+        zipCode: "",
+        accountType: "",
+        abaCode: "",
+        swiftCode: "",
+        sortCode: "",
+        idType: "",
+        idNumber: "",
+        bankBranchCode: "",
+        accountOpeningBranch: "",
+        iban: "",
+        ifsc: "",
+      });
+    } catch (error) {
+      toast.error("Failed to save data."); // Show error notification
+      console.error("Error:", error.response ? error.response.data : error.message);
+    }
   };
+
 
   const AddAccount = () => {
     setForm(!form);
@@ -349,7 +509,24 @@ const BankTransfer = () => {
                   <IoArrowForwardOutline />
                 </FormButton>
               </div>
-            </form> :null}
+            </form> : <>
+              <CardsSection>
+                {accounts.map((account, index) => (
+                  <Card
+                    key={index}
+                    onClick={() => handleCardClick(account)}
+                  >
+                    <CardTitle><span>Bank Name</span> <span>{account.BankName}</span></CardTitle>
+                    <Crosss>
+                      <strong>Account Number:</strong> {account.AccountNo}
+                    </Crosss>
+                    <Crosss>
+                      <strong>IFSC:</strong> {account.IFSC}
+                    </Crosss>
+                  </Card>
+                ))}
+              </CardsSection>
+            </>}
           </FormContainer>
         </FormWrapper>
       </PageContainer>

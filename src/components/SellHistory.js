@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Navbar from "./Navbar";
-import Footer from "./Footer";
+import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { ChevronLeft } from "lucide-react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 
+// Styled Components
 const Container = styled.div`
   background-color: #121212;
   min-height: 100vh;
@@ -132,8 +133,6 @@ const Label = styled.span`
   text-align: center;
   @media (max-width: 320px) {
     font-size: 12px;
-    top: 10px;
-    left: 10px;
   }
 `;
 
@@ -167,11 +166,60 @@ const StatusValue = styled(Value)`
   }};
 `;
 
+const ModalBackground = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+`;
+
+const ModalContent = styled.div`
+  background-color: white;
+  color: black;
+  padding: 20px;
+  border-radius: 10px;
+  width: 400px;
+`;
+
+const CloseButton = styled.button`
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  float: right;
+`;
+
+const Table = styled.table`
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+
+  th,
+  td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: left;
+  }
+
+  th {
+    background-color: #f2f2f2;
+  }
+`;
+
+// Main Component
 const SellHistory = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("Pending");
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [accountDetails, setAccountDetails] = useState(null);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -184,7 +232,7 @@ const SellHistory = () => {
       if (email) {
         try {
           const response = await fetch(
-            `http://localhost:8000/transactions/get/email/${email}`
+            `https://crypto-backend-main.onrender.com/transactions/get/email/${email}`
           );
           if (!response.ok) throw new Error("Failed to fetch transactions");
           const data = await response.json();
@@ -202,6 +250,16 @@ const SellHistory = () => {
 
     fetchTransactions();
   }, []);
+
+  const handleIconClick = (accountDetail) => {
+    setAccountDetails(accountDetail);
+    setModalVisible(true);
+  };
+
+  const closeModal = () => {
+    setModalVisible(false);
+    setAccountDetails(null);
+  };
 
   if (loading)
     return (
@@ -257,12 +315,14 @@ const SellHistory = () => {
                 </TransactionHeader>
                 <TransactionDetails>
                   <TransactionColumn>
-                    <Label>Bank Name</Label>
-                    <Value>{transaction.BankName}</Value>
+                    <Label>Account Detail</Label>
+                    <Value>
+                      <MdOutlineRemoveRedEye onClick={() => handleIconClick(transaction.AccountDetail)} />
+                    </Value>
                   </TransactionColumn>
                   <TransactionColumn>
-                    <Label>A/C Number</Label>
-                    <Value>{transaction.AccountNumber}</Value>
+                    <Label>Country</Label>
+                    <Value>{transaction.Country}</Value>
                   </TransactionColumn>
                   <TransactionColumn>
                     <Label>Amount</Label>
@@ -279,6 +339,31 @@ const SellHistory = () => {
             ))}
         </TransactionList>
       </Container>
+      {/* Modal for Account Details */}
+      {modalVisible && (
+        <ModalBackground onClick={closeModal}>
+          <ModalContent onClick={(e) => e.stopPropagation()}>
+            <CloseButton onClick={closeModal}>&times;</CloseButton>
+            <h2>Account Details</h2>
+            <Table>
+              <thead>
+                <tr>
+                  <th>Field</th>
+                  <th>Value</th>
+                </tr>
+              </thead>
+              <tbody>
+                {accountDetails && Object.entries(accountDetails).map(([key, value]) => (
+                  <tr key={key}>
+                    <td>{key}</td>
+                    <td>{value}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          </ModalContent>
+        </ModalBackground>
+      )}
       {/* <Footer /> */}
     </>
   );
