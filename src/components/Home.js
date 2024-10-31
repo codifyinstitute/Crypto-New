@@ -492,14 +492,21 @@ const Home = () => {
                 Sell Now
               </ProceedButton>}
               
+              <PaymentMethods>
+              <PaymentIcon />
+            </PaymentMethods>
+
+            <PoweredBy>
+              Powered by <Moonn src={logoM} />
+            </PoweredBy>
             </div>
           </ExchangeCard>
         </motion.div>
       </ExchangeSection>
-      <PaymentMethods>
+      {/* <PaymentMethods>
         <PoweredBy>Powered by</PoweredBy>
         <PaymentIcon src={logoM} alt="Payment Logo" />
-      </PaymentMethods>
+      </PaymentMethods> */}
     </Container>
   );
 };
@@ -959,6 +966,9 @@ const Card = styled.div`
   z-index: 2;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   width: 300px;
+`;
+const Moonn = styled.img`
+  width: 25%;
 `;
 
 // other fiat

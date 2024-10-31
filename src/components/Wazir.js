@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import BinanceImage from '../assets/Binancee2.png'; // Replace with actual path
-import CoinbaseImage from '../assets/bybit.png'; // Replace with actual path
-import KrakenImage from '../assets/kucoin.png'; // Replace with actual path
-import WazirxImage from '../assets/Wazirx.webp'; // Replace with actual path
+import ByBitImage from '../assets/bybit.png'; // Replace with actual path
+import BitgetImage from '../assets/Bitget.png'; // Replace with actual path
+import WazirxImage from '../assets/Coinbase2.png'; // Replace with actual path
 import { useSelector } from 'react-redux';
 
 const Grid = styled.div`
@@ -232,20 +232,20 @@ const CryptoPriceGrid = () => {
           usdtPrice={data?.Coinbase?.Average || null}
           minPrice={data?.Coinbase?.Min || null}
           maxPrice={data?.Coinbase?.Max || null}
-          image={CoinbaseImage}
+          image={ByBitImage}
           selectedCountry={selectedCountry}
         />
         <CryptoPriceCard
-          exchange="Kraken"
+          exchange="Bitget"
           avgPrice={data?.Kraken?.Average || null}
           usdtPrice={data?.Kraken?.Average || null}
           minPrice={data?.Kraken?.Min || null}
           maxPrice={data?.Kraken?.Max || null}
-          image={KrakenImage}
+          image={BitgetImage}
           selectedCountry={selectedCountry}
         />
         <CryptoPriceCard
-          exchange="Wazirx"
+          exchange="Coinbase"
           avgPrice={data?.Wazirx?.Average || null}
           usdtPrice={data?.Wazirx?.Average || null}
           minPrice={data?.Wazirx?.Min || null}
