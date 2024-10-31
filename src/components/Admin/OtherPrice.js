@@ -174,7 +174,7 @@ const OtherPrice = () => {
         <Container>
           <h1>Update Static Data ({country})</h1>
           <Form onSubmit={handleSubmit}>
-            <h2>Wazirx</h2>
+            <h2>Coinbase</h2>
             <Label htmlFor="Wazirx_Average">Average</Label>
             <Input
               type="number"
@@ -226,7 +226,7 @@ const OtherPrice = () => {
               onChange={(e) => handleChange({ target: { name: 'Binance', value: { ...formData.Binance, Max: e.target.value } } })}
             />
 
-            <h2>Coinbase</h2>
+            <h2>Bybit</h2>
             <Label htmlFor="Coinbase_Average">Average</Label>
             <Input
               type="number"
@@ -252,7 +252,7 @@ const OtherPrice = () => {
               onChange={(e) => handleChange({ target: { name: 'Coinbase', value: { ...formData.Coinbase, Max: e.target.value } } })}
             />
 
-            <h2>Kraken</h2>
+            <h2>Bitget</h2>
             <Label htmlFor="Kraken_Average">Average</Label>
             <Input
               type="number"
