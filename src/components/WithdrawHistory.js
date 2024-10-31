@@ -304,7 +304,7 @@ const WithdrawHistory = () => {
   const fetchDepositHistory = async () => {
     const email = localStorage.getItem("token");
     try {
-      const response = await fetch(`http://localhost:8000/deposit-transactions/get/email/${email}`);
+      const response = await fetch(`http://localhost:8000/withdraw/get/email/${email}`);
       if (!response.ok) throw new Error('Network response was not ok');
       const data = await response.json();
       console.log(data); // Log the entire data to check its structure
@@ -363,10 +363,10 @@ const WithdrawHistory = () => {
             ) : (
                 WithdrawHistory.map((data, index) => (
                 <DepositHistoryCard key={index}>
-                  <InfoRow>
+                  {/* <InfoRow>
                     <Label>Transaction:</Label>
-                    <Value>{data.OrderId}</Value> {/* Accessing OrderId from the backend */}
-                  </InfoRow>
+                    <Value>{data.OrderId}</Value> 
+                  </InfoRow> */}
                   <InfoRow>
                     <Label>Status:</Label>
                     <StatusValue status={data.Status}>{data.Status}</StatusValue>
@@ -379,11 +379,15 @@ const WithdrawHistory = () => {
                     <Label>Created Time:</Label>
                     <Value>{data.Date} {data.Time}</Value> {/* Combine Date and Time */}
                   </InfoRow>
+                  {/* <InfoRow>
+                    <Label>Wallet Address:</Label>
+                    <Value>{data.WalletAddress}</Value> {/* Combine Date and Time */}
+                  {/* </InfoRow> */} 
                   <InfoRow>
                     <Label>Withdraw Amount:</Label>
                     <AmountContainer>
                       <img src={usdtimg} style={{ width: '26px', height: '26px' }} alt="USDT Icon" />
-                      <Value>{data.Amount} USDT</Value> {/* Display amount with currency */}
+                      <Value>{data.WithdrawAmount} USDT</Value> {/* Display amount with currency */}
                     </AmountContainer>
                   </InfoRow>
                 </DepositHistoryCard>

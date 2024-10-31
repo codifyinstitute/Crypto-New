@@ -614,7 +614,7 @@ h1{
 //     width: 26%;
   
 // }
-}
+/* } */
 p{
   font-size: 24px;
   @media (max-width:480px){

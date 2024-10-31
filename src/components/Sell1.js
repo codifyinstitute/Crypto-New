@@ -1060,7 +1060,7 @@ const Sell1 = () => {
 
             <InputContainer>
               <InputWrapper>
-                <Input type="text" value={`₹ ${inr.toFixed(2)}`} readOnly />
+                <Input type="text" value={`${countryObject[selectedCountry].symbol} ${inr.toFixed(2)}`} readOnly />
                 <CurrencyToggle
                   onClick={() => setIsFiatDropdownOpen(!isFiatDropdownOpen)}
                 >
@@ -1205,9 +1205,9 @@ const Sell1 = () => {
         </ExchangeCard>
         <Container>
           <PriceDisplay>
-            <Price> ₹ {selectedCurrency?.Rate}</Price>
+            <Price> {countryObject[selectedCountry].symbol} {selectedCurrency?.Rate}</Price>
           </PriceDisplay>
-          <Subtext>1 USDT = ₹ {selectedCurrency?.Rate}</Subtext>
+          <Subtext>1 USDT = {countryObject[selectedCountry].symbol} {selectedCurrency?.Rate}</Subtext>
           <Center>
             <TableContainer>
               <Table>

@@ -485,7 +485,7 @@ const Home = () => {
                 )}
               </OrderSummary>
               {inSufficientBalance?
-              <ProceedButton onClick={()=>navigate('/deposit')}>
+              <ProceedButton style={{backgroundColor:"gray"}} onClick={()=>navigate('/deposit')}>
               Add USDT to Wallet
             </ProceedButton>
               :<ProceedButton onClick={handleSellNowClick}>

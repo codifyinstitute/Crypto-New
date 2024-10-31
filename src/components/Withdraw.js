@@ -26,6 +26,7 @@ const WithdrawUSDT = () => {
   const [networkFee, setNetworkFee] = useState(0);
   const [selectNetwork, setSelectNetwork] = useState('TRC20');
   const [isValid, setIsValid] = useState(true);
+  const [walletAmount, setWalletAmount] = useState("0");
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -81,6 +82,8 @@ const WithdrawUSDT = () => {
   if (!login) {
     navigate('/sell2');
   }
+
+
 
 
   const handleDepositNowClick = () => {
@@ -148,6 +151,74 @@ const WithdrawUSDT = () => {
     }, 1000);
   };
 
+  const handleConfirmClick = async () => {
+    // console.log(50)
+    if (isFormValid) {
+      const currentDate = new Date();
+      const formattedDate = currentDate.toLocaleDateString();
+      const formattedTime = currentDate.toLocaleTimeString();
+      try {
+        const response = await fetch("http://localhost:8000/withdraw/add", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            Email: localStorage.getItem("token"),
+            Network: selectNetwork,
+            Currency: "USDT",
+            Status: "Failed",
+            Date: formattedDate,
+            Time: formattedTime,
+            WithdrawAmount: withdrawAmount,
+            WalletAddress: walletAddress,
+          }),
+        });
+  
+        if (!response.ok) {
+          throw new Error("Failed to submit transaction");
+        }
+  
+        const result = await response.json();
+        
+        // Show success toast message
+        toast.success("Withdrawal request submitted successfully!");
+  
+        // Clear the form
+        setWalletAddress('');
+        setWithdrawAmount('');
+        setSelectNetwork('TRC20'); // Reset to default or desired network
+        setIsFormValid(false); // Reset form validity state if needed
+  
+        navigate("/", { state: { data: result } });
+      } catch (error) {
+        alert("Error submitting transaction: " + error.message);
+      }
+    } else {
+      toast.error("Please fill in all fields correctly.");
+    }
+  };
+  
+
+  const token = localStorage.getItem("token");
+  const fetchWallet = async () => {
+    try {
+      const response = await fetch(`http://localhost:8000/wallet/get/${token}`);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data = await response.json();
+      setWalletAmount(data.Amount);
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchWallet();
+  }, [])
+
   return (
     <>
       <Navbar />
@@ -159,10 +230,10 @@ const WithdrawUSDT = () => {
               <ChevronLeft />
             </BackButton>
             <TabWrapper>
-            <Title>Withdraw USDT</Title>
+              <Title>Withdraw USDT</Title>
             </TabWrapper>
             <RefreshButton>
-            <AiOutlineHistory onClick={()=>navigate("/withdrawhistory")} style={{ color: '#FFA500', fontSize: '30px' }} />
+              <AiOutlineHistory onClick={() => navigate("/withdrawhistory")} style={{ color: '#FFA500', fontSize: '30px' }} />
             </RefreshButton>
           </Header>
           <FormGroup>
@@ -178,64 +249,64 @@ const WithdrawUSDT = () => {
             <NetworkRow>
               <InputLabel>Network</InputLabel>
               <NetworkWrapper>
-  {selectNetwork === 'TRC20' ? (
+                {selectNetwork === 'TRC20' ? (
 
-    <ActiveButton onClick={handleTrcClick} style={{ position: "relative" }}>
-  <Check strokeWidth={4}
-    style={{ 
-      position: "absolute",
-      bottom: "2px",
-      right: "2px",
-      backgroundColor: "#FFF176",
-      borderRadius: "50%",
-      padding: "2px",
-      // color: "black",
-      color: "#000000",
-      width: "16px",
-      height: "14px" 
-    }} 
-  />
-  <img src={trcimg} alt="TRC20 Icon" style={{ width: "20px", height: "20px", marginRight: "8px" }} />
-  TRC20
-</ActiveButton>
+                  <ActiveButton onClick={handleTrcClick} style={{ position: "relative" }}>
+                    <Check strokeWidth={4}
+                      style={{
+                        position: "absolute",
+                        bottom: "2px",
+                        right: "2px",
+                        backgroundColor: "#FFF176",
+                        borderRadius: "50%",
+                        padding: "2px",
+                        // color: "black",
+                        color: "#000000",
+                        width: "16px",
+                        height: "14px"
+                      }}
+                    />
+                    <img src={trcimg} alt="TRC20 Icon" style={{ width: "20px", height: "20px", marginRight: "8px" }} />
+                    TRC20
+                  </ActiveButton>
 
-  ) : (
-    <InactiveButton onClick={handleTrcClick}>
-             <img src={trcimg} alt="TRC20 Icon" style={{ width: "20px", height: "20px", marginRight: "8px" }} />
-      TRC20
-    </InactiveButton>
-  )}
-  {selectNetwork === 'BEP20' ? (
-    <ActiveButton onClick={handleBepClick} style={{ position: "relative" }}>
-         <Check strokeWidth={3}
-    style={{ 
-      position: "absolute",
-      bottom: "2px",
-      right: "2px",
-      backgroundColor: "#FFF176",
-      borderRadius: "50%",
-      padding: "2px",
-      // color: "black",
-      color: "#000000",
-      width: "16px",
-      height: "14px" 
-    }} 
-  />
-  {/* <Check color="#f9f06b" strokeWidth={3} /> */}
-      <img src={Bepimg} alt="BEP20 Icon" style={{ width: "20px", height: "20px", marginRight: "8px" }} />
+                ) : (
+                  <InactiveButton onClick={handleTrcClick}>
+                    <img src={trcimg} alt="TRC20 Icon" style={{ width: "20px", height: "20px", marginRight: "8px" }} />
+                    TRC20
+                  </InactiveButton>
+                )}
+                {selectNetwork === 'BEP20' ? (
+                  <ActiveButton onClick={handleBepClick} style={{ position: "relative" }}>
+                    <Check strokeWidth={3}
+                      style={{
+                        position: "absolute",
+                        bottom: "2px",
+                        right: "2px",
+                        backgroundColor: "#FFF176",
+                        borderRadius: "50%",
+                        padding: "2px",
+                        // color: "black",
+                        color: "#000000",
+                        width: "16px",
+                        height: "14px"
+                      }}
+                    />
+                    {/* <Check color="#f9f06b" strokeWidth={3} /> */}
+                    <img src={Bepimg} alt="BEP20 Icon" style={{ width: "20px", height: "20px", marginRight: "8px" }} />
 
-      BEP20
-    </ActiveButton>
-  ) : (
-    <InactiveButton onClick={handleBepClick}>
-          
-          <img src={Bepimg} alt="BEP20 Icon" style={{ width: "20px", height: "20px", marginRight: "8px" }} />
+                    BEP20
+                  </ActiveButton>
+                ) : (
+                  <InactiveButton onClick={handleBepClick}>
 
-      BEP20
-    </InactiveButton>
-  )}
-</NetworkWrapper>
-            
+                    <img src={Bepimg} alt="BEP20 Icon" style={{ width: "20px", height: "20px", marginRight: "8px" }} />
+
+                    BEP20
+                  </InactiveButton>
+                )}
+              </NetworkWrapper>
+
             </NetworkRow>
           </FormGroup>
           <FormGroup>
@@ -265,22 +336,24 @@ const WithdrawUSDT = () => {
             {amountError && <ErrorText>{amountError}</ErrorText>}
           </FormGroup>
           {/* <BalanceInfo> */}
-            {/* <Available>Available: 0 
+          {/* <Available>Available: 0 
               
                <BoldText>USDT</BoldText>
          
             </Available> */}
-            {/* <Fee>Refund Fee: 1 <BoldText>USDT</BoldText></Fee> */}
+          {/* <Fee>Refund Fee: 1 <BoldText>USDT</BoldText></Fee> */}
           {/* </BalanceInfo> */}
           <CurrencyRow>
-              <InputLabel>Available</InputLabel>
-              <CurrencyButton className="active">
-                <NetworkIcon src={usdtimg} alt="USDT" />
-                
-                <span> 100 </span> USDT
-              </CurrencyButton>
-            </CurrencyRow>
-          <ProceedButton disabled={!isFormValid}>Confirm</ProceedButton>
+            <InputLabel>Available</InputLabel>
+            <CurrencyButton className="active">
+              <NetworkIcon src={usdtimg} alt="USDT" />
+
+              <span> {walletAmount} </span> USDT
+            </CurrencyButton>
+          </CurrencyRow>
+          <ProceedButton onClick={handleConfirmClick} disabled={!isFormValid}>
+            Confirm
+          </ProceedButton>
         </ExchangeCard>
       </TradingEnvironment>
       <HomeContact />
