@@ -75,6 +75,7 @@ const Home = () => {
   const [currencies, setCurrencies] = useState([]);
   const [transactionFee, setTransactionFee] = useState(0);
   const [networkFee, setNetworkFee] = useState(0);
+  const [walletAmount, setWalletAmount] = useState(0);
   const [minAmount, setMinAmount] = useState(0);
   const [selectedCurrency, setSelectedCurrency] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -84,14 +85,35 @@ const Home = () => {
   const [selectedFiatCurrency, setSelectedFiatCurrency] = useState(null);
   const [filteredFiatCurrencies, setFilteredFiatCurrencies] = useState([]);
   const [isDetailsExpanded, setIsDetailsExpanded] = useState(false);
+  const [inSufficientBalance, setInSufficientBalance] = useState(false);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const token = localStorage.getItem("token");
+  const fetchWallet = async () => {
+    try {
+      const response = await fetch(`http://localhost:8000/wallet/get/${token}`);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data = await response.json();
+      setWalletAmount(data.Amount);
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(()=>{
+    fetchWallet();
+  },[])
+
+
   const fetchTransactionFee = async () => {
     try {
       const response = await fetch(
-        "https://crypto-backend-main.onrender.com/static/get/66c445a358802d46d5d70dd4"
+        `http://localhost:8000/static/${countryObject[selectedCountry]?.urlName}/one`
       );
       if (!response.ok) {
         throw new Error("Network response was not ok");
@@ -110,11 +132,11 @@ const Home = () => {
 
   useEffect(() => {
     fetchTransactionFee();
-  }, []);
+  }, [selectedCountry]);
 
   useEffect(() => {
     axios
-      .get(`https://crypto-backend-main.onrender.com/currencies/${countryObject[selectedCountry].urlName}/all`)
+      .get(`http://localhost:8000/currencies/${countryObject[selectedCountry].urlName}/all`)
       .then((response) => {
         setCurrencies(response.data);
         setSelectedCurrency(response.data[0] || null);
@@ -155,6 +177,11 @@ const Home = () => {
 
   const handleUsdtChange = (e) => {
     const value = e.target.value;
+    if(value>walletAmount){
+      setInSufficientBalance(true);
+    }else{
+      setInSufficientBalance(false);
+    }
     setUsdt(value);
     const numericValue = Number(value);
     setIsValid(numericValue > 0 && numericValue >= minAmount);
@@ -334,10 +361,11 @@ const Home = () => {
                       ))}
                   </CurrencyList>
                 </AnimatedDropdownContainer>
-                <InputMessage isValid={isValid}>
+                <InputMessage isValid={isValid} inSufficientBalance={inSufficientBalance}>
                   {isValid
-                    ? `You can proceed with this amount.`
+                    ?inSufficientBalance?"Insufficient Balance": `You can proceed with this amount.`
                     : ` Minimum sell order is ${minAmount} USDT.`}
+                  {/* -{inSufficientBalance?"Insufficient Balance":null} */}
                 </InputMessage>
               </InputContainer>
               <InputLabel>Receive</InputLabel>
@@ -437,7 +465,7 @@ const Home = () => {
                           </TooltipText>
                         </TooltipContainer>
                       </span>
-                      <span>as low as Rs {transactionFee}</span>
+                      <span>as low as {countryObject[selectedCountry].symbol} {transactionFee}</span>
                     </OrderDetail>
                     <OrderDetail>
                       <span>
@@ -450,14 +478,19 @@ const Home = () => {
                           </TooltipText>
                         </TooltipContainer>
                       </span>
-                      <span>as low as Rs {networkFee}</span>
+                      <span>as low as {countryObject[selectedCountry].symbol} {networkFee}</span>
                     </OrderDetail>
                   </>
                 )}
               </OrderSummary>
-              <ProceedButton onClick={handleSellNowClick}>
+              {inSufficientBalance?
+              <ProceedButton onClick={()=>navigate('/deposit')}>
+              Add USDT to Wallet
+            </ProceedButton>
+              :<ProceedButton onClick={handleSellNowClick}>
                 Sell Now
-              </ProceedButton>
+              </ProceedButton>}
+              
             </div>
           </ExchangeCard>
         </motion.div>
@@ -531,7 +564,7 @@ const Subtitle = styled.p`
 
 const InputMessage = styled.p`
   font-size: 0.9rem;
-  color: ${(props) => (props.isValid ? "green" : "red")};
+  color: ${(props) => (props.isValid && !props.inSufficientBalance ? "green" : "red")};
   margin-top: 0.5rem;
 `;
 

@@ -4,6 +4,7 @@ import BinanceImage from '../assets/Binancee2.png'; // Replace with actual path
 import CoinbaseImage from '../assets/bybit.png'; // Replace with actual path
 import KrakenImage from '../assets/kucoin.png'; // Replace with actual path
 import WazirxImage from '../assets/Wazirx.webp'; // Replace with actual path
+import { useSelector } from 'react-redux';
 
 const Grid = styled.div`
   display: grid;
@@ -142,14 +143,47 @@ const Title = styled.h2`
   }
 `;
 
-const CryptoPriceCard = ({ exchange, avgPrice, usdtPrice, minPrice, maxPrice, image }) => (
+const countryObject = {
+  India: {
+    urlName: "india",
+    symbol: "₹",
+    name: "India"
+  },
+  Brazil: {
+    urlName: "brl",
+    symbol: "R$",
+    name: "Brazil"
+  },
+  UK: {
+    urlName: "uk",
+    symbol: "£",
+    name: "United Kingdom"
+  },
+  Euro: {
+    urlName: "euro",
+    symbol: "€",
+    name: "European Union"
+  },
+  Dubai: {
+    urlName: "aed",
+    symbol: "د.إ",
+    name: "Dubai"
+  },
+  USA: {
+    urlName: "usa",
+    symbol: "$",
+    name: "United States of America"
+  }
+}
+
+const CryptoPriceCard = ({ exchange, avgPrice, usdtPrice, minPrice, maxPrice, image, selectedCountry }) => (
   <Card>
     <CoinIcon>
       <img src={image} alt={exchange} />
     </CoinIcon>
     <ExchangeName>{exchange}</ExchangeName>
-    <Price>Avg ₹ {avgPrice}</Price>
-    <SubText>1 USDT = ₹ {usdtPrice}</SubText>
+    <Price>Avg {countryObject[selectedCountry].symbol} {avgPrice}</Price>
+    <SubText>1 USDT = {countryObject[selectedCountry].symbol} {usdtPrice}</SubText>
 {  /*  <MinMaxPrice>
       <PriceInfo>Min ₹ {minPrice}</PriceInfo>
       <PriceInfo>Max ₹ {maxPrice}</PriceInfo>
@@ -158,11 +192,12 @@ const CryptoPriceCard = ({ exchange, avgPrice, usdtPrice, minPrice, maxPrice, im
 );
 
 const CryptoPriceGrid = () => {
+  const selectedCountry = useSelector((state) => state.country.value);
   const [data, setData] = useState({});
 
   const fetchTransactionFee = async () => {
     try {
-      const response = await fetch('https://crypto-backend-main.onrender.com/static/get/66c445a358802d46d5d70dd4');
+      const response = await fetch(`http://localhost:8000/static/${countryObject[selectedCountry]?.urlName}/one`);
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
@@ -176,7 +211,7 @@ const CryptoPriceGrid = () => {
 
   useEffect(() => {
     fetchTransactionFee();
-  }, []);
+  }, [selectedCountry]);
 
   return (
     <>
@@ -189,6 +224,7 @@ const CryptoPriceGrid = () => {
           minPrice={data?.Binance?.Min || null}
           maxPrice={data?.Binance?.Max || null}
           image={BinanceImage}
+          selectedCountry={selectedCountry}
         />
         <CryptoPriceCard
           exchange="Bybit"
@@ -197,6 +233,7 @@ const CryptoPriceGrid = () => {
           minPrice={data?.Coinbase?.Min || null}
           maxPrice={data?.Coinbase?.Max || null}
           image={CoinbaseImage}
+          selectedCountry={selectedCountry}
         />
         <CryptoPriceCard
           exchange="Kraken"
@@ -205,6 +242,7 @@ const CryptoPriceGrid = () => {
           minPrice={data?.Kraken?.Min || null}
           maxPrice={data?.Kraken?.Max || null}
           image={KrakenImage}
+          selectedCountry={selectedCountry}
         />
         <CryptoPriceCard
           exchange="Wazirx"
@@ -213,6 +251,7 @@ const CryptoPriceGrid = () => {
           minPrice={data?.Wazirx?.Min || null}
           maxPrice={data?.Wazirx?.Max || null}
           image={WazirxImage}
+          selectedCountry={selectedCountry}
         />
       </Grid>
     </>

@@ -195,7 +195,7 @@ const AdminTransaction = () => {
   useEffect(() => {
     const fetchTransactions = async () => {
       try {
-        const response = await fetch('https://crypto-backend-main.onrender.com/transactions/all');
+        const response = await fetch('http://localhost:8000/transactions/all');
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
@@ -245,7 +245,7 @@ const AdminTransaction = () => {
     }
 
     try {
-      const response = await fetch(`https://crypto-backend-main.onrender.com/transactions/put/${selectedTransactionId}`, {
+      const response = await fetch(`http://localhost:8000/transactions/put/${selectedTransactionId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -263,7 +263,7 @@ const AdminTransaction = () => {
       setSelectedTransactionId('');
       
       // Refetch transactions
-      const updatedTransactions = await fetch('https://crypto-backend-main.onrender.com/transactions/all').then(res => res.json());
+      const updatedTransactions = await fetch('http://localhost:8000/transactions/all').then(res => res.json());
       setTransactions(updatedTransactions);
     } catch (error) {
       console.error('Error updating transaction status:', error);

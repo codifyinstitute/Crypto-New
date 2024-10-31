@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import Sidebar from './Sidebar'; // Adjust the path if necessary
+import { useParams } from 'react-router-dom';
 
 // Styled components (as before)
 const DashboardContainer = styled.div`
@@ -67,7 +68,49 @@ const Button = styled.button`
   }
 `;
 
+const countryObject = {
+  India: {
+    urlName: "india",
+    symbol: "₹",
+    name: "India",
+    fait: "INR"
+  },
+  Brazil: {
+    urlName: "brl",
+    symbol: "R$",
+    name: "Brazil",
+    fait: "BRL"
+  },
+  "United Kingdom": {
+    urlName: "uk",
+    symbol: "£",
+    name: "United Kingdom",
+    fait: "GBP"
+  },
+  "European Union": {
+    urlName: "euro",
+    symbol: "€",
+    name: "European Union",
+    fait: "EUR"
+  },
+  "United Arab Emirates": {
+    urlName: "aed",
+    symbol: "د.إ",
+    name: "Dubai",
+    fait: "AED"
+  },
+  "United State of America": {
+    urlName: "usa",
+    symbol: "$",
+    name: "United States of America",
+    fait: "USD"
+  }
+}
+
 const OtherPrice = () => {
+  const { country: con } = useParams();
+  const [country, setCountry] = useState('');
+  const [id, setId] = useState('');
   const [formData, setFormData] = useState({
     TransactionFee: '',
     NetworkFee: '',
@@ -82,17 +125,25 @@ const OtherPrice = () => {
 
   // Fetch data on component mount
   useEffect(() => {
+    console.log(countryObject[country]?.urlName);
+    // console.log(countryObject[country]?.urlName);
     const fetchData = async () => {
       try {
-        const response = await axios.get('https://crypto-backend-main.onrender.com/static/get/66c445a358802d46d5d70dd4');
+        const response = await axios.get(`http://localhost:8000/static/${countryObject[country]?.urlName}/one`);
         setFormData(response.data);
+        setId(response.data._id)
+        console.log(response.data._id)
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     };
 
     fetchData();
-  }, []);
+  }, [country]);
+
+  useEffect(() => {
+    setCountry(con);
+  }, [con]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -104,9 +155,10 @@ const OtherPrice = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    // console.log(id)
+    // console.log(countryObject[country]?.urlName)
     try {
-      const response = await axios.put('https://crypto-backend-main.onrender.com/static/put/66c445a358802d46d5d70dd4', formData);
+      const response = await axios.put(`http://localhost:8000/static/${countryObject[country]?.urlName}/put/${id}`, formData);
       alert('Data updated successfully');
       //console.log(response.data);
     } catch (error) {
@@ -120,7 +172,7 @@ const OtherPrice = () => {
       <Sidebar isOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
       <Content>
         <Container>
-          <h1>Update Static Data</h1>
+          <h1>Update Static Data ({country})</h1>
           <Form onSubmit={handleSubmit}>
             <h2>Wazirx</h2>
             <Label htmlFor="Wazirx_Average">Average</Label>

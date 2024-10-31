@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import Sidebar from './Sidebar';
 
@@ -87,7 +87,49 @@ const Button = styled.button`
   }
 `;
 
+const countryObject = {
+    India: {
+        urlName: "india",
+        symbol: "₹",
+        name: "India",
+        fait: "INR"
+    },
+    Brazil: {
+        urlName: "brl",
+        symbol: "R$",
+        name: "Brazil",
+        fait: "BRL"
+    },
+    "United Kingdom": {
+        urlName: "uk",
+        symbol: "£",
+        name: "United Kingdom",
+        fait: "GBP"
+    },
+    "European Union": {
+        urlName: "euro",
+        symbol: "€",
+        name: "European Union",
+        fait: "EUR"
+    },
+    "United Arab Emirates": {
+        urlName: "aed",
+        symbol: "د.إ",
+        name: "Dubai",
+        fait: "AED"
+    },
+    "United State of America": {
+        urlName: "usa",
+        symbol: "$",
+        name: "United States of America",
+        fait: "USD"
+    }
+}
+
 const AdminTransactionFee = () => {
+    const { country: con } = useParams();
+    const [country, setCountry] = useState('');
+    const [id, setId] = useState('');
     const navigate = useNavigate();
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [transactionFee, setTransactionFee] = useState(0);
@@ -109,24 +151,35 @@ const AdminTransactionFee = () => {
         }
     }, [navigate]);
 
+    useEffect(() => {
+        // console.log(con)
+        setCountry(con);
+    }, [con]);
+
     const fetchTransactionFee = async () => {
+        // console.log(countryObject[country]?.urlName)
+        // console.log(countryObject[country])
+        // console.log(country)
+        // console.log(con)
         try {
-            const response = await fetch('https://crypto-backend-main.onrender.com/static/get/66c445a358802d46d5d70dd4');
+            const response = await fetch(`http://localhost:8000/static/${countryObject[country]?.urlName}/one`);
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
             const data = await response.json();
-            //console.log(data)
+            // console.log(data.TransactionFee, data.NetworkFee, data.MinAmount)
             setTransactionFee(data.TransactionFee);
             setTransactionFeeFix(data.TransactionFee);
             setNetworkFee(data.NetworkFee);
             setNetworkFeeFix(data.NetworkFee);
             setMinAmount(data.MinAmount);
             setMinAmountFix(data.MinAmount);
+            setId(data._id);
+            // console.log(data._id)
             // setTransactionId(data.TransactionId);
             // setImage(data.QRCode);
         } catch (error) {
-            setError('Error fetching transaction fee');
+            console.log('Error fetching transaction fee');
         } finally {
             setLoading(false);
         }
@@ -134,14 +187,14 @@ const AdminTransactionFee = () => {
 
     useEffect(() => {
         fetchTransactionFee();
-    }, []);
+    }, [country]);
 
     const handleFeeUpdate = async (event) => {
         event.preventDefault();
         setLoading(true);
 
         try {
-            const response = await fetch('https://crypto-backend-main.onrender.com/static/put/66c445a358802d46d5d70dd4', {
+            const response = await fetch(`http://localhost:8000/static/${countryObject[country]?.urlName}/put/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -167,7 +220,7 @@ const AdminTransactionFee = () => {
         setLoading(true);
 
         try {
-            const response = await fetch('https://crypto-backend-main.onrender.com/static/put/66c445a358802d46d5d70dd4', {
+            const response = await fetch(`http://localhost:8000/static/${countryObject[country]?.urlName}/put/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -193,7 +246,7 @@ const AdminTransactionFee = () => {
         setLoading(true);
 
         try {
-            const response = await fetch('https://crypto-backend-main.onrender.com/static/put/66c445a358802d46d5d70dd4', {
+            const response = await fetch(`http://localhost:8000/static/${countryObject[country]?.urlName}/put/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -220,7 +273,7 @@ const AdminTransactionFee = () => {
             <Sidebar isOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
             <Content>
                 <Section>
-                    <Title>Transaction Management</Title>
+                    <Title>Transaction Management ({country})</Title>
                     <Paragraph>Manage and review the transaction details here.</Paragraph>
                     {loading ? (
                         <Paragraph>Loading...</Paragraph>
@@ -229,7 +282,7 @@ const AdminTransactionFee = () => {
                     ) : (
                         <>
                             <Form onSubmit={handleFeeUpdate}>
-                                <FeeDisplay>Current Processing Fee: ₹{transactionFeeFix}</FeeDisplay>
+                                <FeeDisplay>Current Processing Fee: {countryObject[country]?.symbol}{transactionFeeFix}</FeeDisplay>
                                 <label>
                                     <Paragraph>Update Fee:</Paragraph>
                                     <Input
@@ -242,7 +295,7 @@ const AdminTransactionFee = () => {
                             </Form>
 
                             <Form onSubmit={handleNetworkFeeUpdate}>
-                                <FeeDisplay>Current Network Fee: ₹{networkFeeFix}</FeeDisplay>
+                                <FeeDisplay>Current Network Fee: {countryObject[country]?.symbol}{networkFeeFix}</FeeDisplay>
                                 <label>
                                     <Paragraph>Update Fee:</Paragraph>
                                     <Input
@@ -255,7 +308,7 @@ const AdminTransactionFee = () => {
                             </Form>
 
                             <Form onSubmit={handelMinAmountUpdate}>
-                                <FeeDisplay>Current Minimum Amount: ₹{minAmountFix}</FeeDisplay>
+                                <FeeDisplay>Current Minimum Amount: {countryObject[country]?.symbol}{minAmountFix}</FeeDisplay>
                                 <label>
                                     <Paragraph>Update Minimum Amount:</Paragraph>
                                     <Input

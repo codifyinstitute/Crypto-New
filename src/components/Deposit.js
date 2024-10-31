@@ -820,6 +820,7 @@ const Deposit = () => {
   const [extra, setExtra] = useState(0);
   const [currencies, setCurrencies] = useState([]);
   const [login, setLogin] = useState(false);
+  const [walletAmount, setWalletAmount] = useState(0);
   // const [selectedCurrency, setSelectedCurrency] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -855,8 +856,8 @@ const Deposit = () => {
   //   const fetchData = async () => {
   //     try {
   //       const [currenciesResponse, feesResponse] = await Promise.all([
-  //         axios.get('https://crypto-backend-main.onrender.com/currencies/all'),
-  //         fetch('https://crypto-backend-main.onrender.com/static/get/66c445a358802d46d5d70dd4')
+  //         axios.get('http://localhost:8000/currencies/all'),
+  //         fetch('http://localhost:8000/static/get/66c445a358802d46d5d70dd4')
   //       ]);
 
   //       setCurrencies(currenciesResponse.data);
@@ -1006,6 +1007,25 @@ const Deposit = () => {
     }, 1000);
   };
 
+  const token = localStorage.getItem("token");
+  const fetchWallet = async () => {
+    try {
+      const response = await fetch(`http://localhost:8000/wallet/get/${token}`);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data = await response.json();
+      setWalletAmount(data.Amount);
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(()=>{
+    fetchWallet();
+  },[])
+
 
   return (
     <>
@@ -1065,7 +1085,7 @@ const Deposit = () => {
                 </BalanceIcon>
 
                 <AvailableBalanceValue>
-                  {BalanceValue}
+                  {walletAmount}
                 </AvailableBalanceValue>
               </IconValueWrapper>
             </BalanceWrapper>

@@ -297,13 +297,32 @@ const Navbar = () => {
   const selectedCountryStore = useSelector((state) => state.country.value);
   const dispatch = useDispatch();
   const [path, setPath] = useState("");
+  const [amount, setAmount] = useState("0");
   const [selectedCountry, setSelectedCountry] = useState({
     name: selectedCountryStore,
     flag: countryFlags[selectedCountryStore] || '', // Set initial flag based on store value
   });
   const navigate = useNavigate();
   const location = useLocation();
+
   const token = localStorage.getItem("token");
+  const fetchWallet = async () => {
+    try {
+      const response = await fetch(`http://localhost:8000/wallet/get/${token}`);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data = await response.json();
+      setAmount(data.Amount);
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(()=>{
+    fetchWallet();
+  },[])
 
   useEffect(() => {
 
@@ -407,7 +426,7 @@ const Navbar = () => {
 
 
             <span style={{ textAlign: "center", fontWeight: "bold" }}>
-              0
+              {amount}
             </span>{" "}
             &nbsp;
             &nbsp;
