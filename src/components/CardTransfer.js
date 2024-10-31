@@ -102,7 +102,8 @@ const FormWarning = styled.p`
 
 const FormButton = styled.button`
   background-color: #f7a600;
-  color: white;
+  color: black;
+  font-weight : 700;
   padding: 0.75rem;
   border: none;
   border-radius: 5px;
@@ -172,7 +173,8 @@ const Crosss = styled.p`
 
 const Button = styled.button`
   background-color: #f7a600;
-  color: white;
+  color: black;
+  font-weight : 700;
   border: none;
   padding: 10px;
   font-size: .7rem;

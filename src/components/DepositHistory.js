@@ -164,23 +164,10 @@ const MakeDepositButton = styled.button`
   cursor: pointer;
   margin-top: 20px;
 
-<<<<<<< HEAD
   &:hover {
     background-color: #ff8c00;
   }
 `;
-=======
-//   const fetchDepositHistory = async () => {
-//     const email = localStorage.getItem("token");    
-//     try {
-//       const response = await fetch(`https://crypto-backend-main.onrender.com/deposit-transactions/get/email/${email}`);
-//       // https://crypto-backend-main.onrender.com/deposit-transactions/get/email/
-//       if (!response.ok) throw new Error('Network response was not ok');
-//       const data = await response.json();
-//       console.log(data);
-//       // For now, set dummy data
-//       setDepositHistory(data.reverse());
->>>>>>> 67aff49afb3b71c305c3ee4a4394dd29ff0160cd
 
 // for lock-plus icon
 const IconContainer = styled.div`
@@ -225,7 +212,7 @@ const DepositHistory = () => {
   const fetchDepositHistory = async () => {
     const email = localStorage.getItem("token");
     try {
-      const response = await fetch(`https://crypto-backend-main.onrender.com/deposit-transactions/get/email/${email}`);
+      const response = await fetch(`http://localhost:8000/deposit-transactions/get/email/${email}`);
       if (!response.ok) throw new Error('Network response was not ok');
       const data = await response.json();
       setDepositHistory(data.reverse());
