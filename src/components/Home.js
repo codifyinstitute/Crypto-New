@@ -22,12 +22,13 @@ import {
 
 import bg2 from "./../assets/bg2.jpg";
 import usdtt from "./../assets/usdtt.png";
+
 // import logoM from "./../assets/logo2.png";
 import Newcomp from "./Newcomp";
 import payment from "./../assets/Frame 47.png";
 import { RefreshCw } from "lucide-react";
 import logoM from "./../assets/logo2.png";
-
+import usdtimg from "./../assets/usdt1-removebg-preview(2).png";
 import usaFlag from "../assets/USD AMERICA.jpg";
 import dubaiFlag from "../assets/AED DUBAI.jpg";
 import indiaFlag from "../assets/INR INDIA.jpg";
@@ -285,7 +286,7 @@ const Home = () => {
                     onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                   >
                     {selectedCurrency && (
-                      <CurrencyIcon src={usdtt} alt={selectedCurrency.Symbol} />
+                      <CurrencyIcon src={usdtimg} style={{ width: "30px", height: "30px"}} alt={selectedCurrency.Symbol} />
                     )}
                     <Rocks>
                       <Buddy>
@@ -323,7 +324,7 @@ const Home = () => {
                           key={currency._id}
                           onClick={() => handleCurrencySelect(currency)}
                         >
-                          <CurrencyIcon src={usdtt} alt={currency.Symbol} />
+                          <CurrencyIcon src={usdtimg} style={{ width: "30px", height: "30px"}}alt={currency.Symbol} />
                           <CurrencyInfo>
                             <Buddy>
                               <CurrencyName>{currency.Name}</CurrencyName>

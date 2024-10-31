@@ -14,6 +14,10 @@ import { TriangleAlert } from 'lucide-react';
 import moneyIcon from '../assets/usdtt.png';
 import networkIcon from '../assets/usdtt.png';
 import { useSelector } from "react-redux";
+import Bepimg from "./../assets/bep21(1).png";
+import trcimg from "./../assets/trc20(1).png";
+import usdtimg from "./../assets/usdt1-removebg-preview(2).png";
+import { Check } from 'lucide-react';
 
 const PageContainer = styled.div`
   // display: flex;
@@ -341,14 +345,7 @@ const SelectedNetwork = styled(NetworkButton)`
   border-radius: 0.5rem;
   cursor: not-allowed;
   
-  &:hover {
-    background-color: rgb(227, 148, 0);
-  }
-
-  &:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
-  }
+ 
 `;
 
 
@@ -366,6 +363,7 @@ const DepositNetworkWrapper = styled.div`
 display : flex;
 flex-direction : column;
 gap : 5px;
+  position: relative; 
 
 `;
 
@@ -373,6 +371,7 @@ const DepositNetworkHeading = styled.div`
  color : black;
  font-size : 16px;
  font-weight : 700;
+ 
  
 `;
 
@@ -383,7 +382,7 @@ const DepositNetworkvalues = styled.div`
  color : black;
  margin-top : 5px;
  gap : 5px;
-  background-color: #e5e5e5;
+  // background-color: #e5e5e5;
   color: black;
   padding: 8px 16px;
   border-radius: 10px;
@@ -397,12 +396,20 @@ const DepositNetworkvalues = styled.div`
   min-width: 120px; /* Prevent the button from getting too narrow */
   transition: background-color 0.3s;
 
+    // width: 40%;
+  // background-color: orange;
+  color: black;
+  font-weight: 700;
+  border: 2px solid orange;
+  border-radius: 0.5rem;
+
 `;
 
 const DepositNetworkvalues1 = styled.img`
   width: 18px;
   height: 18px;
   // margin-right: 0.75rem;   
+  
 
 `;
 
@@ -438,7 +445,7 @@ const DepositAmountvalues = styled.div`
 
  gap : 5px;
 
-    background-color: #e5e5e5;
+    background-color: #e5e5e9;
   color: black;
   padding: 8px 16px;
   border-radius: 10px;
@@ -451,6 +458,7 @@ const DepositAmountvalues = styled.div`
   gap: 6px; /* Reduce gap slightly */
   min-width: 120px; /* Prevent the button from getting too narrow */
   transition: background-color 0.3s;
+  
 
 `;
 
@@ -458,6 +466,8 @@ const DepositAmountvalues1 = styled.img`
   width: 18px;
   height: 18px;
   // margin-right: 0.75rem;   
+  
+  
 `;
 
 
@@ -465,6 +475,35 @@ const DepositAmountvalues2 = styled.div`
  font-size : 16px;
  font-weight : bold;  
  color : black; 
+`;
+
+const TimerContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+  height : 10px;
+`;
+
+const TimerCard = styled.div`
+  background-color: #f0f0f0; // Light gray background
+  border-radius: 5px;
+  padding: 5px;
+  margin: 0 5px; // Minimal gap between cards
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  flex: 1; // Makes each card take equal space
+`;
+
+const TimerValue = styled.div`
+  font-size: 16px; // Larger font size for visibility
+  font-weight: bold;
+  color: #333; // Dark text color for contrast
+`;
+
+const TimerLabel = styled.div`
+  font-size: 12px; // Smaller font size for the label
+  color: #666; // Lighter text color for the label
 `;
 
 // const CountDownWrapper = Styled.div 
@@ -893,7 +932,7 @@ const Depposit1 = () => {
             <div>
               <QRcodeHeading>
                 <QRcodeHeadingText>
-                  Scan the Qrcode and Deposit
+                  Scan The QRcode To Deposit
                 </QRcodeHeadingText>
               </QRcodeHeading>
             </div>
@@ -953,12 +992,24 @@ const Depposit1 = () => {
 
 
             {/* Add countdown timer below the deposit address */}
-            <InfoRow style={{ marginTop: "10px", textAlign: "center" }}>
+            {/* <InfoRow style={{ marginTop: "10px", textAlign: "center" }}>
               <Label1>Time Remaining</Label1>
               <Value>{timeLeft}</Value>
-            </InfoRow>
+            </InfoRow> */}
 
-
+<InfoRow style={{ textAlign: "center" }}>
+<Label1 style={{ fontWeight: 700, fontSize: '16px', marginBottom: '10px', color: '#333' }}>
+  Time Remaining
+</Label1>
+        <TimerContainer>
+          {timeLeft.split(':').map((time, index) => (
+            <TimerCard key={index}>
+              <TimerValue>{time}</TimerValue>
+              <TimerLabel>{['Hours', 'Minutes', 'Seconds'][index]}</TimerLabel>
+            </TimerCard>
+          ))}
+        </TimerContainer>
+      </InfoRow>
 
             {/* Timer ended */}
 
@@ -1022,7 +1073,7 @@ const Depposit1 = () => {
                   Deposit Amount
                 </DepositAmountHeading>
                 <DepositAmountvalues>
-                  <DepositAmountvalues1 src={moneyIcon} alt="image" />
+                  <DepositAmountvalues1 src={usdtimg}style={{ width: "22px", height: "22px" }} alt="image" />
                   <DepositAmountvalues2>
                     <span>
                       {amount}
@@ -1034,12 +1085,30 @@ const Depposit1 = () => {
 
 
               <DepositNetworkWrapper>
+                  <Check
+    strokeWidth={3}
+    style={{
+      position: "absolute",
+      bottom: "5px",
+      right: "5px",
+      backgroundColor: "#FFF176",
+      
+      borderRadius: "50%",
+      padding: "2px",
+      color: "#000000",
+      width: "16px",
+      height: "16px"
+    }}
+  />
                 <DepositNetworkHeading>
                   Deposit Network
                 </DepositNetworkHeading>
 
                 <DepositNetworkvalues>
-                  <DepositNetworkvalues1 src={moneyIcon} alt="image" />
+                  <DepositNetworkvalues1 
+                  
+                  src={selectNetwork === 'TRC20' ? trcimg : Bepimg} 
+                  alt="network icon"  />
                   <DepositNetworkvalues2>
                     <span>
                       {network}

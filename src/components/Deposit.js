@@ -15,9 +15,12 @@ import payment from "./../assets/Frame 47.png";
 import { RefreshCw } from 'lucide-react';
 import logoM from "./../assets/logo2.png";
 import Depositimg from "./../assets/Deposit.jpg"
+import Bepimg from "./../assets/bep21(1).png";
+import trcimg from "./../assets/trc20(1).png";
+import usdtimg from "./../assets/usdt1-removebg-preview(2).png";
 import { TriangleAlert } from 'lucide-react';
 import { toast, ToastContainer } from "react-toastify";
-
+import { Check } from 'lucide-react';
 
 const TradingEnvironment = styled.div`
   display: flex;
@@ -52,13 +55,18 @@ const ExchangeCard = styled.div`
   } */
 `;
 
+
 const TabContainer = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between;
   margin-bottom: 1.5rem;
 `;
 
+const TabWrapper = styled.div`
+  flex: 1;
+  display: flex;
+  justify-content: flex-start;  // Aligns tab content to the left
+`;
 
 const Tab = styled.div`
   padding: 0.5rem 0;
@@ -68,6 +76,8 @@ const Tab = styled.div`
   cursor: pointer;
   font-size: 25px;
   font-weight: 700;
+  display: inline-block;
+  text-align: left;
 `;
 const InputLabel = styled.div`
   font-size: 0.9rem;
@@ -145,7 +155,7 @@ const ProceedButton = styled.button`
     border-radius: 0.5rem;
     font-size: 20px;
     cursor: pointer;
-    // margin-top: -10rem;
+    margin-top: 1rem;
     transition: background-color 0.3s ease;
     display: flex;
     align-items: center;
@@ -589,21 +599,21 @@ h1{
 
 }
 
-button{
-  height: 50px;
-  font-size: 20px;
-  border-radius: 10px;
-  width: 30%;
-  margin-bottom: 15px;
-  color: white;
-  border: 0px solid orange;
-  background-color: orange;
-  @media (max-width:480px){
-    font-size: 18px;
-    height: 40px;
-    width: 26%;
+// button{
+//   height: 50px;
+//   font-size: 20px;
+//   border-radius: 10px;
+//   width: 30%;
+//   margin-bottom: 15px;
+//   color: white;
+//   border: 0px solid orange;
+//   background-color: orange;
+//   @media (max-width:480px){
+//     font-size: 18px;
+//     height: 40px;
+//     width: 26%;
   
-}
+// }
 }
 p{
   font-size: 24px;
@@ -657,48 +667,78 @@ const NetworkWrapper = styled.div`
   // background-color: #f0f0f0;
 `;
 
+// const Button = styled.button`
+//   padding: 10px 20px;
+//   border: none;
+//   border-radius: 4px;
+//   cursor: pointer;
+//   font-size: 16px;
+//   color: #fff;
+// `;
+
+// const ActiveButton = styled(Button)`
+//     width: 40%;
+//     background-color: orange;
+//     color: black;
+//     font-weight:700;
+//     border: none;
+//     border-radius: 0.5rem;
+//  &:hover {
+//       background-color: rgb(227, 148, 0);
+//     }
+
+//     &:disabled {
+//       background-color: #ccc;
+//       cursor: not-allowed;
+//     }
+// `;
+
 const Button = styled.button`
+  display: flex; // Enable flexbox
+  align-items: center; // Center items vertically
+  justify-content: center; // Center items horizontally
   padding: 10px 20px;
   border: none;
   border-radius: 4px;
+  background-color: white;
   cursor: pointer;
   font-size: 16px;
-  color: #fff;
+  // color: #fff;
+  height: 50px; // Set a fixed height for uniformity
 `;
 
 const ActiveButton = styled(Button)`
-    width: 40%;
-    background-color: orange;
-    color: black;
-    font-weight:700;
-    border: none;
-    border-radius: 0.5rem;
- &:hover {
-      background-color: rgb(227, 148, 0);
-    }
+  width: 40%;
+  // background-color: orange;
+  color: black;
+  font-weight: 700;
+  border: 2px solid orange;
+  border-radius: 0.5rem;
 
-    &:disabled {
-      background-color: #ccc;
-      cursor: not-allowed;
-    }
 `;
 
 const InactiveButton = styled(Button)`
   width: 40%;
   color: black;
   background-color: #e5e5e5;
-  &:hover {
-    background-color: #aaa;
-  }
+
+  // &:hover {
+  //   background-color: #aaa;
+  // }
 `;
-
-
+// const InactiveButton = styled(Button)`
+//   width: 40%;
+//   color: black;
+//   background-color: #e5e5e5;
+//   &:hover {
+//     background-color: #aaa;
+//   }
+// `;
 const AmountHeading = styled.div`
-font-size : 16px;
-margin-top: 0.8rem;
+  font-size: 16px;
+  margin-top: 0.8rem;
   font-weight: bold;
 `;
-
 
 const DepositInput = styled.div`
   display: flex;
@@ -707,27 +747,36 @@ const DepositInput = styled.div`
   padding: 8px 12px;
   border-radius: 4px;
   width: 100%;
-  margin-top : 15px;
+  max-width: 100%; /* Ensure it doesn't exceed the container */
+  margin-top: 15px;
+  gap: 4px; /* Controlled spacing */
+  box-sizing: border-box; /* Ensure padding doesn't push content outside */
+  overflow: hidden; /* Prevent overflow */
 `;
 
 const InputField = styled.input`
   flex: 1;
   padding: 8px;
   border: none;
-  outline : none;
-  font-size: 16px;
-  font-size: 20px;
+  outline: none;
+  font-size: 1rem; /* Use rem for better responsiveness */
   font-weight: 700;
-`;
-const DepsitCurrencyIcon = styled.img`
- width: 18px;
-  height: 18px;
-  margin-right: 0.75rem;  
+  box-sizing: border-box; /* Include padding in the width */
 `;
 
-const currencyText = styled.span`
-font-size : 5rem;
-`
+const DepsitCurrencyIcon = styled.img`
+  width: 26px;
+  height: 26px;
+  flex-shrink: 0; /* Prevent shrinking */
+`;
+
+const CurrencyText = styled.p`
+  font-size: 0.875rem; /* Use rem for better responsiveness */
+  font-weight: 700;
+  margin: 0;
+  flex-shrink: 0; /* Prevent shrinking */
+`;
+
 
 
 
@@ -745,7 +794,7 @@ const BalanceWrapper = styled.div`
 `;
 
 const BalanceText = styled.div`
-  font-size: 1rem;
+  font-size: 1.1rem;
   font-weight: bold;
 `;
 
@@ -773,7 +822,7 @@ const BalanceIcon = styled.img`
 `;
 
 const AvailableBalanceValue = styled.div`
-  font-size: 1rem;
+  font-size: 1.1rem;
   font-weight: bold;
 //  background-color: #e1e1e1;
   /* padding: 8px 2px; Spacing for a button-like look */
@@ -797,6 +846,7 @@ const Disclaimer = styled.div`
 display : flex;
   align-items: center;
   gap : 1rem;
+  margin-top : 1rem;
   `
 
 const DisclaimerIcon = styled.div`
@@ -808,8 +858,6 @@ const DisclaimerText = styled.span`
   font-weight: 700;
   text-align : justify;
 `;
-
-
 
 const Deposit = () => {
   const location = useLocation();
@@ -957,7 +1005,7 @@ const Deposit = () => {
 
   const handleBackClick = () => {
     if (login) {
-      navigate('/');
+      navigate('/wallet');
     } else {
       navigate('/');
     }
@@ -1019,7 +1067,10 @@ const Deposit = () => {
               <BackButton onClick={handleBackClick}>
                 <ChevronLeft />
               </BackButton>
-              <Tab active> USDT Deposit </Tab>
+              {/* <Tab active> USDT Deposit </Tab> */}
+              <TabWrapper>
+    <Tab>USDT Deposit</Tab>
+  </TabWrapper>
               <AiOutlineHistory onClick={()=>navigate("/depositHistory")} style={{ color: '#FFA500', fontSize: '30px' }} />
             </TabContainer>
 
@@ -1029,19 +1080,68 @@ const Deposit = () => {
             </DepositImageContainer>
             <DepositText>  Network   </DepositText>
 
-            <NetworkWrapper>
-              {selectNetwork === 'TRC20' ? (
-                <ActiveButton onClick={handleTrcClick}>TRC20</ActiveButton>
-              ) : (
-                <InactiveButton onClick={handleTrcClick}>TRC20</InactiveButton>
-              )}
-              {selectNetwork === 'BEP20' ? (
-                <ActiveButton onClick={handleBepClick}>BEP20</ActiveButton>
-              ) : (
-                <InactiveButton onClick={handleBepClick}>BEP20</InactiveButton>
-              )}
-              {/* <div>Selected Network: {selectNetwork}</div> */}
-            </NetworkWrapper>
+
+
+
+<NetworkWrapper>
+  {selectNetwork === 'TRC20' ? (
+
+    <ActiveButton onClick={handleTrcClick} style={{ position: "relative" }}>
+  <Check strokeWidth={3}
+    style={{ 
+      position: "absolute",
+      bottom: "5px",
+      right: "5px",
+      backgroundColor: "#FFF176",
+      borderRadius: "50%",
+      padding: "2px",
+      // color: "black",
+      color: "#000000",
+      width: "16px",
+      height: "16px" 
+    }} 
+  />
+  <img src={trcimg} alt="TRC20 Icon" style={{ width: "20px", height: "20px", marginRight: "8px" }} />
+  TRC20
+</ActiveButton>
+
+  ) : (
+    <InactiveButton onClick={handleTrcClick}>
+             <img src={trcimg} alt="TRC20 Icon" style={{ width: "20px", height: "20px", marginRight: "8px" }} />
+      TRC20
+    </InactiveButton>
+  )}
+  {selectNetwork === 'BEP20' ? (
+    <ActiveButton onClick={handleBepClick} style={{ position: "relative" }}>
+         <Check strokeWidth={3}
+    style={{ 
+      position: "absolute",
+      bottom: "5px",
+      right: "5px",
+      backgroundColor: "#FFF176",
+      borderRadius: "50%",
+      padding: "2px",
+      color: "#000000", 
+      width: "16px",
+      height: "16px" 
+    }} 
+  />
+  {/* <Check color="#f9f06b" strokeWidth={3} /> */}
+      <img src={Bepimg} alt="BEP20 Icon" style={{ width: "20px", height: "20px", marginRight: "8px" }} />
+
+      BEP20
+    </ActiveButton>
+  ) : (
+    <InactiveButton onClick={handleBepClick}>
+          
+          <img src={Bepimg} alt="BEP20 Icon" style={{ width: "20px", height: "20px", marginRight: "8px" }} />
+
+      BEP20
+    </InactiveButton>
+  )}
+</NetworkWrapper>
+
+
 
 
             <AmountHeading>  Enter Amount   </AmountHeading>
@@ -1052,8 +1152,10 @@ const Deposit = () => {
                 value={usdt}
                 onChange={(e) => setUsdt(e.target.value)}
               />
-              <DepsitCurrencyIcon src={usdtt} alt={"currncy"} />
-              {/* <currencyText>USDT</currencyText> */}
+              
+              <DepsitCurrencyIcon src={usdtimg}   style={{ width: "26px", height: "26px"}} />
+           
+               <CurrencyText>USDT</CurrencyText>
             </DepositInput>
             <BalanceWrapper>
               <BalanceText>
@@ -1061,7 +1163,7 @@ const Deposit = () => {
               </BalanceText>
 
               <IconValueWrapper>
-                <BalanceIcon src={usdtt} alt={"currency"} >
+                <BalanceIcon src={usdtimg}  style={{ width: "26px", height: "26px" }}alt={"currency"} >
                 </BalanceIcon>
 
                 <AvailableBalanceValue>
@@ -1071,6 +1173,17 @@ const Deposit = () => {
             </BalanceWrapper>
 
 
+          </div>
+          <div>
+            <Disclaimer>
+              <DisclaimerIcon>
+                <TriangleAlert size={20} color="#e5a50a" />
+              </DisclaimerIcon>
+              <DisclaimerText>
+                For the safety of your funds please ensure that the network
+                selected and amount entered is appropriate
+              </DisclaimerText>
+            </Disclaimer>
           </div>
           <div>
 
@@ -1086,17 +1199,7 @@ const Deposit = () => {
               Powered by <Moonn src={logoM} />
             </PoweredBy>
           </div>
-          <div>
-            <Disclaimer>
-              <DisclaimerIcon>
-                <TriangleAlert size={20} color="#e5a50a" />
-              </DisclaimerIcon>
-              <DisclaimerText>
-                For the safety of your funds please ensure that the network
-                selected and amount entered is appropriate
-              </DisclaimerText>
-            </Disclaimer>
-          </div>
+         
           <Indicator onClick={toggleCardVisibility}>
             <Info size={20} />
           </Indicator>

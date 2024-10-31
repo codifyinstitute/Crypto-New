@@ -26,7 +26,7 @@ import germany from "./../assets/germay.png"; // Corrected the image path
 import Dubai from "../assets/dubai flag.png";
 import bg2 from "./../assets/bg2.jpg";
 import Newcomp from "./Newcomp";
-
+import usdtimg from "./../assets/usdt1-removebg-preview(2).png";
 import usaFlag from "../assets/USD AMERICA.jpg";
 import dubaiFlag from "../assets/AED DUBAI.jpg";
 import indiaFlag from "../assets/INR INDIA.jpg";
@@ -949,7 +949,7 @@ const Sell1 = () => {
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                 >
                   {selectedCurrency && (
-                    <CurrencyIcon src={usdtt} alt={selectedCurrency.Symbol} />
+                    <CurrencyIcon src={usdtimg} style={{ width: "30px", height: "30px" }} alt={selectedCurrency.Symbol} />
                   )}
                   <Rocks>
                     <Buddy>
@@ -981,7 +981,7 @@ const Sell1 = () => {
                       key={currency._id}
                       onClick={() => handleCurrencySelect(currency)}
                     >
-                      <CurrencyIcon src={usdtt} alt={currency.Symbol} />
+                      <CurrencyIcon src={usdtimg}  style={{ width: "30px", height: "30px" }} alt={currency.Symbol} />
                       <CurrencyInfo>
                         <Buddy>
                           <CurrencyName>{currency.Name}</CurrencyName>
