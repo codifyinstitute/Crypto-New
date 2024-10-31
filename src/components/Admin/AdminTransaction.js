@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Sidebar from './Sidebar';
 import { MdOutlineRemoveRedEye } from "react-icons/md";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 // Styled components for AdminTransaction
 const DashboardContainer = styled.div`
@@ -169,6 +171,27 @@ const TablePop = styled.table`
   }
 `;
 
+const ConfirmationModalBackground = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+`;
+
+const ConfirmationModalContent = styled.div`
+  background-color: white;
+  color: black;
+  padding: 20px;
+  border-radius: 10px;
+  width: 300px;
+`;
+
 const AdminTransaction = () => {
   const navigate = useNavigate();
   const [modalVisible, setModalVisible] = useState(false);
@@ -184,6 +207,10 @@ const AdminTransaction = () => {
   const [filterCountry, setFilterCountry] = useState(''); // New state for country filter
   const [tokens, setTokens] = useState([]);
   const [countries, setCountries] = useState([]); // New state for country list
+  const [confirmAction, setConfirmAction] = useState({ type: '', id: '', amount: '' });
+  const [searchQuery, setSearchQuery] = useState('');
+
+
 
   useEffect(() => {
     const Id = localStorage.getItem("Login");
@@ -200,7 +227,7 @@ const AdminTransaction = () => {
           throw new Error('Network response was not ok');
         }
         const data = await response.json();
-        
+
         setTransactions(data.reverse());
         setFilteredTransactions(data);
 
@@ -231,12 +258,19 @@ const AdminTransaction = () => {
     if (filterToken) {
       filtered = filtered.filter(transaction => transaction.Token === filterToken);
     }
-    if (filterCountry) { // Add country filter
+    if (filterCountry) {
       filtered = filtered.filter(transaction => transaction.Country === filterCountry);
+    }
+    if (searchQuery) {
+      filtered = filtered.filter(transaction =>
+        transaction.OrderId.toString().includes(searchQuery) ||
+        transaction.Email.toLowerCase().includes(searchQuery.toLowerCase())
+      );
     }
 
     setFilteredTransactions(filtered);
-  }, [filterDate, filterStatus, filterToken, filterCountry, transactions]); // Include filterCountry
+  }, [filterDate, filterStatus, filterToken, filterCountry, searchQuery, transactions]);
+
 
   const handleUpdateStatus = async () => {
     if (!selectedTransactionId || !status) {
@@ -261,10 +295,10 @@ const AdminTransaction = () => {
       alert(data.message);
       setStatus('');
       setSelectedTransactionId('');
-      
+
       // Refetch transactions
       const updatedTransactions = await fetch('http://localhost:8000/transactions/all').then(res => res.json());
-      setTransactions(updatedTransactions);
+      setTransactions(updatedTransactions.reverse());
     } catch (error) {
       console.error('Error updating transaction status:', error);
     }
@@ -280,8 +314,90 @@ const AdminTransaction = () => {
     setAccountDetails(null);
   };
 
+  const handleConfirmAction = async () => {
+    try {
+      const url = confirmAction.type === 'accept'
+        ? `http://localhost:8000/transactions/complete/${confirmAction.id}`
+        : `http://localhost:8000/transactions/reject/${confirmAction.id}`;
+
+      const response = await fetch(url, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ amount: confirmAction.amount }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to submit transaction");
+      }
+
+      toast.success(`Transaction ${confirmAction.type === 'accept' ? 'accepted' : 'rejected'} successfully!`);
+
+      const updatedTransactions = await fetch('http://localhost:8000/transactions/all').then(res => res.json());
+      setTransactions(updatedTransactions.reverse());
+      setFilteredTransactions(updatedTransactions.reverse());
+    } catch (error) {
+      toast.error(`Error: ${error.message}`);
+    } finally {
+      setConfirmAction({ type: '', id: '', amount: '' });
+    }
+  };
+
+
+  const handelReject = async (id, value) => {
+    try {
+      const response = await fetch(`http://localhost:8000/transactions/reject/${id}`, { // Updated URL for the backend
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          amount: value,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to submit transaction");
+      }
+
+      const result = await response.json();
+
+    } catch (error) {
+      alert("Error submitting transaction: " + error.message);
+    }
+  }
+
+  const openConfirmation = (type, id, amount) => {
+    setConfirmAction({ type, id, amount });
+  };
+
+  const handelConfirm = async (id, value) => {
+    try {
+      const response = await fetch(`http://localhost:8000/transactions/complete/${id}`, { // Updated URL for the backend
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          amount: value,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to submit transaction");
+      }
+
+      const result = await response.json();
+
+    } catch (error) {
+      alert("Error submitting transaction: " + error.message);
+    }
+  }
+
   return (
     <DashboardContainer>
+      <ToastContainer />
       <Sidebar isOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
       <Content>
         <Section>
@@ -316,7 +432,16 @@ const AdminTransaction = () => {
                 <option key={country} value={country}>{country}</option>
               ))}
             </Select>
+
+            {/* Search Input */}
+            <InputDate
+              type="text"
+              placeholder="Search by Order ID or Email"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
           </FiltersContainer>
+
 
           <TableContainer>
             <Table>
@@ -336,6 +461,8 @@ const AdminTransaction = () => {
                   <th>Time</th>
                   <th>Update Status</th>
                   <th>Update</th>
+                  <th>Reject</th>
+                  <th>Accept</th>
                 </tr>
               </thead>
               <tbody>
@@ -356,26 +483,47 @@ const AdminTransaction = () => {
                     <td>{transaction.Date}</td>
                     <td>{transaction.Time}</td>
                     <td>
-                      <Select
-                        value={selectedTransactionId === transaction._id ? status : ''}
-                        onChange={(e) => {
-                          if (selectedTransactionId === transaction._id) {
-                            setStatus(e.target.value);
-                          } else {
-                            setSelectedTransactionId(transaction._id);
-                            setStatus(e.target.value);
-                          }
-                        }}
-                      >
-                        <option value="">Select Status</option>
-                        <option value="Pending">Pending</option>
-                        <option value="In Transit">In Transit</option>
-                        <option value="Decline">Decline</option>
-                        <option value="Completed">Completed</option>
-                      </Select>
+                      {transaction.Status === "Failed" || transaction.Status === "Successful" ? `${transaction.Status}` :
+                        <Select
+                          value={selectedTransactionId === transaction._id ? status : ''}
+                          onChange={(e) => {
+                            if (selectedTransactionId === transaction._id) {
+                              setStatus(e.target.value);
+                            } else {
+                              setSelectedTransactionId(transaction._id);
+                              setStatus(e.target.value);
+                            }
+                          }}
+                        >
+                          <option value="">Select Status</option>
+                          <option value="Pending">Pending</option>
+                          <option value="In Transit">In Transit</option>
+                          {/* <option value="Failed">Decline</option>
+                      <option value="Completed">Completed</option> */}
+                        </Select>
+                      }
+
                     </td>
                     <td>
-                      <Button onClick={handleUpdateStatus}>Update Status</Button>
+                      {transaction.Status === "Failed" || transaction.Status === "Successful" ? `${transaction.Status}` :
+                        <Button onClick={handleUpdateStatus}>Update Status</Button>
+                      }
+                    </td>
+                    <td>
+                      {transaction.Status === "Failed" || transaction.Status === "Successful" ? `${transaction.Status}` :
+                        <Button style={{ backgroundColor: "Red" }}
+                          onClick={() => openConfirmation('reject', transaction._id, transaction.USDTAmount)}>
+                          Reject
+                        </Button>
+                      }
+                    </td>
+                    <td>
+                      {transaction.Status === "Failed" || transaction.Status === "Successful" ? `${transaction.Status}` :
+                        <Button style={{ backgroundColor: "Green" }}
+                          onClick={() => openConfirmation('accept', transaction._id, transaction.USDTAmount)}>
+                          Confirm
+                        </Button>
+                      }
                     </td>
                   </tr>
                 ))}
@@ -408,6 +556,16 @@ const AdminTransaction = () => {
           </ModalContent>
         </ModalBackground>
       )}
+      {confirmAction.type && (
+        <ConfirmationModalBackground onClick={() => setConfirmAction({ type: '', id: '', amount: '' })}>
+          <ConfirmationModalContent onClick={(e) => e.stopPropagation()}>
+            <h3>Are you sure you want to {confirmAction.type === 'accept' ? 'accept' : 'reject'} this transaction?</h3>
+            <Button onClick={handleConfirmAction}>Yes</Button>
+            <Button onClick={() => setConfirmAction({ type: '', id: '', amount: '' })}>No</Button>
+          </ConfirmationModalContent>
+        </ConfirmationModalBackground>
+      )}
+
     </DashboardContainer>
   );
 };

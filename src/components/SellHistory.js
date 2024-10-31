@@ -292,14 +292,14 @@ const SellHistory = () => {
             In Transit
           </Tab>
           <Tab
-            active={activeTab === "Completed"}
-            onClick={() => setActiveTab("Completed")}
+            active={activeTab === "Successful"}
+            onClick={() => setActiveTab("Successful")}
           >
             Completed
           </Tab>
           <Tab
-            active={activeTab === "Decline"}
-            onClick={() => setActiveTab("Decline")}
+            active={activeTab === "Failed"}
+            onClick={() => setActiveTab("Failed")}
           >
             Declined
           </Tab>
