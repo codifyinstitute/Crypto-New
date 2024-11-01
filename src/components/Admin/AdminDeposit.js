@@ -544,10 +544,11 @@ const AdminDeposit = () => {
                                 />
                                 <Button onClick={handelConfirm}>Pay</Button>
                             </>
-                        ) : (
+                        ) : (<>
                             <Paragraph>Are you sure you want to reject this transaction?</Paragraph>
+                            <Button onClick={handelReject}>Yes, Reject</Button>
+                        </>
                         )}
-                        <Button onClick={handelReject}>Yes, Reject</Button>
                     </ModalContent>
                 </ModalBackground>
             )}

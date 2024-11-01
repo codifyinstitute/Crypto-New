@@ -10,6 +10,8 @@ import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useSelector } from "react-redux";
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
 
 const PageContainer = styled.div`
   display: flex;
@@ -98,6 +100,7 @@ const FormInput = styled.input`
 const FormWarning = styled.p`
   font-size: 12px;
   margin-bottom: 1rem;
+  color: red; /* Set the text color to red for error messages */
 `;
 
 const FormButton = styled.button`
@@ -227,93 +230,62 @@ const CardTransfer = () => {
   const [form, setForm] = useState(true);
   const [accounts, setAccounts] = useState([]);
 
-  // State for form data
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    cardNumber: "",
-    expiryDate: "",
-    cvv: "",
-    phoneNumber: "",
-  });
-
-  useEffect(()=>{
-    console.log(selectedCountry)
+  useEffect(() => {
     const email = localStorage.getItem("token");
     axios
       .get(`https://crypto-backend-main.onrender.com/account-details/${countryObject[selectedCountry].urlName}/card/${email}`)
       .then((response) => {
-        console.log(response.data)
         setAccounts(response.data);
       })
       .catch((error) => {
         console.error("Error fetching Accounts:", error);
       });
-  },[selectedCountry])
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
+  }, [selectedCountry]);
 
   const handleCardClick = (account) => {
-    const existingTransactionDetails =
-      JSON.parse(localStorage.getItem("transactionDetails")) || {};
+    const existingTransactionDetails = JSON.parse(localStorage.getItem("transactionDetails")) || {};
+    const { _id, __v, ...filteredAccount } = account;
 
-      const { _id, __v, ...filteredAccount } = account;
+    const updatedTransactionDetails = {
+      ...existingTransactionDetails,
+      AccountDetail: { ...filteredAccount }
+    };
 
-      const updatedTransactionDetails = {
-        ...existingTransactionDetails,
-        AccountDetail: { ...filteredAccount }
-      };
-
-    localStorage.setItem(
-      "transactionDetails",
-      JSON.stringify(updatedTransactionDetails)
-    );
+    localStorage.setItem("transactionDetails", JSON.stringify(updatedTransactionDetails));
     navigate("/sell4");
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const validationSchema = Yup.object({
+    FirstName: Yup.string().required("First name is required"),
+    LastName: Yup.string().required("Last name is required"),
+    CardNumber: Yup.string().required("Card number is required").matches(/^\d{16}$/, "Card number must be 16 digits"),
+    ExpiryDate: Yup.date().required("Expiry date is required").nullable(),
+    CVV: Yup.string().required("CVV is required").matches(/^\d{3}$/, "CVV must be 3 digits"),
+    PhoneNumber: Yup.string().required("Phone number is required").matches(/^\d{10}$/, "Phone number must be 10 digits"),
+  });
+
+  const handleSubmit = async (values, { resetForm }) => {
     const email = localStorage.getItem("token");
-    
-    // Prepare data for submission
     const submissionData = {
-      Email:email,
-      FirstName: formData.firstName,
-      LastName: formData.lastName,
-      CardNumber: formData.cardNumber,
-      ExpiryDate: formData.expiryDate,
-      CVV: formData.cvv,
-      PhoneNumber: formData.phoneNumber,
+      Email: email,
+      ...values,
     };
 
-    // Replace with your API URL
     const url = `https://crypto-backend-main.onrender.com/account-details/${countryObject[selectedCountry].urlName}/card/add`;
 
     try {
       await axios.post(url, submissionData);
-      toast.success("Card information saved successfully!"); // Show success notification
-
-      // Reset form data
-      setFormData({
-        firstName: "",
-        lastName: "",
-        cardNumber: "",
-        expiryDate: "",
-        cvv: "",
-        phoneNumber: "",
-      });
+      toast.success("Card information saved successfully!");
+      resetForm();
     } catch (error) {
-      toast.error("Failed to save card information."); // Show error notification
+      toast.error("Failed to save card information.");
       console.error("Error:", error.response ? error.response.data : error.message);
     }
   };
 
   const AddAccount = () => {
     setForm(!form);
-  }
+  };
 
   return (
     <>
@@ -336,99 +308,84 @@ const CardTransfer = () => {
                 </button>
                 <Tab>Choose payment method</Tab>
               </Left>
-              {form ? (
-                <Button onClick={AddAccount}>Choose Card</Button>
-              ) : (
-                <Button onClick={AddAccount}>Add Card +</Button>
-              )}
+              <Button onClick={AddAccount}>{form ? "Choose Card" : "Add Card +"}</Button>
             </TabContainer>
-            {form ?
-              <form onSubmit={handleSubmit}>
-            <FormSection>
-              <p>Card Information</p>
-              <FormLabel>First Name</FormLabel>
-              <FormInput
-                name="firstName"
-                value={formData.firstName}
-                onChange={handleChange}
-                placeholder="Please enter your First name"
-              />
+            {form ? (
+              <Formik
+                initialValues={{
+                  FirstName: "",
+                  LastName: "",
+                  CardNumber: "",
+                  ExpiryDate: "",
+                  CVV: "",
+                  PhoneNumber: "",
+                }}
+                validationSchema={validationSchema}
+                onSubmit={handleSubmit}
+              >
+                {({ isSubmitting }) => (
+                  <Form>
+                    <FormSection>
+                      <p>Card Information</p>
+                      <FormLabel>First Name</FormLabel>
+                      <Field name="FirstName" as={FormInput} placeholder="Please enter your First name" />
+                      <ErrorMessage name="FirstName" component={FormWarning} />
 
-              <FormLabel>Last Name</FormLabel>
-              <FormInput
-                name="lastName"
-                value={formData.lastName}
-                onChange={handleChange}
-                placeholder="Please enter your Last name"
-              />
+                      <FormLabel>Last Name</FormLabel>
+                      <Field name="LastName" as={FormInput} placeholder="Please enter your Last name" />
+                      <ErrorMessage name="LastName" component={FormWarning} />
 
-              <FormLabel>Card Number</FormLabel>
-              <FormInput
-                name="cardNumber"
-                value={formData.cardNumber}
-                onChange={handleChange}
-                placeholder="Enter Your Card Number"
-              />
+                      <FormLabel>Card Number</FormLabel>
+                      <Field name="CardNumber" as={FormInput} placeholder="Enter Your Card Number" />
+                      <ErrorMessage name="CardNumber" component={FormWarning} />
 
-              <FormLabel>Expiry Date</FormLabel>
-              <FormInput
-                type="month"
-                name="expiryDate"
-                value={formData.expiryDate}
-                onChange={handleChange}
-              />
+                      <FormLabel>Expiry Date</FormLabel>
+                      <Field name="ExpiryDate" type="month" as={FormInput} />
+                      <ErrorMessage name="ExpiryDate" component={FormWarning} />
 
-              <FormLabel>CVV/CVC</FormLabel>
-              <FormInput
-                name="cvv"
-                value={formData.cvv}
-                onChange={handleChange}
-                placeholder="Enter Your CVV/CVC"
-              />
+                      <FormLabel>CVV/CVC</FormLabel>
+                      <Field name="CVV" as={FormInput} placeholder="Enter Your CVV/CVC" />
+                      <ErrorMessage name="CVV" component={FormWarning} />
 
-              <FormLabel>Phone Number</FormLabel>
-              <FormInput
-                name="phoneNumber"
-                value={formData.phoneNumber}
-                onChange={handleChange}
-                placeholder="Enter Your Phone Number"
-              />
-            </FormSection>
+                      <FormLabel>Phone Number</FormLabel>
+                      <Field name="PhoneNumber" as={FormInput} placeholder="Enter Your Phone Number" />
+                      <ErrorMessage name="PhoneNumber" component={FormWarning} />
+                    </FormSection>
 
-            <FormWarning>
-              Attention: Please ensure the card information is accurate.
-            </FormWarning>
+                    <FormWarning>
+                      Attention: Please ensure the card information is accurate.
+                    </FormWarning>
 
-            <FormButton type="submit">
-              Confirm
-              <IoArrowForwardOutline />
-            </FormButton>
-          </form>
-          :<>
-            <CardsSection>
-              {accounts.map((account, index) => (
-                <Card
-                  key={index}
-                  onClick={() => handleCardClick(account)}
-                >
-                  <CardTitle><span>Card Number</span> <span>{account.CardNumber}</span></CardTitle>
-                  <Crosss>
-                    <strong>Expiry Date:</strong> {account.ExpiryDate}
-                  </Crosss>
-                  <Crosss>
-                    <strong>CVV:</strong> {account.CVV}
-                  </Crosss>
-                </Card>
-              ))}
-            </CardsSection>
-          </>
-              }
+                    <FormButton type="submit" disabled={isSubmitting}>
+                      Confirm
+                      <IoArrowForwardOutline />
+                    </FormButton>
+                  </Form>
+                )}
+              </Formik>
+            ) : (
+              <CardsSection>
+                {accounts.map((account, index) => (
+                  <Card key={index} onClick={() => handleCardClick(account)}>
+                    <CardTitle>
+                      <span>Card Number</span> <span>{account.CardNumber}</span>
+                    </CardTitle>
+                    <Crosss>
+                      <strong>Expiry Date:</strong> {account.ExpiryDate}
+                    </Crosss>
+                    <Crosss>
+                      <strong>CVV:</strong> {account.CVV}
+                    </Crosss>
+                  </Card>
+                ))}
+              </CardsSection>
+            )}
           </FormContainer>
-      </FormWrapper>
-    </PageContainer >
+        </FormWrapper>
+      </PageContainer>
       <HomeContact />
       <Footer />
-      <ToastContainer /> {/* Toast Container for notifications */ }
+      <ToastContainer />
     </>
   );
 };

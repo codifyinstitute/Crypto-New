@@ -885,7 +885,7 @@ const Deposit = () => {
   useEffect(() => {
     const token = localStorage.getItem('token');
     token ? setLogin(true) : setLogin(false);
-    if(!token){
+    if (!token) {
       navigate("/sell2")
     }
   }, [])
@@ -1075,9 +1075,9 @@ const Deposit = () => {
     }
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     fetchWallet();
-  },[])
+  }, [])
 
 
   return (
@@ -1094,9 +1094,9 @@ const Deposit = () => {
               </BackButton>
               {/* <Tab active> USDT Deposit </Tab> */}
               <TabWrapper>
-    <Tab>USDT Deposit</Tab>
-  </TabWrapper>
-              <AiOutlineHistory onClick={()=>navigate("/depositHistory")} style={{ color: '#FFA500', fontSize: '30px' }} />
+                <Tab>USDT Deposit</Tab>
+              </TabWrapper>
+              <AiOutlineHistory onClick={() => navigate("/depositHistory")} style={{ color: '#FFA500', fontSize: '30px' }} />
             </TabContainer>
 
             <InputLabel>You Deposit</InputLabel>
@@ -1108,63 +1108,63 @@ const Deposit = () => {
 
 
 
-<NetworkWrapper>
-  {selectNetwork === 'TRC20' ? (
+            <NetworkWrapper>
+              {selectNetwork === 'TRC20' ? (
 
-    <ActiveButton onClick={handleTrcClick} style={{ position: "relative" }}>
-  <Check strokeWidth={3}
-    style={{ 
-      position: "absolute",
-      bottom: "5px",
-      right: "5px",
-      backgroundColor: "#FFF176",
-      borderRadius: "50%",
-      padding: "2px",
-      // color: "black",
-      color: "#000000",
-      width: "16px",
-      height: "16px" 
-    }} 
-  />
-  <img src={trcimg} alt="TRC20 Icon" style={{ width: "20px", height: "20px", marginRight: "8px" }} />
-  TRC20
-</ActiveButton>
+                <ActiveButton onClick={handleTrcClick} style={{ position: "relative" }}>
+                  <Check strokeWidth={3}
+                    style={{
+                      position: "absolute",
+                      bottom: "5px",
+                      right: "5px",
+                      backgroundColor: "#FFF176",
+                      borderRadius: "50%",
+                      padding: "2px",
+                      // color: "black",
+                      color: "#000000",
+                      width: "16px",
+                      height: "16px"
+                    }}
+                  />
+                  <img src={trcimg} alt="TRC20 Icon" style={{ width: "20px", height: "20px", marginRight: "8px" }} />
+                  TRC20
+                </ActiveButton>
 
-  ) : (
-    <InactiveButton onClick={handleTrcClick}>
-             <img src={trcimg} alt="TRC20 Icon" style={{ width: "20px", height: "20px", marginRight: "8px" }} />
-      TRC20
-    </InactiveButton>
-  )}
-  {selectNetwork === 'BEP20' ? (
-    <ActiveButton onClick={handleBepClick} style={{ position: "relative" }}>
-         <Check strokeWidth={3}
-    style={{ 
-      position: "absolute",
-      bottom: "5px",
-      right: "5px",
-      backgroundColor: "#FFF176",
-      borderRadius: "50%",
-      padding: "2px",
-      color: "#000000", 
-      width: "16px",
-      height: "16px" 
-    }} 
-  />
-  {/* <Check color="#f9f06b" strokeWidth={3} /> */}
-      <img src={Bepimg} alt="BEP20 Icon" style={{ width: "20px", height: "20px", marginRight: "8px" }} />
+              ) : (
+                <InactiveButton onClick={handleTrcClick}>
+                  <img src={trcimg} alt="TRC20 Icon" style={{ width: "20px", height: "20px", marginRight: "8px" }} />
+                  TRC20
+                </InactiveButton>
+              )}
+              {selectNetwork === 'BEP20' ? (
+                <ActiveButton onClick={handleBepClick} style={{ position: "relative" }}>
+                  <Check strokeWidth={3}
+                    style={{
+                      position: "absolute",
+                      bottom: "5px",
+                      right: "5px",
+                      backgroundColor: "#FFF176",
+                      borderRadius: "50%",
+                      padding: "2px",
+                      color: "#000000",
+                      width: "16px",
+                      height: "16px"
+                    }}
+                  />
+                  {/* <Check color="#f9f06b" strokeWidth={3} /> */}
+                  <img src={Bepimg} alt="BEP20 Icon" style={{ width: "20px", height: "20px", marginRight: "8px" }} />
 
-      BEP20
-    </ActiveButton>
-  ) : (
-    <InactiveButton onClick={handleBepClick}>
-          
-          <img src={Bepimg} alt="BEP20 Icon" style={{ width: "20px", height: "20px", marginRight: "8px" }} />
+                  BEP20
+                </ActiveButton>
+              ) : (
+                <InactiveButton onClick={handleBepClick}>
 
-      BEP20
-    </InactiveButton>
-  )}
-</NetworkWrapper>
+                  <img src={Bepimg} alt="BEP20 Icon" style={{ width: "20px", height: "20px", marginRight: "8px" }} />
+
+                  BEP20
+                </InactiveButton>
+              )}
+            </NetworkWrapper>
 
 
 
@@ -1177,18 +1177,18 @@ const Deposit = () => {
                 value={usdt}
                 onChange={(e) => setUsdt(e.target.value)}
               />
-              
-              <DepsitCurrencyIcon src={usdtimg}   style={{ width: "26px", height: "26px"}} />
-           
-               <CurrencyText>USDT</CurrencyText>
+
+              <DepsitCurrencyIcon src={usdtimg} style={{ width: "26px", height: "26px" }} />
+
+              <CurrencyText>USDT</CurrencyText>
             </DepositInput>
             <BalanceWrapper>
               <BalanceText>
-              Available  :
+                Available  :
               </BalanceText>
 
               <IconValueWrapper>
-                <BalanceIcon src={usdtimg}  style={{ width: "26px", height: "26px" }}alt={"currency"} >
+                <BalanceIcon src={usdtimg} style={{ width: "26px", height: "26px" }} alt={"currency"} >
                 </BalanceIcon>
 
                 <AvailableBalanceValue>
@@ -1224,7 +1224,7 @@ const Deposit = () => {
               Powered by <Moonn src={logoM} />
             </PoweredBy>
           </div>
-         
+
           <Indicator onClick={toggleCardVisibility}>
             <Info size={20} />
           </Indicator>

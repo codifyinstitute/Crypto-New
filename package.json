@@ -12,6 +12,7 @@
     "copy-to-clipboard": "^3.3.3",
     "d3-geo": "^3.1.1",
     "dotenv": "^16.4.5",
+    "formik": "^2.4.6",
     "framer-motion": "^11.5.4",
     "gapi-script": "^1.2.0",
     "globe.gl": "^2.32.5",
@@ -40,7 +41,8 @@
     "styled-components": "^6.1.12",
     "three": "^0.167.1",
     "vanta": "^0.5.24",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "yup": "^1.4.0"
   },
   "scripts": {
     "start": "react-scripts start",

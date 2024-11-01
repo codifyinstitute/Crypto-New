@@ -559,6 +559,8 @@ const Depposit1 = () => {
   const [savedData, setSavedData] = useState(null);
   const [transactionId, setTransactionId] = useState("");
   const [image, setImage] = useState("");
+  const [network, setNetwork] = useState("");
+  const [amount, setAmount] = useState("");
   const [timeLeft, setTimeLeft] = useState("00:00:00");
   const targetDate = useRef(new Date(Date.now() + 2 * 24 * 60 * 60 * 1000));
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
@@ -579,12 +581,20 @@ const Depposit1 = () => {
   });
 
 
-  const networkDetails = JSON.parse(localStorage.getItem('networkDetails'));
-  const network = networkDetails?.network;
-  const amount = networkDetails?.depositAmount;
-  if(!networkDetails){
-  navigate('/')
-  }
+  useEffect(() => {
+    const networkDetails = JSON.parse(localStorage.getItem('networkDetails'));
+    if (!networkDetails) {
+      navigate('/')
+    } else {
+      const network = networkDetails.network;
+      const amount = networkDetails.depositamount;
+      setNetwork(network)
+      setAmount(amount)
+      console.log(network)
+      console.log(networkDetails)
+      console.log(amount)
+    }
+  }, [])
 
   // console.log();
   // console.log(amount);
@@ -705,11 +715,11 @@ const Depposit1 = () => {
   useEffect(() => {
     console.log(selectedCountry)
     fetchCurrencyData();
-  }, [network,selectedCountry]);
+  }, [network, selectedCountry]);
 
-  useEffect(()=>{
+  useEffect(() => {
     fetchCurrencyData();
-  },[selectNetwork])
+  }, [selectNetwork])
 
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem("transactionDetails"));
@@ -829,7 +839,7 @@ const Depposit1 = () => {
         },
         body: JSON.stringify({
           Email: localStorage.getItem("token"),
-          Amount: data.depositAmount,
+          Amount: data.depositamount,
           Network: network,
           Status: "Pending",
           Date: formattedDate,
@@ -1002,19 +1012,19 @@ const Depposit1 = () => {
               <Value>{timeLeft}</Value>
             </InfoRow> */}
 
-<InfoRow style={{ textAlign: "center" }}>
-<Label1 style={{ fontWeight: 700, fontSize: '16px', marginBottom: '10px', color: '#333' }}>
-  Time Remaining
-</Label1>
-        <TimerContainer>
-          {timeLeft.split(':').map((time, index) => (
-            <TimerCard key={index}>
-              <TimerValue>{time}</TimerValue>
-              <TimerLabel>{['Hours', 'Minutes', 'Seconds'][index]}</TimerLabel>
-            </TimerCard>
-          ))}
-        </TimerContainer>
-      </InfoRow>
+            <InfoRow style={{ textAlign: "center" }}>
+              <Label1 style={{ fontWeight: 700, fontSize: '16px', marginBottom: '10px', color: '#333' }}>
+                Time Remaining
+              </Label1>
+              <TimerContainer>
+                {timeLeft.split(':').map((time, index) => (
+                  <TimerCard key={index}>
+                    <TimerValue>{time}</TimerValue>
+                    <TimerLabel>{['Hours', 'Minutes', 'Seconds'][index]}</TimerLabel>
+                  </TimerCard>
+                ))}
+              </TimerContainer>
+            </InfoRow>
 
             {/* Timer ended */}
 
@@ -1078,7 +1088,7 @@ const Depposit1 = () => {
                   Deposit Amount
                 </DepositAmountHeading>
                 <DepositAmountvalues>
-                  <DepositAmountvalues1 src={usdtimg}style={{ width: "22px", height: "22px" }} alt="image" />
+                  <DepositAmountvalues1 src={usdtimg} style={{ width: "22px", height: "22px" }} alt="image" />
                   <DepositAmountvalues2>
                     <span>
                       {amount}
@@ -1090,30 +1100,30 @@ const Depposit1 = () => {
 
 
               <DepositNetworkWrapper>
-                  <Check
-    strokeWidth={3}
-    style={{
-      position: "absolute",
-      bottom: "5px",
-      right: "5px",
-      backgroundColor: "#FFF176",
-      
-      borderRadius: "50%",
-      padding: "2px",
-      color: "#000000",
-      width: "16px",
-      height: "16px"
-    }}
-  />
+                <Check
+                  strokeWidth={3}
+                  style={{
+                    position: "absolute",
+                    bottom: "5px",
+                    right: "5px",
+                    backgroundColor: "#FFF176",
+
+                    borderRadius: "50%",
+                    padding: "2px",
+                    color: "#000000",
+                    width: "16px",
+                    height: "16px"
+                  }}
+                />
                 <DepositNetworkHeading>
                   Deposit Network
                 </DepositNetworkHeading>
 
                 <DepositNetworkvalues>
-                  <DepositNetworkvalues1 
-                  
-                  src={selectNetwork === 'TRC20' ? trcimg : Bepimg} 
-                  alt="network icon"  />
+                  <DepositNetworkvalues1
+
+                    src={network === 'TRC20' ? trcimg : Bepimg}
+                    alt="network icon" />
                   <DepositNetworkvalues2>
                     <span>
                       {network}
