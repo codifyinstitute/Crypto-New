@@ -882,6 +882,15 @@ const Deposit = () => {
   const [TRCValue, setTRVvalue] = useState()
   const [selectNetwork, setSelectNetwork] = useState('TRC20');
 
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    token ? setLogin(true) : setLogin(false);
+    if(!token){
+      navigate("/sell2")
+    }
+  }, [])
+
+
 
   useEffect(() => {
     const countdown = setInterval(() => {
@@ -891,10 +900,6 @@ const Deposit = () => {
     return () => clearInterval(countdown);
   }, []);
 
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    token ? setLogin(true) : setLogin(false);
-  }, [])
 
   const handleRefresh = () => {
     setTimer(30);

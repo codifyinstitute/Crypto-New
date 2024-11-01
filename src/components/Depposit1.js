@@ -566,6 +566,7 @@ const Depposit1 = () => {
   const [enteredAmount, setEnteredAmount] = useState('');
   const [selectedNetwork, setSelectedNetwork] = useState('TRC20');
   const [createdTime, setCreatedTime] = useState(null);
+  const navigate = useNavigate();
 
   const [selectNetwork, setSelectNetwork] = useState(() => {
     const storedNetworkDetails = localStorage.getItem('networkDetails');
@@ -579,13 +580,15 @@ const Depposit1 = () => {
 
 
   const networkDetails = JSON.parse(localStorage.getItem('networkDetails'));
-  const network = networkDetails.network;
-  const amount = networkDetails.depositAmount;
+  const network = networkDetails?.network;
+  const amount = networkDetails?.depositAmount;
+  if(!networkDetails){
+  navigate('/')
+  }
 
   // console.log();
   // console.log(amount);
 
-  const navigate = useNavigate();
 
   // Created Time 
   useEffect(() => {
@@ -625,12 +628,6 @@ const Depposit1 = () => {
     }
   }, []);
 
-
-  // Optional: Update local storage when network details change
-  useEffect(() => {
-    const networkDetails = { network: selectedNetwork, depositAmount: enteredAmount };
-    localStorage.setItem('networkDetails', JSON.stringify(networkDetails));
-  }, [selectedNetwork, enteredAmount]);
 
 
 
@@ -706,9 +703,13 @@ const Depposit1 = () => {
   };
 
   useEffect(() => {
-
+    console.log(selectedCountry)
     fetchCurrencyData();
-  }, [network]);
+  }, [network,selectedCountry]);
+
+  useEffect(()=>{
+    fetchCurrencyData();
+  },[selectNetwork])
 
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem("transactionDetails"));
@@ -811,9 +812,11 @@ const Depposit1 = () => {
     const formattedTime = currentDate.toLocaleTimeString();
 
     try {
+      const data = JSON.parse(localStorage.getItem("networkDetails"));
+
       /* console.log({
         Email: localStorage.getItem("token"),
-        Amount: localData.amountPay,
+        Amount: data.depositAmount,
         Network: network,
         Status: "Pending",
         Date: formattedDate,
@@ -826,7 +829,7 @@ const Depposit1 = () => {
         },
         body: JSON.stringify({
           Email: localStorage.getItem("token"),
-          Amount: localData.amountPay,
+          Amount: data.depositAmount,
           Network: network,
           Status: "Pending",
           Date: formattedDate,
@@ -842,6 +845,8 @@ const Depposit1 = () => {
       const result = await response.json();
       setSavedData(result);
       setShowSuccess(true);
+      localStorage.removeItem("networkDetails");
+      localStorage.removeItem("transaction");
       navigate("/sell6", { state: { data: result } });
     } catch (error) {
       alert("Error submitting transaction: " + error.message);

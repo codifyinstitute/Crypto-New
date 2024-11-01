@@ -39,6 +39,9 @@ const WithdrawUSDT = () => {
   useEffect(() => {
     const token = localStorage.getItem('token');
     setLogin(!!token);
+    if (!token) {
+      navigate('/sell2')
+    }
   }, []);
 
   useEffect(() => {

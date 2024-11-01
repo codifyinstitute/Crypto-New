@@ -453,7 +453,7 @@ const Wallet = () => {
                 <p style={{ fontSize: "11px" }}>Total balance</p>
               </Balance>
             </Part>
-            {login ? null : <LoginButton>Login to Deposit</LoginButton>}
+            {login ? null : <LoginButton onClick={()=>navigate('/sell2')}>Login to Deposit</LoginButton>}
             <ActionButtons>
               <Deposit onClick={handleDepositclick}>
                 <div><img src={deposit} alt="Deposit" /></div>
