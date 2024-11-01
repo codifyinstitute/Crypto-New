@@ -738,7 +738,7 @@ const Sell1 = () => {
   const token = localStorage.getItem("token");
   const fetchWallet = async () => {
     try {
-      const response = await fetch(`http://localhost:8000/wallet/get/${token}`);
+      const response = await fetch(`https://crypto-backend-main.onrender.com/wallet/get/${token}`);
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
@@ -757,6 +757,8 @@ const Sell1 = () => {
   useEffect(() => {
     if (usdt > walletAmount) {
       setInSufficientBalance(true)
+    }else{
+      setInSufficientBalance(false)
     }
   }, [usdt, walletAmount])
 
@@ -771,6 +773,7 @@ const Sell1 = () => {
   useEffect(() => {
     const token = localStorage.getItem("token");
     token ? setLogin(true) : setLogin(false);
+    
   }, []);
 
   const handleRefresh = () => {
@@ -782,8 +785,8 @@ const Sell1 = () => {
     const fetchData = async () => {
       try {
         const [currenciesResponse, feesResponse] = await Promise.all([
-          axios.get(`http://localhost:8000/currencies/${countryObject[selectedCountry].urlName}/all`),
-          fetch(`http://localhost:8000/static/${countryObject[selectedCountry]?.urlName}/one`),
+          axios.get(`https://crypto-backend-main.onrender.com/currencies/${countryObject[selectedCountry].urlName}/all`),
+          fetch(`https://crypto-backend-main.onrender.com/static/${countryObject[selectedCountry]?.urlName}/one`),
         ]);
 
         setCurrencies(currenciesResponse.data);
@@ -796,7 +799,9 @@ const Sell1 = () => {
           const feesData = await feesResponse.json();
           setTransactionFee(feesData.TransactionFee);
           setNetworkFee(feesData.NetworkFee);
-          setUsdt(feesData.MinAmount);
+          if(!location.state?.amount){
+            setUsdt(feesData.MinAmount);
+          }
           setMinAmount(feesData.MinAmount);
         }
       } catch (error) {

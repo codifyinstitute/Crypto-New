@@ -332,8 +332,8 @@ const Sell4 = () => {
 
   const fetchTransactionFee = async () => {
     try {
-      const response = await fetch(`http://localhost:8000/static/${countryObject[selectedCountry]?.urlName}/one`);
-      const countResponse = await fetch("http://localhost:8000/transactions/get/count");
+      const response = await fetch(`https://crypto-backend-main.onrender.com/static/${countryObject[selectedCountry]?.urlName}/one`);
+      const countResponse = await fetch("https://crypto-backend-main.onrender.com/transactions/get/count");
 
       if (!response.ok && !countResponse.ok) {
         throw new Error("Network response was not ok");
@@ -350,7 +350,7 @@ const Sell4 = () => {
 
   const fetchCurrencyData = async () => {
     try {
-      const response = await fetch(`http://localhost:8000/currencies/${countryObject[selectedCountry].urlName}/all`);
+      const response = await fetch(`https://crypto-backend-main.onrender.com/currencies/${countryObject[selectedCountry].urlName}/all`);
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
@@ -411,7 +411,7 @@ const Sell4 = () => {
   const confirmTransaction = async () => {
     setShowConfirmation(false);
     try {
-      const response = await fetch("http://localhost:8000/transactions/add", {
+      const response = await fetch("https://crypto-backend-main.onrender.com/transactions/add", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -532,15 +532,15 @@ const Sell4 = () => {
                   </InfoRow>
                   <InfoRow>
                     <Label1>Transaction Fee</Label1>
-                    <Value>₹{transactionFee}</Value>
+                    <Value>{countryObject[selectedCountry].symbol} {transactionFee}</Value>
                   </InfoRow>
                   <InfoRow>
                     <Label1>Network Fee</Label1>
-                    <Value>₹{networkFee}</Value>
+                    <Value>{countryObject[selectedCountry].symbol} {networkFee}</Value>
                   </InfoRow>
                   <InfoRow>
                     <Label1>You'll Receive</Label1>
-                    <Value>₹{calculateReceivedAmount()}</Value>
+                    <Value>{countryObject[selectedCountry].symbol} {calculateReceivedAmount()}</Value>
                   </InfoRow>
                 </div>
                 {/* <hr />
@@ -596,7 +596,7 @@ const Sell4 = () => {
             <QRCodeContainer>
               <QRCode>
                 <img
-                  src={`http://localhost:8000/uploads/${image}`}
+                  src={`https://crypto-backend-main.onrender.com/uploads/${image}`}
                   width="150px"
                   alt="QR code"
                 />

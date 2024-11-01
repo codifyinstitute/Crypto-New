@@ -193,8 +193,8 @@ const AmountContainer = styled.div`
 //   const fetchDepositHistory = async () => {
 //     const email = localStorage.getItem("token");    
 //     try {
-//       const response = await fetch(`http://localhost:8000/deposit-transactions/get/email/${email}`);
-//       // http://localhost:8000/deposit-transactions/get/email/
+//       const response = await fetch(`https://crypto-backend-main.onrender.com/deposit-transactions/get/email/${email}`);
+//       // https://crypto-backend-main.onrender.com/deposit-transactions/get/email/
 //       if (!response.ok) throw new Error('Network response was not ok');
 //       const data = await response.json();
 //       console.log(data);
@@ -304,7 +304,7 @@ const WithdrawHistory = () => {
   const fetchDepositHistory = async () => {
     const email = localStorage.getItem("token");
     try {
-      const response = await fetch(`http://localhost:8000/withdraw/get/email/${email}`);
+      const response = await fetch(`https://crypto-backend-main.onrender.com/withdraw/get/email/${email}`);
       if (!response.ok) throw new Error('Network response was not ok');
       const data = await response.json();
       console.log(data); // Log the entire data to check its structure
