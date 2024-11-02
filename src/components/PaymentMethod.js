@@ -1,5 +1,5 @@
 
-import React, { useState } from "react"; // Import useState
+import React, { useEffect, useState } from "react"; // Import useState
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Navbar from "./Navbar";
@@ -10,6 +10,7 @@ import { FaUniversity, FaCreditCard } from "react-icons/fa"; // For bank and car
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useSelector } from "react-redux";
+import axios from "axios";
 
 // Styled components
 const PageContainer = styled.div`
@@ -125,9 +126,115 @@ const ProceedButton = styled.button`
   text-align: center;
 `;
 
+const Button = styled.button`
+  background-color: #f7a600;
+  color: black;
+  font-weight : 700;
+  border: none;
+  padding: 10px;
+  font-size: .7rem;
+  border-radius: 4px;
+  cursor: pointer;
+  opacity: ${({ disabled }) => (disabled ? 0.5 : 1)};
+  pointer-events: ${({ disabled }) => (disabled ? "none" : "auto")};
+
+  &:hover {
+    background-color: #e69500;
+  }
+`;
+
+const CardsSection = styled.div`
+  width: 100%;
+  border-radius: 1rem;
+  margin-top: 1rem;
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2%;
+  justify-content: space-around;
+  flex-wrap: wrap;
+`;
+
+const Card = styled.div`
+  width: 100%;
+  background-color: ${({ selected }) => (selected ? "#f7a600" : "white")};
+  color: ${({ selected }) => (selected ? "white" : "#333")};
+  border: 2px solid ${({ selected }) => (selected ? "#f7a600" : "#ccc")};
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+  font-family: Arial, sans-serif;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s, border 0.3s;
+
+  &:hover {
+    background-color: ${({ selected }) => (selected ? "#e69500" : "#f7a600")};
+    color: ${({ selected }) => (selected ? "white" : "#fff")};
+    border-color: ${({ selected }) => (selected ? "#e69500" : "#e69500")};
+  }
+`;
+
+const CardTitle = styled.h4`
+  display: flex;
+  justify-content: space-between;
+  color: inherit;
+  cursor: pointer;
+  font-size: 18px;
+  padding: 0.3rem 0;
+  border-bottom: 2px solid inherit;
+  font-weight: 500;
+  margin-bottom: 1%;
+  @media (max-Width:480px){
+    font-size: 16px;
+  }
+`;
+
+const Crosss = styled.p`
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  @media (max-Width:480px){
+    font-size: 14px;
+  }
+`;
+
+const countryObject = {
+  India: {
+    urlName: "india",
+    symbol: "₹",
+    name: "India"
+  },
+  Brazil: {
+    urlName: "brl",
+    symbol: "R$",
+    name: "Brazil"
+  },
+  UK: {
+    urlName: "uk",
+    symbol: "£",
+    name: "United Kingdom"
+  },
+  Euro: {
+    urlName: "euro",
+    symbol: "€",
+    name: "European Union"
+  },
+  Dubai: {
+    urlName: "aed",
+    symbol: "د.إ",
+    name: "Dubai"
+  },
+  USA: {
+    urlName: "usa",
+    symbol: "$",
+    name: "United States of America"
+  }
+}
+
 const PaymentMethod = () => {
   const selectedCountry = useSelector((state) => state.country.value);
   const navigate = useNavigate();
+  const [accounts, setAccounts] = useState([]);
+  const [form, setForm] = useState(true);
   const [selectedOption, setSelectedOption] = useState(null); // State to track the selected payment option
 
   const handleOptionClick = (option) => {
@@ -143,6 +250,41 @@ const PaymentMethod = () => {
       toast.error("Please select a payment option."); // Show an error if no option is selected
     }
   };
+
+  const handleCardClick = (account) => {
+    const existingTransactionDetails =
+      JSON.parse(localStorage.getItem("transactionDetails")) || {};
+
+      const { _id, __v, ...filteredAccount } = account;
+
+      const updatedTransactionDetails = {
+        ...existingTransactionDetails,
+        AccountDetail: { ...filteredAccount }
+      };
+
+    localStorage.setItem(
+      "transactionDetails",
+      JSON.stringify(updatedTransactionDetails)
+    );
+    navigate("/sell4");
+  };
+
+  useEffect(()=>{
+    const email = localStorage.getItem("token");
+    axios
+      .get(`https://crypto-backend-main.onrender.com/account-details/${countryObject[selectedCountry].urlName}/${email}`)
+      .then((response) => {
+        console.log(response.data)
+        setAccounts(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching Accounts:", error);
+      });
+  },[selectedCountry])
+
+  const AddAccount = () => {
+    setForm(!form);
+  }
 
   return (
     <>
@@ -164,9 +306,9 @@ const PaymentMethod = () => {
                 >
                   <ChevronLeft />
                 </button>
-                <Tab>Choose Payment Method</Tab>
+                <Tab>Payment Method</Tab>
               </Left>
-              <button
+              {/* <button
                 style={{
                   border: "none",
                   background: "transparent",
@@ -175,46 +317,70 @@ const PaymentMethod = () => {
                 }}
               >
                 <Menu />
-              </button>
+              </button> */}
+              {form ? (
+                <Button onClick={AddAccount}>Choose Account</Button>
+              ) : (
+                <Button onClick={AddAccount}>Choose Method</Button>
+              )}
             </TabContainer>
-
-            <PaymentOption
-              onClick={() => handleOptionClick("bank")}
-              style={{ border: selectedOption === "bank" ? "2px solid #f7a600" : "1px solid #ddd" }}
-            >
-              <IconWrapper>
-                <FaUniversity />
-              </IconWrapper>
-              <OptionText>
-                <OptionTitle>Bank Transfer</OptionTitle>
-                <OptionDescription>
-                  Processing time can take up to 1 day
-                </OptionDescription>
-              </OptionText>
-            </PaymentOption>
-
-            {selectedCountry === "Euro" || selectedCountry === "USA" ? (
+            {form ? (<>
               <PaymentOption
-                onClick={() => handleOptionClick("card")}
-                style={{ border: selectedOption === "card" ? "2px solid #f7a600" : "1px solid #ddd" }}
+                onClick={() => handleOptionClick("bank")}
+                style={{ border: selectedOption === "bank" ? "2px solid #f7a600" : "1px solid #ddd" }}
               >
                 <IconWrapper>
-                  <FaCreditCard />
+                  <FaUniversity />
                 </IconWrapper>
                 <OptionText>
-                  <OptionTitle>Card</OptionTitle>
+                  <OptionTitle>Bank Transfer</OptionTitle>
                   <OptionDescription>
-                    Processing time can take up to 15 min
+                    Processing time can take up to 1 day
                   </OptionDescription>
                 </OptionText>
               </PaymentOption>
-            ) : null}
 
-            {selectedOption && ( // Show the Proceed button only if an option is selected
-              <ProceedButton onClick={handleProceedClick}>
-                Proceed
-              </ProceedButton>
-            )}
+              {selectedCountry === "Euro" || selectedCountry === "USA" ? (
+                <PaymentOption
+                  onClick={() => handleOptionClick("card")}
+                  style={{ border: selectedOption === "card" ? "2px solid #f7a600" : "1px solid #ddd" }}
+                >
+                  <IconWrapper>
+                    <FaCreditCard />
+                  </IconWrapper>
+                  <OptionText>
+                    <OptionTitle>Card</OptionTitle>
+                    <OptionDescription>
+                      Processing time can take up to 15 min
+                    </OptionDescription>
+                  </OptionText>
+                </PaymentOption>
+              ) : null}
+
+              {selectedOption && ( // Show the Proceed button only if an option is selected
+                <ProceedButton onClick={handleProceedClick}>
+                  Proceed
+                </ProceedButton>
+              )}
+            </>) : (<>
+              <CardsSection>
+                {accounts.map((account, index) => (
+                  <Card
+                    key={index}
+                    onClick={() => handleCardClick(account)}
+                  >
+                    <CardTitle><span>Bank Name</span> <span>{account.BankName}</span></CardTitle>
+                    <Crosss>
+                      <strong>Account Number:</strong> {account.AccountNo}
+                    </Crosss>
+                    {/* <Crosss>
+                      <strong>IFSC:</strong> {account.IFSC}
+                    </Crosss> */}
+                  </Card>
+                ))}
+              </CardsSection>
+            </>)}
+
           </FormContainer>
         </FormWrapper>
       </PageContainer>

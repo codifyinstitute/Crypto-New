@@ -6,6 +6,7 @@ import { ChevronLeft } from "lucide-react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 // Styled Components
 const Container = styled.div`
@@ -212,8 +213,42 @@ const Table = styled.table`
   }
 `;
 
+const countryObject = {
+  India: {
+    urlName: "india",
+    symbol: "₹",
+    name: "India"
+  },
+  Brazil: {
+    urlName: "brl",
+    symbol: "R$",
+    name: "Brazil"
+  },
+  UK: {
+    urlName: "uk",
+    symbol: "£",
+    name: "United Kingdom"
+  },
+  Euro: {
+    urlName: "euro",
+    symbol: "€",
+    name: "European Union"
+  },
+  Dubai: {
+    urlName: "aed",
+    symbol: "د.إ",
+    name: "Dubai"
+  },
+  USA: {
+    urlName: "usa",
+    symbol: "$",
+    name: "United States of America"
+  }
+}
+
 // Main Component
 const SellHistory = () => {
+  const selectedCountry = useSelector((state) => state.country.value);
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("Pending");
   const [transactions, setTransactions] = useState([]);
@@ -227,16 +262,19 @@ const SellHistory = () => {
   }, []);
 
   useEffect(() => {
+    // console.log(selectedCountry)
     const fetchTransactions = async () => {
       const email = localStorage.getItem("token");
       if (email) {
         try {
           const response = await fetch(
-            `http://localhost:8000/transactions/get/email/${email}`
+            `https://crypto-backend-main.onrender.com/transactions/get/email/${email}`
           );
           if (!response.ok) throw new Error("Failed to fetch transactions");
           const data = await response.json();
-          setTransactions(data.reverse());
+          const filData = data.filter(val => val.Country === selectedCountry)
+          // console.log(filData);
+          setTransactions(filData.reverse());
         } catch (error) {
           toast.error(error.message);
         } finally {
@@ -249,10 +287,11 @@ const SellHistory = () => {
     };
 
     fetchTransactions();
-  }, []);
+  }, [selectedCountry]);
 
   const handleIconClick = (accountDetail) => {
     setAccountDetails(accountDetail);
+    console.log(accountDetail)
     setModalVisible(true);
   };
 
@@ -326,7 +365,7 @@ const SellHistory = () => {
                   </TransactionColumn>
                   <TransactionColumn>
                     <Label>Amount</Label>
-                    <Value>₹{transaction.ReceivedAmount}</Value>
+                    <Value>{countryObject[transaction.Country].symbol} {transaction.ReceivedAmount}</Value>
                   </TransactionColumn>
                   <TransactionColumn>
                     <Label>Status</Label>
@@ -344,12 +383,11 @@ const SellHistory = () => {
         <ModalBackground onClick={closeModal}>
           <ModalContent onClick={(e) => e.stopPropagation()}>
             <CloseButton onClick={closeModal}>&times;</CloseButton>
-            <h2>Account Details</h2>
+            
             <Table>
               <thead>
                 <tr>
-                  <th>Field</th>
-                  <th>Value</th>
+                  <th colSpan="2">{Object.keys(accountDetails).includes("CardNumber")?"Card Details":"Bank Details"}</th>
                 </tr>
               </thead>
               <tbody>

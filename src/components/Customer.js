@@ -176,7 +176,7 @@ const Component = () => {
 
   const fetchReviews = async () => {
     try {
-        const response = await axios.get('http://localhost:8000/reviews/all');
+        const response = await axios.get('https://crypto-backend-main.onrender.com/reviews/all');
         setReviews(response.data);
     } catch (error) {
         console.error('Error fetching reviews:', error);
@@ -221,7 +221,7 @@ useEffect(() => {
             {reviews.map((testimonial, index) => (
               <TestimonialCard key={index}>
                 <Avatar>
-                  { <img src={`http://localhost:8000/uploads/${testimonial.Image}`} alt={testimonial.Name} />}
+                  { <img src={`https://crypto-backend-main.onrender.com/uploads/${testimonial.Image}`} alt={testimonial.Name} />}
                 </Avatar>
                 <TestimonialContent>
                   <h3>{testimonial.Name}</h3>

@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import Navbar from './Navbar';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { UserRound, CircleUser,CirclePlus } from 'lucide-react';
+import { UserRound, CircleUser, CirclePlus } from 'lucide-react';
 
 
 const Container = styled.div`
@@ -183,11 +183,11 @@ const Profile = () => {
     const email = localStorage.getItem('token');
     if (email) {
       try {
-        const response = await fetch(`http://localhost:8000/users/get/${email}`);
+        const response = await fetch(`https://crypto-backend-main.onrender.com/users/get/${email}`);
         if (!response.ok) throw new Error('Failed to fetch user data');
         const data = await response.json();
         setUserEmail(data.Email);
-        setProfileImage(`http://localhost:8000/uploads/${data.Profile}`);
+        setProfileImage(`https://crypto-backend-main.onrender.com/uploads/${data.Profile}`);
       } catch (error) {
         toast.error(error.message);
       } finally {
@@ -203,7 +203,7 @@ const Profile = () => {
     const email = localStorage.getItem('token');
     if (email) {
       try {
-        const response = await fetch(`http://localhost:8000/wallets/getBalance/${email}`);
+        const response = await fetch(`https://crypto-backend-main.onrender.com/wallets/getBalance/${email}`);
         if (!response.ok) throw new Error('Failed to fetch wallet balance');
         const data = await response.json();
         setWalletBalance(data.balance);
@@ -221,6 +221,11 @@ const Profile = () => {
   if (loading) return <Container><p>Loading...</p></Container>;
 
   const getInitial = email => email.charAt(0).toUpperCase();
+
+  const logout = () => {
+    localStorage.removeItem('token')
+    navigate("/")
+  }
 
   return (
     <>
@@ -240,14 +245,14 @@ const Profile = () => {
           <input
             type="file"
             ref={fileInputRef}
-            onChange={() => {}}
+            onChange={() => { }}
             accept="image/*"
             style={{ display: 'none' }}
           />
           <Username>{userEmail}</Username>
           <Subtitle>Email</Subtitle>
           <WalletBalanceButton onClick={fetchWalletBalance}>
-          <CircleUser size={20} />
+            <CircleUser size={20} />
             {walletBalance !== null ? `Balance: ${walletBalance}` : 'Show Wallet Balance'}
           </WalletBalanceButton>
         </ProfileSection>
@@ -265,7 +270,7 @@ const Profile = () => {
             <MenuLink href="/depositHistory">
               <IconText>
                 <Icon>📥</Icon>
-                
+
                 Your Deposit History
               </IconText>
               <ArrowIcon>▶</ArrowIcon>
@@ -307,7 +312,7 @@ const Profile = () => {
               <ArrowIcon>▶</ArrowIcon>
             </MenuLink>
           </MenuItem>
-          <MenuItem onClick={() => localStorage.removeItem('token')}>
+          <MenuItem onClick={logout}>
             <MenuLink>
               <IconText>
                 <Icon>🚪</Icon>

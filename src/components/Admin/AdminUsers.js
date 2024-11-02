@@ -122,7 +122,7 @@ const AdminUsers = () => {
     useEffect(() => {
         const fetchUsers = async () => {
             try {
-                const response = await fetch('http://localhost:8000/users/all');
+                const response = await fetch('https://crypto-backend-main.onrender.com/users/all');
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
@@ -149,7 +149,7 @@ const AdminUsers = () => {
                                 <tr>
                                     <th>Email</th>
                                     <th>MobileNo</th>
-                                    <th>Accounts</th>
+                                    {/* <th>Accounts</th> */}
                                 </tr>
                             </thead>
                             <tbody>
@@ -158,7 +158,7 @@ const AdminUsers = () => {
                                         <tr>
                                             <td>{user.Email}</td>
                                             <td>{user.MobileNo}</td>
-                                            <td>
+                                            {/* <td>
                                                 {user.Accounts.length > 0 ? (
                                                     <NestedTable>
                                                         <thead>
@@ -183,7 +183,7 @@ const AdminUsers = () => {
                                                         </tbody>
                                                     </NestedTable>
                                                 ) : 'No Accounts'}
-                                            </td>
+                                            </td> */}
                                         </tr>
                                     </React.Fragment>
                                 ))}

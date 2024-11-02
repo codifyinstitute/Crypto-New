@@ -409,7 +409,7 @@ const Wallet = () => {
   const token = localStorage.getItem("token");
   const fetchWallet = async () => {
     try {
-      const response = await fetch(`http://localhost:8000/wallet/get/${token}`);
+      const response = await fetch(`https://crypto-backend-main.onrender.com/wallet/get/${token}`);
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
@@ -488,8 +488,7 @@ const Wallet = () => {
       <span style={{ fontSize: "16px", marginTop: "7px", fontWeight: "700" }}>Wallet balance</span>
     </Balance>
             </Part>
-            {login ? null : <LoginButton>Login to Deposit</LoginButton>}
-
+            {login ? null : <LoginButton onClick={()=>navigate('/sell2')}>Login to Deposit</LoginButton>}
             <ActionButtons>
                 <Deposit onClick={handleDepositclick}>
                   <div>

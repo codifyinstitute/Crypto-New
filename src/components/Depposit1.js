@@ -589,6 +589,8 @@ const Depposit1 = () => {
   const [savedData, setSavedData] = useState(null);
   const [transactionId, setTransactionId] = useState("");
   const [image, setImage] = useState("");
+  const [network, setNetwork] = useState("");
+  const [amount, setAmount] = useState("");
   const [timeLeft, setTimeLeft] = useState("00:00:00");
   const targetDate = useRef(new Date(Date.now() + 2 * 24 * 60 * 60 * 1000));
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
@@ -596,6 +598,7 @@ const Depposit1 = () => {
   const [enteredAmount, setEnteredAmount] = useState('');
   const [selectedNetwork, setSelectedNetwork] = useState('TRC20');
   const [createdTime, setCreatedTime] = useState(null);
+  const navigate = useNavigate();
 
   const [selectNetwork, setSelectNetwork] = useState(() => {
     const storedNetworkDetails = localStorage.getItem('networkDetails');
@@ -608,14 +611,24 @@ const Depposit1 = () => {
   });
 
 
-  const networkDetails = JSON.parse(localStorage.getItem('networkDetails'));
-  const network = networkDetails.network;
-  const amount = networkDetails.depositAmount;
+  useEffect(() => {
+    const networkDetails = JSON.parse(localStorage.getItem('networkDetails'));
+    if (!networkDetails) {
+      navigate('/')
+    } else {
+      const network = networkDetails.network;
+      const amount = networkDetails.depositamount;
+      setNetwork(network)
+      setAmount(amount)
+      console.log(network)
+      console.log(networkDetails)
+      console.log(amount)
+    }
+  }, [])
 
   // console.log();
   // console.log(amount);
 
-  const navigate = useNavigate();
 
   // Created Time 
   useEffect(() => {
@@ -656,12 +669,6 @@ const Depposit1 = () => {
   }, []);
 
 
-  // Optional: Update local storage when network details change
-  useEffect(() => {
-    const networkDetails = { network: selectedNetwork, depositAmount: enteredAmount };
-    localStorage.setItem('networkDetails', JSON.stringify(networkDetails));
-  }, [selectedNetwork, enteredAmount]);
-
 
 
   useEffect(() => {
@@ -695,8 +702,8 @@ const Depposit1 = () => {
 
   const fetchTransactionFee = async () => {
     try {
-      const response = await fetch(`http://localhost:8000/static/${countryObject[selectedCountry]?.urlName}/one`);
-      /* const countResponse = await fetch("http://localhost:8000/transactions/get/count"); */
+      const response = await fetch(`https://crypto-backend-main.onrender.com/static/${countryObject[selectedCountry]?.urlName}/one`);
+      /* const countResponse = await fetch("https://crypto-backend-main.onrender.com/transactions/get/count"); */
 
       if (!response.ok) {
         throw new Error("Network response was not ok");
@@ -713,7 +720,7 @@ const Depposit1 = () => {
 
   const fetchCurrencyData = async () => {
     try {
-      const response = await fetch(`http://localhost:8000/currencies/${countryObject[selectedCountry].urlName}/all`);
+      const response = await fetch(`https://crypto-backend-main.onrender.com/currencies/${countryObject[selectedCountry].urlName}/all`);
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
@@ -736,9 +743,13 @@ const Depposit1 = () => {
   };
 
   useEffect(() => {
-
+    console.log(selectedCountry)
     fetchCurrencyData();
-  }, [network]);
+  }, [network, selectedCountry]);
+
+  useEffect(() => {
+    fetchCurrencyData();
+  }, [selectNetwork])
 
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem("transactionDetails"));
@@ -795,7 +806,7 @@ const Depposit1 = () => {
   // const confirmTransaction = async () => {
   //   setShowConfirmation(false);
   //   try {
-  //     const response = await fetch("http://localhost:8000/transactions/add", {
+  //     const response = await fetch("https://crypto-backend-main.onrender.com/transactions/add", {
   //       method: "POST",
   //       headers: {
   //         "Content-Type": "application/json",
@@ -841,22 +852,24 @@ const Depposit1 = () => {
     const formattedTime = currentDate.toLocaleTimeString();
 
     try {
+      const data = JSON.parse(localStorage.getItem("networkDetails"));
+
       /* console.log({
         Email: localStorage.getItem("token"),
-        Amount: localData.amountPay,
+        Amount: data.depositAmount,
         Network: network,
         Status: "Pending",
         Date: formattedDate,
         Time: formattedTime,
       }) */
-      const response = await fetch("http://localhost:8000/deposit-transactions/add", { // Updated URL for the backend
+      const response = await fetch("https://crypto-backend-main.onrender.com/deposit-transactions/add", { // Updated URL for the backend
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
           Email: localStorage.getItem("token"),
-          Amount: localData.amountPay,
+          Amount: data.depositamount,
           Network: network,
           Status: "Pending",
           Date: formattedDate,
@@ -872,6 +885,8 @@ const Depposit1 = () => {
       const result = await response.json();
       setSavedData(result);
       setShowSuccess(true);
+      localStorage.removeItem("networkDetails");
+      localStorage.removeItem("transaction");
       navigate("/sell6", { state: { data: result } });
     } catch (error) {
       alert("Error submitting transaction: " + error.message);
@@ -969,7 +984,7 @@ const Depposit1 = () => {
             <QRCodeContainer>
               <QRCode>
                 <img
-                  src={`http://localhost:8000/uploads/${image}`}
+                  src={`https://crypto-backend-main.onrender.com/uploads/${image}`}
                   width="100px"
                   alt="QR code"
                 />
@@ -1153,10 +1168,10 @@ const Depposit1 = () => {
                 </DepositNetworkHeading>
 
                 <DepositNetworkvalues>
-                  <DepositNetworkvalues1 
-                  
-                  src={selectNetwork === 'TRC20' ? trcimg : Bepimg} 
-                  alt="network icon"  />
+                  <DepositNetworkvalues1
+
+                    src={network === 'TRC20' ? trcimg : Bepimg}
+                    alt="network icon" />
                   <DepositNetworkvalues2>
                     <span>
                       {network}

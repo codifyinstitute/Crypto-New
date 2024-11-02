@@ -10,6 +10,8 @@ import { useSelector } from "react-redux";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
+import * as Yup from 'yup'; // Import Yup
+import { Formik, Form, Field, ErrorMessage } from 'formik'; // Import Formik
 
 const PageContainer = styled.div`
   display: flex;
@@ -87,7 +89,7 @@ const FormInput = styled.input`
   font-size: 14px;
   border: 1px solid #ddd;
   border-radius: 5px;
-  margin-bottom: 1rem;
+  /* margin-bottom: 1rem; */
 `;
 
 const Select = styled.select`
@@ -226,148 +228,122 @@ const countryObject = {
   }
 }
 
+
 const BankTransfer = () => {
   const selectedCountry = useSelector((state) => state.country.value);
   const navigate = useNavigate();
   const [form, setForm] = useState(true);
   const [accounts, setAccounts] = useState([]);
 
-  // State for input fields
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    bankName: "",
-    accountNumber: "",
-    city: "",
-    state: "",
-    address: "",
-    zipCode: "",
-    accountType: "",
-    abaCode: "",
-    swiftCode: "",
-    sortCode: "",
-    idType: "",
-    idNumber: "",
-    bankBranchCode: "",
-    accountOpeningBranch: "",
-    iban: "",
-    ifsc: "",
+    firstName: "", lastName: "", bankName: "", accountNumber: "",
+    city: "", state: "", address: "", zipCode: "", accountType: "",
+    abaCode: "", swiftCode: "", sortCode: "", idType: "", idNumber: "",
+    bankBranchCode: "", accountOpeningBranch: "", iban: "", ifsc: ""
   });
 
-  useEffect(()=>{
+  useEffect(() => {
     const email = localStorage.getItem("token");
-    axios
-      .get(`http://localhost:8000/account-details/${countryObject[selectedCountry].urlName}/${email}`)
-      .then((response) => {
-        console.log(response.data)
-        setAccounts(response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching Accounts:", error);
-      });
-  },[selectedCountry])
+    axios.get(`https://crypto-backend-main.onrender.com/account-details/${countryObject[selectedCountry].urlName}/${email}`)
+      .then((response) => setAccounts(response.data))
+      .catch((error) => console.error("Error fetching Accounts:", error));
+  }, [selectedCountry]);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
+  const validationSchema = Yup.object().shape({
+    firstName: Yup.string().matches(/^[A-Za-z\s]+$/, "First name can only contain letters").required("First name is required"),
+    lastName: Yup.string().matches(/^[A-Za-z\s]+$/, "Last name can only contain letters").required("Last name is required"),
+    bankName: Yup.string().required("Bank name is required"),
+    accountNumber: Yup.string().matches(/^\d+$/, "Account number must be a number").required("Account number is required"),
+    city: selectedCountry === "USA" ? Yup.string().matches(/^[A-Za-z\s]+$/, "City can only contain letters").required("City is required") : Yup.string(),
+    state: selectedCountry === "USA" ? Yup.string().matches(/^[A-Za-z\s]+$/, "State can only contain letters").required("State is required") : Yup.string(),
+    address: ["UK", "USA"].includes(selectedCountry) ? Yup.string().required("Address is required") : Yup.string(),
+    zipCode: selectedCountry === "USA" ? Yup.string().matches(/^\d+$/, "Zip code must be a number").required("Zip code is required") : Yup.string(),
+    accountType: ["Brazil", "USA"].includes(selectedCountry) ? Yup.string().required("Account type is required") : Yup.string(),
+    abaCode: ["Euro", "USA"].includes(selectedCountry) ? Yup.string().matches(/^\d{9}$/, "ABA code must be a 9-digit number").required("ABA code is required") : Yup.string(),
+    swiftCode: selectedCountry === "Euro" ? Yup.string().required("Swift code is required") : Yup.string(),
+    sortCode: selectedCountry === "UK" ? Yup.string().matches(/^\d{6}$/, "Sort code must be a 6-digit number").required("Sort code is required") : Yup.string(),
+    idType: selectedCountry === "Brazil" ? Yup.string().required("ID type is required") : Yup.string(),
+    idNumber: selectedCountry === "Brazil" ? Yup.string().matches(/^\d+$/, "ID number must be a number").required("ID number is required") : Yup.string(),
+    bankBranchCode: selectedCountry === "Brazil" ? Yup.string().required("Bank branch code is required") : Yup.string(),
+    accountOpeningBranch: selectedCountry === "Dubai" ? Yup.string().required("Account opening branch is required") : Yup.string(),
+    iban: selectedCountry === "Dubai" ? Yup.string().required("IBAN is required") : Yup.string(),
+    ifsc: selectedCountry === "India" ? Yup.string().required("IFSC is required") : Yup.string(),
+  });
 
   const handleCardClick = (account) => {
-    const existingTransactionDetails =
-      JSON.parse(localStorage.getItem("transactionDetails")) || {};
+    const existingTransactionDetails = JSON.parse(localStorage.getItem("transactionDetails")) || {};
+    const { _id, __v, ...filteredAccount } = account;
 
-      const { _id, __v, ...filteredAccount } = account;
+    const updatedTransactionDetails = {
+      ...existingTransactionDetails,
+      AccountDetail: { ...filteredAccount }
+    };
 
-      const updatedTransactionDetails = {
-        ...existingTransactionDetails,
-        AccountDetail: { ...filteredAccount }
-      };
-
-    localStorage.setItem(
-      "transactionDetails",
-      JSON.stringify(updatedTransactionDetails)
-    );
+    localStorage.setItem("transactionDetails", JSON.stringify(updatedTransactionDetails));
     navigate("/sell4");
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
+  const handleSubmit = async (values) => {
     const email = localStorage.getItem("token");
-
-    // Construct submission object based on selected country
     const submissionData = {
       Email: email,
-      FirstName: formData.firstName,
-      LastName: formData.lastName,
-      BankName: formData.bankName,
-      AccountNo: formData.accountNumber,
+      FirstName: values.firstName,
+      LastName: values.lastName,
+      BankName: values.bankName,
+      AccountNo: values.accountNumber,
     };
 
-    // Add country-specific fields
     if (selectedCountry === "USA") {
-      submissionData.City = formData.city;
-      submissionData.State = formData.state;
-      submissionData.Address = formData.address;
-      submissionData.ZipCode = formData.zipCode;
-      submissionData.AccountType = formData.accountType;
+      submissionData.City = values.city;
+      submissionData.State = values.state;
+      submissionData.Address = values.address;
+      submissionData.ZipCode = values.zipCode;
+      submissionData.AccountType = values.accountType;
     } else if (selectedCountry === "Brazil") {
-      submissionData.AccountType = formData.accountType;
-      submissionData.IDType = formData.idType;
-      submissionData.IDNumber = formData.idNumber;
-      submissionData.BranchCode = formData.bankBranchCode;
-      submissionData.ABACode = formData.abaCode;
+      submissionData.AccountType = values.accountType;
+      submissionData.IDType = values.idType;
+      submissionData.IDNumber = values.idNumber;
+      submissionData.BranchCode = values.bankBranchCode;
+      submissionData.ABACode = values.abaCode;
     } else if (selectedCountry === "UK") {
-      submissionData.SortCode = formData.sortCode;
-      submissionData.Address = formData.address;
+      submissionData.SortCode = values.sortCode;
+      submissionData.Address = values.address;
     } else if (selectedCountry === "Euro") {
-      submissionData.ABACode = formData.abaCode;
-      submissionData.SwiftCode = formData.swiftCode;
+      submissionData.ABACode = values.abaCode;
+      submissionData.SwiftCode = values.swiftCode;
     } else if (selectedCountry === "Dubai") {
-      submissionData.OpeningBranch = formData.accountOpeningBranch;
-      submissionData.IBAN = formData.iban;
+      submissionData.OpeningBranch = values.accountOpeningBranch;
+      submissionData.IBAN = values.iban;
     } else if (selectedCountry === "India") {
-      submissionData.IFSC = formData.ifsc;
+      submissionData.IFSC = values.ifsc;
     }
 
-    // API call to save data
-    const url = `http://localhost:8000/account-details/${countryObject[selectedCountry].urlName}/add`;
+    const url = `https://crypto-backend-main.onrender.com/account-details/${countryObject[selectedCountry].urlName}/add`;
 
     try {
       await axios.post(url, submissionData);
-      toast.success("Data saved successfully!"); // Show success notification
+      toast.success("Data saved successfully!");
+      setForm(!form);
 
-      // Reset form data
       setFormData({
-        firstName: "",
-        lastName: "",
-        bankName: "",
-        accountNumber: "",
-        city: "",
-        state: "",
-        address: "",
-        zipCode: "",
-        accountType: "",
-        abaCode: "",
-        swiftCode: "",
-        sortCode: "",
-        idType: "",
-        idNumber: "",
-        bankBranchCode: "",
-        accountOpeningBranch: "",
-        iban: "",
-        ifsc: "",
+        firstName: "", lastName: "", bankName: "", accountNumber: "",
+        city: "", state: "", address: "", zipCode: "", accountType: "",
+        abaCode: "", swiftCode: "", sortCode: "", idType: "", idNumber: "",
+        bankBranchCode: "", accountOpeningBranch: "", iban: "", ifsc: ""
       });
     } catch (error) {
-      toast.error("Failed to save data."); // Show error notification
+      toast.error("Failed to save data.");
       console.error("Error:", error.response ? error.response.data : error.message);
     }
   };
 
+  const toggleForm = () => {
+    setForm(!form);
+  };
 
   const AddAccount = () => {
     setForm(!form);
-  }
+  };
 
   return (
     <>
@@ -379,12 +355,7 @@ const BankTransfer = () => {
               <Left>
                 <button
                   onClick={() => window.history.back()}
-                  style={{
-                    border: "none",
-                    background: "transparent",
-                    cursor: "pointer",
-                    color: "#f7a600",
-                  }}
+                  style={{ border: "none", background: "transparent", cursor: "pointer", color: "#f7a600" }}
                 >
                   <ChevronLeft />
                 </button>
@@ -396,120 +367,143 @@ const BankTransfer = () => {
                 <Button onClick={AddAccount}>Add Account +</Button>
               )}
             </TabContainer>
-            {form ? <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", justifyContent: "space-between", height: "100%" }}>
-              <FormSection>
-                <FormLabel>First Name</FormLabel>
-                <FormInput name="firstName" value={formData.firstName} onChange={handleChange} placeholder="Please enter your First name" />
+            {form ? (
+              <Formik
+                initialValues={formData}
+                validationSchema={validationSchema}
+                onSubmit={handleSubmit}
+              >
+                {({ isSubmitting }) => (
+                  <Form style={{ display: "flex", flexDirection: "column", justifyContent: "space-between", height: "100%" }}>
+                    <FormSection>
+                      <FormLabel>First Name</FormLabel>
+                      <Field name="firstName" as={FormInput} placeholder="Please enter your First name" />
+                      <ErrorMessage name="firstName" component="div" style={{ color: "red", marginBottom: "1rem" }} />
 
-                <FormLabel>Last Name</FormLabel>
-                <FormInput name="lastName" value={formData.lastName} onChange={handleChange} placeholder="Please enter your Last name" />
+                      <FormLabel>Last Name</FormLabel>
+                      <Field name="lastName" as={FormInput} placeholder="Please enter your Last name" />
+                      <ErrorMessage name="lastName" component="div" style={{ color: "red", marginBottom: "1rem" }} />
 
-                <FormLabel>Bank Name</FormLabel>
-                <FormInput name="bankName" value={formData.bankName} onChange={handleChange} placeholder="Enter Your Bank Name" />
+                      <FormLabel>Bank Name</FormLabel>
+                      <Field name="bankName" as={FormInput} placeholder="Enter Your Bank Name" />
+                      <ErrorMessage name="bankName" component="div" style={{ color: "red", marginBottom: "1rem" }} />
 
-                <FormLabel>Account Number</FormLabel>
-                <FormInput name="accountNumber" value={formData.accountNumber} onChange={handleChange} placeholder="Enter Your Account Number" />
+                      <FormLabel>Account Number</FormLabel>
+                      <Field name="accountNumber" as={FormInput} placeholder="Enter Your Account Number" />
+                      <ErrorMessage name="accountNumber" component="div" style={{ color: "red", marginBottom: "1rem" }} />
 
-                {selectedCountry === "USA" && (
-                  <>
-                    <FormLabel>City</FormLabel>
-                    <FormInput name="city" value={formData.city} onChange={handleChange} placeholder="Please enter City" />
+                      {selectedCountry === "USA" && (
+                        <>
+                          <FormLabel>City</FormLabel>
+                          <Field name="city" as={FormInput} placeholder="Enter Your City" />
+                          <ErrorMessage name="city" component="div" style={{ color: "red", marginBottom: "1rem" }} />
 
-                    <FormLabel>State</FormLabel>
-                    <FormInput name="state" value={formData.state} onChange={handleChange} placeholder="Enter Your State" />
-                  </>
+                          <FormLabel>State</FormLabel>
+                          <Field name="state" as={FormInput} placeholder="Enter Your State" />
+                          <ErrorMessage name="state" component="div" style={{ color: "red", marginBottom: "1rem" }} />
+
+                          <FormLabel>Address</FormLabel>
+                          <Field name="address" as={FormInput} placeholder="Enter Your Address" />
+                          <ErrorMessage name="address" component="div" style={{ color: "red", marginBottom: "1rem" }} />
+
+                          <FormLabel>Zip Code</FormLabel>
+                          <Field name="zipCode" as={FormInput} placeholder="Enter Your Zip Code" />
+                          <ErrorMessage name="zipCode" component="div" style={{ color: "red", marginBottom: "1rem" }} />
+
+                          <FormLabel>Account Type</FormLabel>
+                          <Field name="accountType" as={Select}>
+                            <option value="">Select Account Type</option>
+                            <option value="Saving">Saving</option>
+                            <option value="Checking">Checking</option>
+                          </Field>
+                          <ErrorMessage name="accountType" component="div" style={{ color: "red", marginBottom: "1rem" }} />
+                        </>
+                      )}
+
+                      {selectedCountry === "Brazil" && (
+                        <>
+                          <FormLabel>Account Type</FormLabel>
+                          <Field name="accountType" as={Select}>
+                            <option value="">Select Account Type</option>
+                            <option value="Saving">Saving</option>
+                            <option value="Checking">Checking</option>
+                          </Field>
+                          <ErrorMessage name="accountType" component="div" style={{ color: "red", marginBottom: "1rem" }} />
+
+                          <FormLabel>ID Type</FormLabel>
+                          <Field name="idType" as={Select}>
+                            <option value="">Select ID Type</option>
+                            <option value="Passport">Passport</option>
+                            <option value="ID Card">ID Card</option>
+                          </Field>
+                          <ErrorMessage name="idType" component="div" style={{ color: "red", marginBottom: "1rem" }} />
+
+                          <FormLabel>ID Number</FormLabel>
+                          <Field name="idNumber" as={FormInput} placeholder="Enter Your ID Number" />
+                          <ErrorMessage name="idNumber" component="div" style={{ color: "red", marginBottom: "1rem" }} />
+
+                          <FormLabel>Branch Code</FormLabel>
+                          <Field name="bankBranchCode" as={FormInput} placeholder="Enter Your Branch Code" />
+                          <ErrorMessage name="bankBranchCode" component="div" style={{ color: "red", marginBottom: "1rem" }} />
+
+                          <FormLabel>ABA Code</FormLabel>
+                          <Field name="abaCode" as={FormInput} placeholder="Enter Your ABA Code" />
+                          <ErrorMessage name="abaCode" component="div" style={{ color: "red", marginBottom: "1rem" }} />
+                        </>
+                      )}
+
+                      {selectedCountry === "UK" && (
+                        <>
+                          <FormLabel>Sort Code</FormLabel>
+                          <Field name="sortCode" as={FormInput} placeholder="Enter Your Sort Code" />
+                          <ErrorMessage name="sortCode" component="div" style={{ color: "red", marginBottom: "1rem" }} />
+
+                          <FormLabel>Address</FormLabel>
+                          <Field name="address" as={FormInput} placeholder="Enter Your Address" />
+                          <ErrorMessage name="address" component="div" style={{ color: "red", marginBottom: "1rem" }} />
+                        </>
+                      )}
+
+                      {selectedCountry === "Euro" && (
+                        <>
+                          <FormLabel>ABA Code</FormLabel>
+                          <Field name="abaCode" as={FormInput} placeholder="Enter Your ABA Code" />
+                          <ErrorMessage name="abaCode" component="div" style={{ color: "red", marginBottom: "1rem" }} />
+
+                          <FormLabel>Swift Code</FormLabel>
+                          <Field name="swiftCode" as={FormInput} placeholder="Enter Your Swift Code" />
+                          <ErrorMessage name="swiftCode" component="div" style={{ color: "red", marginBottom: "1rem" }} />
+                        </>
+                      )}
+
+                      {selectedCountry === "Dubai" && (
+                        <>
+                          <FormLabel>Account Opening Branch</FormLabel>
+                          <Field name="accountOpeningBranch" as={FormInput} placeholder="Enter Your Account Opening Branch" />
+                          <ErrorMessage name="accountOpeningBranch" component="div" style={{ color: "red", marginBottom: "1rem" }} />
+
+                          <FormLabel>IBAN</FormLabel>
+                          <Field name="iban" as={FormInput} placeholder="Enter Your IBAN" />
+                          <ErrorMessage name="iban" component="div" style={{ color: "red", marginBottom: "1rem" }} />
+                        </>
+                      )}
+
+                      {selectedCountry === "India" && (
+                        <>
+                          <FormLabel>IFSC</FormLabel>
+                          <Field name="ifsc" as={FormInput} placeholder="Enter Your IFSC" />
+                          <ErrorMessage name="ifsc" component="div" style={{ color: "red", marginBottom: "1rem" }} />
+                        </>
+                      )}
+                    </FormSection>
+                    <FormButton type="submit" disabled={isSubmitting}>
+                      Submit
+                    </FormButton>
+                  </Form>
                 )}
-
-                {(selectedCountry === "UK" || selectedCountry === "USA") && (
-                  <>
-                    <FormLabel>Address</FormLabel>
-                    <FormInput name="address" value={formData.address} onChange={handleChange} placeholder="Enter Your Address" />
-                  </>
-                )}
-
-                {selectedCountry === "USA" && (
-                  <>
-                    <FormLabel>Zip Code</FormLabel>
-                    <FormInput name="zipCode" value={formData.zipCode} onChange={handleChange} placeholder="Enter Your ZipCode" />
-                  </>
-                )}
-
-                {(selectedCountry === "Brazil" || selectedCountry === "USA") && (
-                  <>
-                    <FormLabel>Account Type</FormLabel>
-                    <Select name="accountType" value={formData.accountType} onChange={handleChange}>
-                      <option value="">Select Account Type</option>
-                      <option value="Savings">Savings</option>
-                      <option value="checking">Checking</option>
-                      <option value="deposit">Deposit</option>
-                    </Select>
-                  </>
-                )}
-
-                {(selectedCountry === "Euro" || selectedCountry === "USA") && (
-                  <>
-                    <FormLabel>ABA Code</FormLabel>
-                    <FormInput name="abaCode" value={formData.abaCode} onChange={handleChange} placeholder="9 Digit" />
-                  </>
-                )}
-
-                {selectedCountry === "Euro" && (
-                  <>
-                    <FormLabel>Swift Code</FormLabel>
-                    <FormInput name="swiftCode" value={formData.swiftCode} onChange={handleChange} placeholder="Enter Your Swift Code" />
-                  </>
-                )}
-
-                {selectedCountry === "UK" && (
-                  <>
-                    <FormLabel>Sort Code</FormLabel>
-                    <FormInput name="sortCode" value={formData.sortCode} onChange={handleChange} placeholder="Enter Your Sort Code" />
-                  </>
-                )}
-
-                {selectedCountry === "Brazil" && (
-                  <>
-                    <FormLabel>ID Type</FormLabel>
-                    <FormInput name="idType" value={formData.idType} onChange={handleChange} placeholder="Enter Your Id Type" />
-
-                    <FormLabel>Id Number</FormLabel>
-                    <FormInput name="idNumber" value={formData.idNumber} onChange={handleChange} placeholder="Enter Your Id Number" />
-
-                    <FormLabel>Bank Branch Code</FormLabel>
-                    <FormInput name="bankBranchCode" value={formData.bankBranchCode} onChange={handleChange} placeholder="Enter Your Code" />
-                  </>
-                )}
-
-                {selectedCountry === "Dubai" && (
-                  <>
-                    <FormLabel>Account opening branch</FormLabel>
-                    <FormInput name="accountOpeningBranch" value={formData.accountOpeningBranch} onChange={handleChange} placeholder="Enter Your Branch" />
-
-                    <FormLabel>IBAN</FormLabel>
-                    <FormInput name="iban" value={formData.iban} onChange={handleChange} placeholder="Enter Your IBAN" />
-                  </>
-                )}
-
-                {selectedCountry === "India" && (
-                  <>
-                    <FormLabel>IFSC</FormLabel>
-                    <FormInput name="ifsc" value={formData.ifsc} onChange={handleChange} placeholder="Enter Your IFSC" />
-                  </>
-                )}
-              </FormSection>
-
-              <div>
-                <FormWarning>
-                  Attention: Please ensure the bank account belongs to you and the
-                  information is accurate.
-                </FormWarning>
-
-                <FormButton type="submit">
-                  Confirm
-                  <IoArrowForwardOutline />
-                </FormButton>
-              </div>
-            </form> : <>
+              </Formik>
+            ) : (
+              <>
               <CardsSection>
                 {accounts.map((account, index) => (
                   <Card
@@ -520,18 +514,19 @@ const BankTransfer = () => {
                     <Crosss>
                       <strong>Account Number:</strong> {account.AccountNo}
                     </Crosss>
-                    <Crosss>
+                    {/* <Crosss>
                       <strong>IFSC:</strong> {account.IFSC}
-                    </Crosss>
+                    </Crosss> */}
                   </Card>
                 ))}
               </CardsSection>
-            </>}
+            </>
+            )}
           </FormContainer>
         </FormWrapper>
       </PageContainer>
-      <HomeContact />
       <Footer />
+      <ToastContainer />
     </>
   );
 };

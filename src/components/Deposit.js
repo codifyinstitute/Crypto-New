@@ -965,6 +965,15 @@ const Deposit = () => {
   const [TRCValue, setTRVvalue] = useState()
   const [selectNetwork, setSelectNetwork] = useState('TRC20');
 
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    token ? setLogin(true) : setLogin(false);
+    if (!token) {
+      navigate("/sell2")
+    }
+  }, [])
+
+
 
   useEffect(() => {
     const countdown = setInterval(() => {
@@ -974,10 +983,6 @@ const Deposit = () => {
     return () => clearInterval(countdown);
   }, []);
 
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    token ? setLogin(true) : setLogin(false);
-  }, [])
 
   const handleRefresh = () => {
     setTimer(30);
@@ -987,8 +992,8 @@ const Deposit = () => {
   //   const fetchData = async () => {
   //     try {
   //       const [currenciesResponse, feesResponse] = await Promise.all([
-  //         axios.get('http://localhost:8000/currencies/all'),
-  //         fetch('http://localhost:8000/static/get/66c445a358802d46d5d70dd4')
+  //         axios.get('https://crypto-backend-main.onrender.com/currencies/all'),
+  //         fetch('https://crypto-backend-main.onrender.com/static/get/66c445a358802d46d5d70dd4')
   //       ]);
 
   //       setCurrencies(currenciesResponse.data);
@@ -1141,7 +1146,7 @@ const Deposit = () => {
   const token = localStorage.getItem("token");
   const fetchWallet = async () => {
     try {
-      const response = await fetch(`http://localhost:8000/wallet/get/${token}`);
+      const response = await fetch(`https://crypto-backend-main.onrender.com/wallet/get/${token}`);
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
@@ -1153,9 +1158,9 @@ const Deposit = () => {
     }
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     fetchWallet();
-  },[])
+  }, [])
 
 
   return (
@@ -1172,9 +1177,9 @@ const Deposit = () => {
               </BackButton>
               {/* <Tab active> USDT Deposit </Tab> */}
               <TabWrapper>
-    <Tab>USDT Deposit</Tab>
-  </TabWrapper>
-              <AiOutlineHistory onClick={()=>navigate("/depositHistory")} style={{ color: '#FFA500', fontSize: '30px' }} />
+                <Tab>USDT Deposit</Tab>
+              </TabWrapper>
+              <AiOutlineHistory onClick={() => navigate("/depositHistory")} style={{ color: '#FFA500', fontSize: '30px' }} />
             </TabContainer>
 
             <InputLabel>You Deposit</InputLabel>
@@ -1186,63 +1191,63 @@ const Deposit = () => {
 
 
 
-<NetworkWrapper>
-  {selectNetwork === 'TRC20' ? (
+            <NetworkWrapper>
+              {selectNetwork === 'TRC20' ? (
 
-    <ActiveButton onClick={handleTrcClick} style={{ position: "relative" }}>
-  <Check strokeWidth={3}
-    style={{ 
-      position: "absolute",
-      bottom: "5px",
-      right: "5px",
-      backgroundColor: "#FFF176",
-      borderRadius: "50%",
-      padding: "2px",
-      // color: "black",
-      color: "#000000",
-      width: "16px",
-      height: "16px" 
-    }} 
-  />
-  <img src={trcimg} alt="TRC20 Icon" style={{ width: "20px", height: "20px", marginRight: "8px" }} />
-  TRC20
-</ActiveButton>
+                <ActiveButton onClick={handleTrcClick} style={{ position: "relative" }}>
+                  <Check strokeWidth={3}
+                    style={{
+                      position: "absolute",
+                      bottom: "5px",
+                      right: "5px",
+                      backgroundColor: "#FFF176",
+                      borderRadius: "50%",
+                      padding: "2px",
+                      // color: "black",
+                      color: "#000000",
+                      width: "16px",
+                      height: "16px"
+                    }}
+                  />
+                  <img src={trcimg} alt="TRC20 Icon" style={{ width: "20px", height: "20px", marginRight: "8px" }} />
+                  TRC20
+                </ActiveButton>
 
-  ) : (
-    <InactiveButton onClick={handleTrcClick}>
-             <img src={trcimg} alt="TRC20 Icon" style={{ width: "20px", height: "20px", marginRight: "8px" }} />
-      TRC20
-    </InactiveButton>
-  )}
-  {selectNetwork === 'BEP20' ? (
-    <ActiveButton onClick={handleBepClick} style={{ position: "relative" }}>
-         <Check strokeWidth={3}
-    style={{ 
-      position: "absolute",
-      bottom: "5px",
-      right: "5px",
-      backgroundColor: "#FFF176",
-      borderRadius: "50%",
-      padding: "2px",
-      color: "#000000", 
-      width: "16px",
-      height: "16px" 
-    }} 
-  />
-  {/* <Check color="#f9f06b" strokeWidth={3} /> */}
-      <img src={Bepimg} alt="BEP20 Icon" style={{ width: "20px", height: "20px", marginRight: "8px" }} />
+              ) : (
+                <InactiveButton onClick={handleTrcClick}>
+                  <img src={trcimg} alt="TRC20 Icon" style={{ width: "20px", height: "20px", marginRight: "8px" }} />
+                  TRC20
+                </InactiveButton>
+              )}
+              {selectNetwork === 'BEP20' ? (
+                <ActiveButton onClick={handleBepClick} style={{ position: "relative" }}>
+                  <Check strokeWidth={3}
+                    style={{
+                      position: "absolute",
+                      bottom: "5px",
+                      right: "5px",
+                      backgroundColor: "#FFF176",
+                      borderRadius: "50%",
+                      padding: "2px",
+                      color: "#000000",
+                      width: "16px",
+                      height: "16px"
+                    }}
+                  />
+                  {/* <Check color="#f9f06b" strokeWidth={3} /> */}
+                  <img src={Bepimg} alt="BEP20 Icon" style={{ width: "20px", height: "20px", marginRight: "8px" }} />
 
-      BEP20
-    </ActiveButton>
-  ) : (
-    <InactiveButton onClick={handleBepClick}>
-          
-          <img src={Bepimg} alt="BEP20 Icon" style={{ width: "20px", height: "20px", marginRight: "8px" }} />
+                  BEP20
+                </ActiveButton>
+              ) : (
+                <InactiveButton onClick={handleBepClick}>
 
-      BEP20
-    </InactiveButton>
-  )}
-</NetworkWrapper>
+                  <img src={Bepimg} alt="BEP20 Icon" style={{ width: "20px", height: "20px", marginRight: "8px" }} />
+
+                  BEP20
+                </InactiveButton>
+              )}
+            </NetworkWrapper>
 
 
 
@@ -1255,14 +1260,14 @@ const Deposit = () => {
                 value={usdt}
                 onChange={(e) => setUsdt(e.target.value)}
               />
-              
-              <DepsitCurrencyIcon src={usdtimg}   style={{ width: "26px", height: "26px"}} />
-           
-               <CurrencyText>USDT</CurrencyText>
+
+              <DepsitCurrencyIcon src={usdtimg} style={{ width: "26px", height: "26px" }} />
+
+              <CurrencyText>USDT</CurrencyText>
             </DepositInput>
             <BalanceWrapper>
               <BalanceText>
-              Available  :
+                Available  :
               </BalanceText>
 
               <IconValueWrapper>
@@ -1324,7 +1329,7 @@ const Deposit = () => {
               Powered by <Moonn src={logoM} />
             </PoweredBy>
           </div>
-         
+
           <Indicator onClick={toggleCardVisibility}>
             <Info size={20} />
           </Indicator>

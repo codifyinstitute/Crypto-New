@@ -39,6 +39,9 @@ const WithdrawUSDT = () => {
   useEffect(() => {
     const token = localStorage.getItem('token');
     setLogin(!!token);
+    if (!token) {
+      navigate('/sell2')
+    }
   }, []);
 
   useEffect(() => {
@@ -59,6 +62,13 @@ const WithdrawUSDT = () => {
       setAddressError('');
     }
   };
+
+  useEffect(()=>{
+    if(withdrawAmount>walletAmount){
+      setAmountError('Insufficient balance');
+      setIsFormValid(false)
+    }
+  },[withdrawAmount, walletAmount])
 
   const handleAmountChange = (e) => {
     const value = e.target.value;
@@ -160,7 +170,7 @@ const WithdrawUSDT = () => {
       const formattedDate = currentDate.toLocaleDateString();
       const formattedTime = currentDate.toLocaleTimeString();
       try {
-        const response = await fetch("http://localhost:8000/withdraw/add", {
+        const response = await fetch("https://crypto-backend-main.onrender.com/withdraw/add", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -205,7 +215,7 @@ const WithdrawUSDT = () => {
   const token = localStorage.getItem("token");
   const fetchWallet = async () => {
     try {
-      const response = await fetch(`http://localhost:8000/wallet/get/${token}`);
+      const response = await fetch(`https://crypto-backend-main.onrender.com/wallet/get/${token}`);
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }

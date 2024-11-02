@@ -192,6 +192,39 @@ const ConfirmationModalContent = styled.div`
   width: 300px;
 `;
 
+const countryObject = {
+  India: {
+    urlName: "india",
+    symbol: "₹",
+    name: "India"
+  },
+  Brazil: {
+    urlName: "brl",
+    symbol: "R$",
+    name: "Brazil"
+  },
+  UK: {
+    urlName: "uk",
+    symbol: "£",
+    name: "United Kingdom"
+  },
+  Euro: {
+    urlName: "euro",
+    symbol: "€",
+    name: "European Union"
+  },
+  Dubai: {
+    urlName: "aed",
+    symbol: "د.إ",
+    name: "Dubai"
+  },
+  USA: {
+    urlName: "usa",
+    symbol: "$",
+    name: "United States of America"
+  }
+}
+
 const AdminTransaction = () => {
   const navigate = useNavigate();
   const [modalVisible, setModalVisible] = useState(false);
@@ -222,7 +255,7 @@ const AdminTransaction = () => {
   useEffect(() => {
     const fetchTransactions = async () => {
       try {
-        const response = await fetch('http://localhost:8000/transactions/all');
+        const response = await fetch('https://crypto-backend-main.onrender.com/transactions/all');
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
@@ -279,7 +312,7 @@ const AdminTransaction = () => {
     }
 
     try {
-      const response = await fetch(`http://localhost:8000/transactions/put/${selectedTransactionId}`, {
+      const response = await fetch(`https://crypto-backend-main.onrender.com/transactions/put/${selectedTransactionId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -297,7 +330,7 @@ const AdminTransaction = () => {
       setSelectedTransactionId('');
 
       // Refetch transactions
-      const updatedTransactions = await fetch('http://localhost:8000/transactions/all').then(res => res.json());
+      const updatedTransactions = await fetch('https://crypto-backend-main.onrender.com/transactions/all').then(res => res.json());
       setTransactions(updatedTransactions.reverse());
     } catch (error) {
       console.error('Error updating transaction status:', error);
@@ -317,8 +350,8 @@ const AdminTransaction = () => {
   const handleConfirmAction = async () => {
     try {
       const url = confirmAction.type === 'accept'
-        ? `http://localhost:8000/transactions/complete/${confirmAction.id}`
-        : `http://localhost:8000/transactions/reject/${confirmAction.id}`;
+        ? `https://crypto-backend-main.onrender.com/transactions/complete/${confirmAction.id}`
+        : `https://crypto-backend-main.onrender.com/transactions/reject/${confirmAction.id}`;
 
       const response = await fetch(url, {
         method: 'PUT',
@@ -334,7 +367,7 @@ const AdminTransaction = () => {
 
       toast.success(`Transaction ${confirmAction.type === 'accept' ? 'accepted' : 'rejected'} successfully!`);
 
-      const updatedTransactions = await fetch('http://localhost:8000/transactions/all').then(res => res.json());
+      const updatedTransactions = await fetch('https://crypto-backend-main.onrender.com/transactions/all').then(res => res.json());
       setTransactions(updatedTransactions.reverse());
       setFilteredTransactions(updatedTransactions.reverse());
     } catch (error) {
@@ -347,7 +380,7 @@ const AdminTransaction = () => {
 
   const handelReject = async (id, value) => {
     try {
-      const response = await fetch(`http://localhost:8000/transactions/reject/${id}`, { // Updated URL for the backend
+      const response = await fetch(`https://crypto-backend-main.onrender.com/transactions/reject/${id}`, { // Updated URL for the backend
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -374,7 +407,7 @@ const AdminTransaction = () => {
 
   const handelConfirm = async (id, value) => {
     try {
-      const response = await fetch(`http://localhost:8000/transactions/complete/${id}`, { // Updated URL for the backend
+      const response = await fetch(`https://crypto-backend-main.onrender.com/transactions/complete/${id}`, { // Updated URL for the backend
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -476,9 +509,9 @@ const AdminTransaction = () => {
                     <td>{transaction.Country}</td>
                     <td>{transaction.Token}</td>
                     <td>{transaction.USDTAmount}</td>
-                    <td>{transaction.ProcessingFee}</td>
-                    <td>{transaction.NetworkFee}</td>
-                    <td>{transaction.ReceivedAmount}</td>
+                    <td>{countryObject[transaction.Country].symbol} {transaction.ProcessingFee}</td>
+                    <td>{countryObject[transaction.Country].symbol} {transaction.NetworkFee}</td>
+                    <td>{countryObject[transaction.Country].symbol} {transaction.ReceivedAmount}</td>
                     <td>{transaction.Status}</td>
                     <td>{transaction.Date}</td>
                     <td>{transaction.Time}</td>
@@ -536,12 +569,10 @@ const AdminTransaction = () => {
         <ModalBackground onClick={closeModal}>
           <ModalContent onClick={(e) => e.stopPropagation()}>
             <CloseButton onClick={closeModal}>&times;</CloseButton>
-            <h2>Account Details</h2>
             <TablePop>
               <thead>
                 <tr>
-                  <th>Field</th>
-                  <th>Value</th>
+                <th colSpan="2">{Object.keys(accountDetails).includes("CardNumber")?"Card Details":"Bank Details"}</th>
                 </tr>
               </thead>
               <tbody>
