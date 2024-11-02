@@ -364,7 +364,7 @@ const Sell7 = () => {
           </InfoBox>
 
           <Button onClick={()=>navigate('/withdrawhistory')}>
-            History
+            Withdraw Status
             <ChevronRight size={24} />
           </Button>
         </Container>

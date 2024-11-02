@@ -364,7 +364,7 @@ const Sell5 = () => {
           </InfoBox>
 
           <Button onClick={()=>navigate('/deposithistory')}>
-            History
+            Deposit Status
             <ChevronRight size={24} />
           </Button>
         </Container>
