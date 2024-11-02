@@ -149,6 +149,7 @@ const Sidebar = ({ isOpen, setIsSidebarOpen }) => {
         {/* <SidebarButton onClick={() => handleNavigation('/admin/transactionFee')}>Transaction Fee</SidebarButton> */}
         <SidebarButton onClick={() => handleNavigation('/admin/transactions')}>View Transaction</SidebarButton>
         <SidebarButton onClick={() => handleNavigation('/admin/deposit')}>View Deposit</SidebarButton>
+        <SidebarButton onClick={() => handleNavigation('/admin/withdraw')}>View Withdraw</SidebarButton>
         {/* <SidebarButton onClick={() => handleNavigation('/admin/otherprice')}>Other Price</SidebarButton> */}
         <SidebarButton onClick={() => handleNavigation('/admin/users')}>Users</SidebarButton>
         <SidebarButton onClick={() => handleNavigation('/admin/review')}>Review</SidebarButton>

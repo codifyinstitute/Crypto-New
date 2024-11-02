@@ -47,6 +47,7 @@ import BankTransfer from './components/BankTransfer';
 import CardTransfer from './components/CardTransfer';
 import WithdrawHistory from './components/WithdrawHistory';
 import AdminDeposit from './components/Admin/AdminDeposit';
+import AdminWithdraw from './components/Admin/AdminWithdraw';
 
 
 function App() {
@@ -79,6 +80,7 @@ function App() {
         <Route path="/admin/:country/addCurrency" element={<AdminAddCurrency />} />
         <Route path="/admin/transactions" element={<AdminTransaction />} />
         <Route path="/admin/deposit" element={<AdminDeposit />} />
+        <Route path="/admin/withdraw" element={<AdminWithdraw />} />
         <Route path="/admin/users" element={<AdminUsers />} />
         <Route path="/admin/review" element={<AdminReview />} />
         <Route path="/admin/:country/transactionFee" element={<AdminTransactionFee />} />
