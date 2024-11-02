@@ -22,7 +22,7 @@ import India from "../assets/INR INDIA.jpg";
 import Brazil from "../assets/BRL BRAZIL.jpg";
 import UK from "../assets/GBP UK.jpg";
 import Euro from "../assets/EURO  EUROPEAN UNION.jpg";
-import Tether from "../assets/tether2.png";
+import Tether from "../assets/FINAL-USDT.png";
 
 // Main Navbar container
 const NavbarContainer = styled.nav`
@@ -341,7 +341,7 @@ const StyledCard = styled.button`
   // border-radius : 5px;
     background-color: black;
   border-radius : 4px 0px 0px 4px;
-
+  
   // padding: 0.5rem 0.75rem;
   // background-color: white;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
@@ -355,6 +355,7 @@ const StyledCard = styled.button`
 const IconContainer = styled.div`
   display: flex;
   align-items: center;
+  height : 40px;
   // gap: 0.5rem;
     background-color: #2b9178;
   border-radius : 4px 4px 4px 4px;
@@ -362,24 +363,36 @@ const IconContainer = styled.div`
 `;
 
 const Icon = styled.img`
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 2rem;
+  height: 2rem;
+  // padding-top : 0.2rem;
+  padding-right : 0.2rem;
   // image-size : cover;
-  background-color : gray;
+  // background-color : white;
 //  border-radius : 4px 0px 0px 4px;
   // margin-left : 0px;
 `;
 
+const IconWrapper = styled.span`
+ background-color : #f0f0f0;
+  height: 2.5rem;
+  padding-top : 0.24rem;
+  // display: inline-block; 
+  width: auto,
+`;
 const BalanceText = styled.span`
-  font-size: 1.125rem;
+  font-size: 1.35rem;
   font-weight: 600;
   color: #2b9178;
   color: white;
+  padding-left: 0.6rem;
   display: inline-block; 
   padding-right : 5px;
   margin-left : 0px;
   border-radius : 4px 0px 0px 4px;
-  min-width :40px;
+  min-width :50px;
+  // min-height :25px;
+
   width: auto,
 `;
 
@@ -532,19 +545,24 @@ const Navbar = () => {
 
     <StyledCard onClick={handleWalletClick}>
       <IconContainer>
-      <img 
+        <span style={{height : '2.5rem',  backgroundColor: '#f0f0f0',borderRadius : " 4px 0px 0px 4px"}}>
+        <img 
   src={newWallet} 
   alt="Wallet" 
   style={{
-    width: '1.6rem',            
-    height: '1.6rem',
-    padding: '0.25rem',          
+    width: '1.8rem',            
+    height: '2rem',
+    paddingTop: '0.30rem',          
     backgroundColor: '#f0f0f0',  
     borderRadius : " 4px 0px 0px 4px"
     // borderRadius: '50%'          
   }} 
 />
+          </span>
+     
+        <IconWrapper>
         <Icon src={Tether} alt="USDT" />
+        </IconWrapper>
         <BalanceText>{amount}</BalanceText>
       </IconContainer>
     </StyledCard>

@@ -70,9 +70,23 @@ const Card = styled.div`
 `;
 
 const ScrollableArea = styled.div`
-  flex-grow: 1;
+  // flex-grow: 1;
+  // overflow-y: auto;
+  // max-height: 650px;
+  // display: flex;
+  // flex-direction: column;
+
+  // &::-webkit-scrollbar {
+  //   display: none;
+  // }
+  // scrollbar-width: none;
+
+  // @media (max-width: 375px) {
+  //   max-height: 400px;
+  // }
+   flex-grow: 1;
   overflow-y: auto;
-  max-height: 650px;
+  max-height: calc(100vh - 150px); /* Adjust this value based on the total height of the header and footer */
   display: flex;
   flex-direction: column;
 
@@ -82,7 +96,7 @@ const ScrollableArea = styled.div`
   scrollbar-width: none;
 
   @media (max-width: 375px) {
-    max-height: 400px;
+    max-height: calc(100vh - 120px); /* Adjust for smaller devices */
   }
 `;
 

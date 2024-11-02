@@ -11,7 +11,7 @@ import wallet from "../assets/wallet3.png";
 import newWallet from "../assets/new icon/newWallet.png";
 
 
-import coin from "../assets/tether2.png";
+import coin from "../assets/FINAL-USDT.png";
 import deposit from "../assets/depositimg.jpg";
 import withdraw from "../assets/withdraw.jpg";
 import withdrawicon from "../assets/withdrawicon-removebg-preview.png";
@@ -119,8 +119,8 @@ const Balance = styled.div`
 
   img {
     margin-left: 5px;
-    width: 25px;
-    height: 25px;
+    width: 30px;
+    height: 30px;
   }
 `;
 
@@ -488,7 +488,7 @@ const Wallet = () => {
       <span style={{ fontSize: "16px", marginTop: "7px", fontWeight: "700" }}>Wallet balance</span>
     </Balance>
             </Part>
-            {login ? null : <LoginButton onClick={()=>navigate('/sell2')}>Login to Deposit</LoginButton>}
+            {login ? null : <LoginButton>Login to Deposit</LoginButton>}
             <ActionButtons>
                 <Deposit onClick={handleDepositclick}>
                   <div>

@@ -88,8 +88,8 @@ const ExchangeName = styled.div`
 `;
 
 const Price = styled.div`
-  font-size: 1.2rem;
-  font-weight: bold;
+  font-size: 1rem;
+  font-weight: 800;
   color: white;
 
   @media (max-width: 320px) {
@@ -99,9 +99,10 @@ const Price = styled.div`
 `;
 
 const SubText = styled.div`
-  font-size: 0.8rem;
-  color: #888;
+  font-size: 0.68rem;
+  color: #999;
   margin: 5px;
+  font-weight : 1000;
   @media (max-width: 320px) {
     text-align: center;
     font-size: 0.6em;

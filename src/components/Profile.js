@@ -16,6 +16,8 @@ const Container = styled.div`
   background-color: #121212;
   min-height: 100vh;
   padding: 20px;
+  overflow-y: auto; /* Allow vertical scrolling */
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
 `;
 
 const ProfileSection = styled.div`
@@ -122,10 +124,16 @@ const WalletBalanceButton = styled.button`
 
 
 const MenuList = styled.ul`
-  list-style-type: none;
+  // list-style-type: none;
+  // padding: 0;
+  // width: 100%;
+  // max-width: 400px;
+  
+   list-style-type: none;
   padding: 0;
   width: 100%;
   max-width: 400px;
+  margin-bottom: 20px; /* Add margin for spacing */
 `;
 
 const MenuItem = styled.li`

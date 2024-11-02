@@ -387,7 +387,7 @@ const WithdrawHistory = () => {
                         />
                       </IconContainer>
                       <CenteredValueContainer>
-                        <TextValue>No deposit history available.</TextValue>
+                        <TextValue>No Withdraw history available.</TextValue>
                       </CenteredValueContainer>
                     </NoHistoryContainer>
                    ): (

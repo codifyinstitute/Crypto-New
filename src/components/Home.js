@@ -910,7 +910,7 @@ const CurrencyInfo = styled.div`
 const CurrencySymbol = styled.span`
   font-size: 12px;
   color: #888;
-  margin-top: 6%;
+  // margin-top: 6%;
 `;
 
 const CurrencyName = styled.span`

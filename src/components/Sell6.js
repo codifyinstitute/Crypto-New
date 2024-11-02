@@ -34,6 +34,7 @@ const Container = styled.div`
     0 2px 4px -1px rgba(0, 0, 0, 0.06);
   @media (max-width: 430px) {
     width: 100%;
+    height : 650px;
   }
 `;
 
@@ -131,7 +132,7 @@ const InfoBox = styled.div`
   background-color: #f3f4f6;
   border-radius: 8px;
   padding: 16px;
-  margin: 32px 0;
+  margin: 48px 0;
 `;
 
 const InfoTitle = styled.div`
@@ -363,8 +364,8 @@ const Sell5 = () => {
             </InfoText>
           </InfoBox>
 
-          <Button onClick={()=>navigate('/')}>
-            Home
+          <Button onClick={()=>navigate('/depositHistory')}>
+            See Status
             <ChevronRight size={24} />
           </Button>
         </Container>
