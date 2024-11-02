@@ -1,9 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit'
+var country = localStorage.getItem("Country");
 
 export const countrySlice = createSlice({
     name: 'country',
     initialState: {
-        value: "India"
+        value: country
     },
     reducers: {
         changeCountry: (state, action) => {

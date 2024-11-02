@@ -33,7 +33,7 @@ const WithdrawUSDT = () => {
   const navigate = useNavigate();
 
   const handleBackClick = () => {
-    navigate('/');
+    navigate('/wallet');
   };
 
   useEffect(() => {
@@ -179,7 +179,7 @@ const WithdrawUSDT = () => {
             Email: localStorage.getItem("token"),
             Network: selectNetwork,
             Currency: "USDT",
-            Status: "Failed",
+            Status: "Pending",
             Date: formattedDate,
             Time: formattedTime,
             WithdrawAmount: withdrawAmount,
@@ -202,7 +202,7 @@ const WithdrawUSDT = () => {
         setSelectNetwork('TRC20'); // Reset to default or desired network
         setIsFormValid(false); // Reset form validity state if needed
 
-        navigate("/", { state: { data: result } });
+        navigate("/sell7", { state: { data: result } });
       } catch (error) {
         alert("Error submitting transaction: " + error.message);
       }

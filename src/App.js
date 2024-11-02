@@ -12,6 +12,7 @@ import Sell3 from './components/Sell3';
 import Sell4 from './components/Sell4';
 import Sell5 from './components/Sell5';
 import Sell6 from './components/Sell6';
+import Sell7 from './components/Sell7';
 import Profile from './components/Profile';
 import Bank from './components/Bank';
 import Transaction from './components/SellHistory';
@@ -67,6 +68,7 @@ function App() {
         <Route path="/qr-code" element={<QRCodeCard />} />
         <Route path="/Sell5" element={<Sell5 />} />
         <Route path="/Sell6" element={<Sell6 />} />
+        <Route path="/Sell7" element={<Sell7 />} />
         <Route path="/otp" element={<OTPPage />} />
         <Route path="/Profile" element={<Profile />} />
         <Route path="/Refer" element={<Refer />} />

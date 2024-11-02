@@ -807,7 +807,7 @@ const AccountInfo = styled.div`
 
 const AccountName = styled.span`
   font-weight: bold;
-  margin-bottom: 5px;
+  /* margin-bottom: 5px; */
   font-size: 18px;
   display: flex;
   justify-content: space-between;
@@ -915,14 +915,14 @@ const baseSchema = {
   firstName: Yup.string()
     .matches(/^[A-Za-z\s]+$/, "First name can only contain letters")
     .required("First name is required"),
-    
+
   lastName: Yup.string()
     .matches(/^[A-Za-z\s]+$/, "Last name can only contain letters")
     .required("Last name is required"),
-    
+
   bankName: Yup.string()
     .required("Bank name is required"),
-    
+
   accountNumber: Yup.string()
     .matches(/^\d+$/, "Account number must be a number")
     .required("Account number is required"),
@@ -1001,14 +1001,20 @@ const Bank = () => {
       });
   }, [selectedCountry]);
 
-  const handleDelete = async (accountNumber) => {
+  const handleDelete = async (id) => {
     try {
       const token = localStorage.getItem('token');
-      await axios.delete(`https://crypto-backend-main.onrender.com/users/del/${token}/accounts/${accountNumber}`);
-      setAccounts((prevAccounts) =>
-        prevAccounts.filter((account) => account.AccountNumber !== accountNumber)
-      );
+      await axios.delete(`https://crypto-backend-main.onrender.com/account-details/${countryObject[selectedCountry].urlName}/${id}`);
       toast.success('Account deleted successfully!');
+      axios
+        .get(`https://crypto-backend-main.onrender.com/account-details/bank/all/${token}`)
+        .then((response) => {
+          const filData = response.data.filter(val => val.Country === countryObject[selectedCountry].name);
+          setAccounts(filData.reverse());
+        })
+        .catch((error) => {
+          console.error("Error fetching Accounts:", error);
+        });
     } catch (error) {
       console.error('Error deleting account:', error);
       toast.error('Failed to delete account.');
@@ -1024,8 +1030,8 @@ const Bank = () => {
             <BackButton onClick={() => window.history.back()}><ChevronLeft /></BackButton>
             <Title>Bank Accounts</Title>
           </div>
-          {showForm?<AddButton onClick={() => setShowForm(false)}>View Bank</AddButton>:<AddButton onClick={() => setShowForm(true)}>Add Bank</AddButton>}
-          
+          {showForm ? <AddButton onClick={() => setShowForm(false)}>View Bank</AddButton> : <AddButton onClick={() => setShowForm(true)}>Add Bank</AddButton>}
+
         </Header>
 
         <Maindiv>
@@ -1061,7 +1067,7 @@ const Bank = () => {
                   BankName: values.bankName,
                   AccountNo: values.accountNumber,
                 };
-              
+
                 // Add country-specific fields
                 if (selectedCountry === "USA") {
                   submissionData.City = values.city;
@@ -1084,9 +1090,9 @@ const Bank = () => {
                 } else if (selectedCountry === "India") {
                   submissionData.IFSC = values.ifsc;
                 }
-              
+
                 const url = `https://crypto-backend-main.onrender.com/account-details/${countryObject[selectedCountry].urlName}/add`;
-              
+
                 try {
                   await axios.post(url, submissionData);
                   toast.success("Data saved successfully!");
@@ -1120,7 +1126,7 @@ const Bank = () => {
                           onBlur={handleBlur}
                           placeholder="Please enter your First name"
                         />
-                        {errors.firstName && touched.firstName && <div style={{color:"red",marginBottom:"1rem"}}>{errors.firstName}</div>}
+                        {errors.firstName && touched.firstName && <div style={{ color: "red", marginBottom: "1rem" }}>{errors.firstName}</div>}
 
                         <FormLabel>Last Name</FormLabel>
                         <FormInput
@@ -1130,7 +1136,7 @@ const Bank = () => {
                           onBlur={handleBlur}
                           placeholder="Please enter your Last name"
                         />
-                        {errors.lastName && touched.lastName && <div style={{color:"red",marginBottom:"1rem"}}>{errors.lastName}</div>}
+                        {errors.lastName && touched.lastName && <div style={{ color: "red", marginBottom: "1rem" }}>{errors.lastName}</div>}
 
                         <FormLabel>Bank Name</FormLabel>
                         <FormInput
@@ -1140,7 +1146,7 @@ const Bank = () => {
                           onBlur={handleBlur}
                           placeholder="Enter Your Bank Name"
                         />
-                        {errors.bankName && touched.bankName && <div style={{color:"red",marginBottom:"1rem"}}>{errors.bankName}</div>}
+                        {errors.bankName && touched.bankName && <div style={{ color: "red", marginBottom: "1rem" }}>{errors.bankName}</div>}
 
                         <FormLabel>Account Number</FormLabel>
                         <FormInput
@@ -1150,7 +1156,7 @@ const Bank = () => {
                           onBlur={handleBlur}
                           placeholder="Enter Your Account Number"
                         />
-                        {errors.accountNumber && touched.accountNumber && <div style={{color:"red",marginBottom:"1rem"}}>{errors.accountNumber}</div>}
+                        {errors.accountNumber && touched.accountNumber && <div style={{ color: "red", marginBottom: "1rem" }}>{errors.accountNumber}</div>}
 
                         {/* Conditional Fields Based on Selected Country */}
                         {selectedCountry === "USA" && (
@@ -1163,7 +1169,7 @@ const Bank = () => {
                               onBlur={handleBlur}
                               placeholder="Please enter City"
                             />
-                            {errors.city && touched.city && <div style={{color:"red",marginBottom:"1rem"}}>{errors.city}</div>}
+                            {errors.city && touched.city && <div style={{ color: "red", marginBottom: "1rem" }}>{errors.city}</div>}
 
                             <FormLabel>State</FormLabel>
                             <FormInput
@@ -1173,7 +1179,7 @@ const Bank = () => {
                               onBlur={handleBlur}
                               placeholder="Enter Your State"
                             />
-                            {errors.state && touched.state && <div style={{color:"red",marginBottom:"1rem"}}>{errors.state}</div>}
+                            {errors.state && touched.state && <div style={{ color: "red", marginBottom: "1rem" }}>{errors.state}</div>}
                           </>
                         )}
 
@@ -1187,7 +1193,7 @@ const Bank = () => {
                               onBlur={handleBlur}
                               placeholder="Enter Your Id Type"
                             />
-                            {errors.idType && touched.idType && <div style={{color:"red",marginBottom:"1rem"}}>{errors.idType}</div>}
+                            {errors.idType && touched.idType && <div style={{ color: "red", marginBottom: "1rem" }}>{errors.idType}</div>}
 
                             <FormLabel>ID Number</FormLabel>
                             <FormInput
@@ -1197,7 +1203,7 @@ const Bank = () => {
                               onBlur={handleBlur}
                               placeholder="Enter Your Id Number"
                             />
-                            {errors.idNumber && touched.idNumber && <div style={{color:"red",marginBottom:"1rem"}}>{errors.idNumber}</div>}
+                            {errors.idNumber && touched.idNumber && <div style={{ color: "red", marginBottom: "1rem" }}>{errors.idNumber}</div>}
 
                             <FormLabel>Bank Branch Code</FormLabel>
                             <FormInput
@@ -1207,7 +1213,7 @@ const Bank = () => {
                               onBlur={handleBlur}
                               placeholder="Enter Your Code"
                             />
-                            {errors.bankBranchCode && touched.bankBranchCode && <div style={{color:"red",marginBottom:"1rem"}}>{errors.bankBranchCode}</div>}
+                            {errors.bankBranchCode && touched.bankBranchCode && <div style={{ color: "red", marginBottom: "1rem" }}>{errors.bankBranchCode}</div>}
                           </>
                         )}
 
@@ -1221,7 +1227,7 @@ const Bank = () => {
                               onBlur={handleBlur}
                               placeholder="Enter Your Sort Code"
                             />
-                            {errors.sortCode && touched.sortCode && <div style={{color:"red",marginBottom:"1rem"}}>{errors.sortCode}</div>}
+                            {errors.sortCode && touched.sortCode && <div style={{ color: "red", marginBottom: "1rem" }}>{errors.sortCode}</div>}
                           </>
                         )}
 
@@ -1235,7 +1241,7 @@ const Bank = () => {
                               onBlur={handleBlur}
                               placeholder="Enter Your Branch"
                             />
-                            {errors.accountOpeningBranch && touched.accountOpeningBranch && <div style={{color:"red",marginBottom:"1rem"}}>{errors.accountOpeningBranch}</div>}
+                            {errors.accountOpeningBranch && touched.accountOpeningBranch && <div style={{ color: "red", marginBottom: "1rem" }}>{errors.accountOpeningBranch}</div>}
 
                             <FormLabel>IBAN</FormLabel>
                             <FormInput
@@ -1245,7 +1251,7 @@ const Bank = () => {
                               onBlur={handleBlur}
                               placeholder="Enter Your IBAN"
                             />
-                            {errors.iban && touched.iban && <div style={{color:"red",marginBottom:"1rem"}}>{errors.iban}</div>}
+                            {errors.iban && touched.iban && <div style={{ color: "red", marginBottom: "1rem" }}>{errors.iban}</div>}
                           </>
                         )}
 
@@ -1259,7 +1265,7 @@ const Bank = () => {
                               onBlur={handleBlur}
                               placeholder="Enter Your IFSC"
                             />
-                            {errors.ifsc && touched.ifsc && <div style={{color:"red",marginBottom:"1rem"}}>{errors.ifsc}</div>}
+                            {errors.ifsc && touched.ifsc && <div style={{ color: "red", marginBottom: "1rem" }}>{errors.ifsc}</div>}
                           </>
                         )}
 
@@ -1275,15 +1281,15 @@ const Bank = () => {
           ) : (
             accounts.map((account) => (
               <AccountCard key={account.AccountNumber}>
-                <AccountInfo>
-                  <AccountName>
-                    <div>Bank Name: {account.BankName}</div>
-                    <div>Account Holder: {account.FirstName} {account.LastName}</div>
-                    <div>Account No: {account.AccountNo}</div>
-                    <div>Country: {account.Country}</div>
-                  </AccountName>
+                <AccountInfo><br /><br />
+                  <AccountName><Maincol><Col1><Label>   Bank Name:  </Label></Col1>   <Col2>      {account.BankName} </Col2> </Maincol> </AccountName>
+                  <AccountDetails><Maincol><Col1><Label>Account Name: </Label></Col1>     <Col2>          {account.FirstName}  {account.LastName}</Col2>  </Maincol> </AccountDetails>
+
+                  <AccountNumberValue><Maincol><Col1><Label>Account No: </Label> </Col1>    <Col2>        {account.AccountNo}</Col2> </Maincol> </AccountNumberValue>
+                  {/* <AccountDetails><Maincol><Col1><Label>IFSC</Label>      </Col1>       <Col2>   {account.IFSC}</Col2></Maincol> </AccountDetails>
+                <AccountDetails><Maincol><Col1><Label>Country</Label> </Col1>       <Col2>         {account.Country}</Col2></Maincol>  </AccountDetails> */}
                 </AccountInfo>
-                <DeleteButton onClick={() => handleDelete(account.AccountNumber)}>
+                <DeleteButton onClick={() => handleDelete(account._id)}>
                   Delete
                 </DeleteButton>
               </AccountCard>

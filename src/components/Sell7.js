@@ -270,7 +270,7 @@ const SuccessMessage = styled.div`
   } 
 `;
 
-const Sell5 = () => {
+const Sell7 = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const starCount = 12;
@@ -340,7 +340,7 @@ const Sell5 = () => {
             </TimelineItem>
             <TimelineItem>
               <TimelineDot />
-              <TimelineLabel>Deposited</TimelineLabel>
+              <TimelineLabel>Withdrew</TimelineLabel>
             </TimelineItem>
           </Timeline>
 
@@ -350,20 +350,20 @@ const Sell5 = () => {
               Transaction Details
             </InfoTitle>
             <InfoText>
-              <span style={{fontWeight:"bold"}}>Order Id :</span> <span>{location.state?.data?.transaction?.OrderId}</span>
+              <span style={{fontWeight:"bold"}}> Network :</span> <span>{location.state?.data?.Network}</span>
             </InfoText>
             <InfoText>
-              <span style={{fontWeight:"bold"}}>USDT :</span> <span>{location.state?.data?.transaction?.Amount} USDT</span>
+              <span style={{fontWeight:"bold"}}>USDT :</span> <span>{location.state?.data?.WithdrawAmount} USDT</span>
             </InfoText>
-            {/* <InfoText>
-              <span style={{fontWeight:"bold"}}>Your Recieve :</span> <span>₹{location.state?.data?.ReceivedAmount}</span>
-            </InfoText> */}
             <InfoText>
-              <span style={{fontWeight:"bold"}}>Satus :</span> <span>{location.state?.data?.transaction?.Status}</span>
+              <span style={{fontWeight:"bold"}}>Satus :</span> <span>{location.state?.data?.Status}</span>
+            </InfoText>
+            <InfoText>
+              <span style={{fontWeight:"bold"}}>Time :</span> <span>{location.state?.data?.Time}</span>
             </InfoText>
           </InfoBox>
 
-          <Button onClick={()=>navigate('/deposithistory')}>
+          <Button onClick={()=>navigate('/withdrawhistory')}>
             History
             <ChevronRight size={24} />
           </Button>
@@ -375,4 +375,4 @@ const Sell5 = () => {
   );
 };
 
-export default Sell5;
+export default Sell7;
