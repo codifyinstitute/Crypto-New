@@ -34,7 +34,6 @@ const Container = styled.div`
     0 2px 4px -1px rgba(0, 0, 0, 0.06);
   @media (max-width: 430px) {
     width: 100%;
-    height : 650px;
   }
 `;
 
@@ -132,7 +131,7 @@ const InfoBox = styled.div`
   background-color: #f3f4f6;
   border-radius: 8px;
   padding: 16px;
-  margin: 48px 0;
+  margin: 32px 0;
 `;
 
 const InfoTitle = styled.div`
@@ -271,7 +270,7 @@ const SuccessMessage = styled.div`
   } 
 `;
 
-const Sell5 = () => {
+const Sell7 = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const starCount = 12;
@@ -341,7 +340,7 @@ const Sell5 = () => {
             </TimelineItem>
             <TimelineItem>
               <TimelineDot />
-              <TimelineLabel>Deposited</TimelineLabel>
+              <TimelineLabel>Withdrew</TimelineLabel>
             </TimelineItem>
           </Timeline>
 
@@ -351,21 +350,21 @@ const Sell5 = () => {
               Transaction Details
             </InfoTitle>
             <InfoText>
-              <span style={{fontWeight:"bold"}}>Order Id :</span> <span>{location.state?.data?.transaction?.OrderId}</span>
+              <span style={{fontWeight:"bold"}}> Network :</span> <span>{location.state?.data?.Network}</span>
             </InfoText>
             <InfoText>
-              <span style={{fontWeight:"bold"}}>USDT :</span> <span>{location.state?.data?.transaction?.Amount} USDT</span>
+              <span style={{fontWeight:"bold"}}>USDT :</span> <span>{location.state?.data?.WithdrawAmount} USDT</span>
             </InfoText>
-            {/* <InfoText>
-              <span style={{fontWeight:"bold"}}>Your Recieve :</span> <span>₹{location.state?.data?.ReceivedAmount}</span>
-            </InfoText> */}
             <InfoText>
-              <span style={{fontWeight:"bold"}}>Satus :</span> <span>{location.state?.data?.transaction?.Status}</span>
+              <span style={{fontWeight:"bold"}}>Satus :</span> <span>{location.state?.data?.Status}</span>
+            </InfoText>
+            <InfoText>
+              <span style={{fontWeight:"bold"}}>Time :</span> <span>{location.state?.data?.Time}</span>
             </InfoText>
           </InfoBox>
 
-          <Button onClick={()=>navigate('/deposithistory')}>
-            Deposit Status
+          <Button onClick={()=>navigate('/withdrawhistory')}>
+            Withdraw Status
             <ChevronRight size={24} />
           </Button>
         </Container>
@@ -376,4 +375,4 @@ const Sell5 = () => {
   );
 };
 
-export default Sell5;
+export default Sell7;

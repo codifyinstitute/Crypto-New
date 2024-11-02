@@ -408,8 +408,14 @@ const AdminDeposit = () => {
                         <InputDate
                             type="date"
                             value={filterDate}
-                            onChange={(e) => setFilterDate(e.target.value)}
+                            onChange={(e) => {
+                                // Format the date from YYYY-MM-DD to MM/DD/YYYY
+                                const date = new Date(e.target.value);
+                                const formattedDate = `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
+                                setFilterDate(formattedDate);
+                            }}
                         />
+
 
                         <Select onChange={(e) => setFilterStatus(e.target.value)} value={filterStatus}>
                             <option value="">Select Status</option>

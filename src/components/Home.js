@@ -462,7 +462,8 @@ const Home = () => {
                   <>
                     <OrderDetail>
                       <span>1 {selectedCurrency?.Name}</span>
-                      {/* <span>≈ {selectedCurrency?.Rate} {extra?`+ ${extra}`:null} INR</span> */}
+                      <span>≈ {selectedCurrency?.Rate} {" "}
+                      {selectedFiatCurrency?.symbol}</span>
                     </OrderDetail>
                     <OrderDetail>
                       <span>

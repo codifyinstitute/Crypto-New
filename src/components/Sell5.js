@@ -288,7 +288,7 @@ const Sell5 = () => {
         <Container>
           <Header>
             <TabContainer>
-              <BackButton onClick={() => window.history.back()}>
+              <BackButton onClick={() => navigate('/')}>
                 {" "}
                 <ChevronLeft></ChevronLeft>
               </BackButton>
