@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { AiOutlineHistory } from "react-icons/ai";
-import { ChevronDown, ChevronUp, ChevronRight, Info, X, Moon } from 'lucide-react';
+import { ChevronDown, ChevronUp, ChevronRight, Info, X, Moon, Weight } from 'lucide-react';
 import { ChevronLeft } from 'lucide-react';
 import ind from "./../assets/ind.jpeg";
 import usdtt from "./../assets/usdtt.png";
@@ -42,19 +42,23 @@ const ExchangeCard = styled.div`
   color: #333333;
   padding: 1.5rem;
   border-radius: 0.5rem;
-  width: 380px;
+  width: 100%;  // Use full width for mobile viewports
+  max-width: 380px;  // Limit maximum width
   height: 650px;
-  max-width: 100%;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  /* @media (max-width: 430px) {
-  margin-top: 15%;
-   
-  } */
-`;
 
+  @media (max-width: 480px) {
+    height: auto; // Allow height to adjust based on content
+    padding: 1rem; // Adjust padding for smaller screens
+  }
+
+  @media (max-width: 320px) {
+    padding: 0.5rem; // Further reduce padding for very small screens
+  }
+`;
 
 const TabContainer = styled.div`
   display: flex;
@@ -78,6 +82,14 @@ const Tab = styled.div`
   font-weight: 700;
   display: inline-block;
   text-align: left;
+
+  @media (max-width: 480px) {
+    font-size: 20px; // Adjust font size for smaller screens
+  }
+
+  @media (max-width: 320px) {
+    font-size: 18px; // Further adjust for very small screens
+  }
 `;
 const InputLabel = styled.div`
   font-size: 0.9rem;
@@ -106,16 +118,19 @@ const Input = styled.input`
   color: #333;
   font-size: 1.5rem;
   font-weight: bold;
-  width: 20%;
+  width: 100%; // Allow full width for input
 
   &:focus {
     outline: none;
   }
 
- @media (max-width: 480px) {
-  font-size: 1.2rem;
+  @media (max-width: 480px) {
+    font-size: 1.2rem; // Adjust font size for smaller screens
+  }
 
-  } 
+  @media (max-width: 320px) {
+    font-size: 1rem; // Further adjust for very small screens
+  }
 `;
 
 const CurrencyToggle = styled.div`
@@ -145,31 +160,32 @@ const UpdateText = styled.div`
 
 //  `
 
+
 const ProceedButton = styled.button`
-    width: 100%;
-    padding: 1rem;
-    background-color: orange;
-    color: black;
-    font-weight:700;
-    border: none;
-    border-radius: 0.5rem;
-    font-size: 20px;
-    cursor: pointer;
-    margin-top: 1rem;
-    transition: background-color 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  width: 100%; // Ensure button takes full width
+  padding: 1rem;
+  background-color: orange;
+  color: black;
+  font-weight: 700;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 20px;
+  cursor: pointer;
+  margin-top: 1rem;
+  transition: background-color 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-    &:hover {
-      background-color: rgb(227, 148, 0);
-    }
+  &:hover {
+    background-color: rgb(227, 148, 0);
+  }
 
-    &:disabled {
-      background-color: #ccc;
-      cursor: not-allowed;
-    }
-  `;
+  &:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+`;
 
 const PaymentMethods = styled.div`
     display: flex;
@@ -664,7 +680,13 @@ const NetworkWrapper = styled.div`
   width: 100%;
   height: 50px;
   margin-top: 0.5rem;
-  // background-color: #f0f0f0;
+  flex-wrap: wrap;  // Allow elements to wrap on smaller screens
+  gap: 8px;  // Add space between wrapped items for readability
+
+  @media (max-width: 480px) {
+    justify-content: space-between;
+    gap: 5px;  // Reduce gap on smaller screens if needed
+  }
 `;
 
 // const Button = styled.button`
@@ -707,24 +729,29 @@ const Button = styled.button`
   height: 50px; // Set a fixed height for uniformity
 `;
 
+
 const ActiveButton = styled(Button)`
-  width: 40%;
-  // background-color: orange;
+  width: 48%; // Use percentage to maintain responsive sizing
+  font-size: 14px; // Adjust font size for smaller screens
   color: black;
   font-weight: 700;
   border: 2px solid orange;
   border-radius: 0.5rem;
 
+  @media (max-width: 480px) {
+    width: 45%;  // Adjust width to fit better on smaller screens
+  }
 `;
 
 const InactiveButton = styled(Button)`
-  width: 40%;
+  width: 48%;
+  font-size: 14px;
   color: black;
   background-color: #e5e5e5;
 
-  // &:hover {
-  //   background-color: #aaa;
-  // }
+  @media (max-width: 480px) {
+    width: 45%;  // Adjust width similarly for consistency
+  }
 `;
 // const InactiveButton = styled(Button)`
 //   width: 40%;
@@ -744,37 +771,62 @@ const DepositInput = styled.div`
   display: flex;
   align-items: center;
   border: 1px solid #ccc;
-  padding: 8px 12px;
+  padding: 8px 10px;
   border-radius: 4px;
   width: 100%;
-  max-width: 100%; /* Ensure it doesn't exceed the container */
+  max-width: 100%;
   margin-top: 15px;
-  gap: 4px; /* Controlled spacing */
-  box-sizing: border-box; /* Ensure padding doesn't push content outside */
-  overflow: hidden; /* Prevent overflow */
+  gap: 4px;
+  box-sizing: border-box;
+  overflow: hidden;
+
+  /* Responsive adjustments for smaller viewports */
+  @media (max-width: 400px) {
+    padding: 6px 8px;
+    gap: 2px;
+  }
 `;
 
+// The input field itself
 const InputField = styled.input`
   flex: 1;
-  padding: 8px;
+  padding: 6px;
   border: none;
   outline: none;
-  font-size: 1rem; /* Use rem for better responsiveness */
+  font-size: 0.9rem; /* Smaller font for smaller screens */
   font-weight: 700;
-  box-sizing: border-box; /* Include padding in the width */
+  box-sizing: border-box;
+
+  /* Adjust padding and font size for narrow screens */
+  @media (max-width: 400px) {
+    padding: 4px;
+    font-size: 0.85rem;
+  }
 `;
 
+// Icon for currency
 const DepsitCurrencyIcon = styled.img`
-  width: 26px;
-  height: 26px;
-  flex-shrink: 0; /* Prevent shrinking */
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+
+  /* Slightly smaller icon for small screens */
+  @media (max-width: 400px) {
+    width: 20px;
+    height: 20px;
+  }
 `;
 
-const CurrencyText = styled.p`
-  font-size: 0.875rem; /* Use rem for better responsiveness */
-  font-weight: 700;
-  margin: 0;
-  flex-shrink: 0; /* Prevent shrinking */
+// Currency text (e.g., "USDT")
+const CurrencyText = styled.span`
+  font-size: 1rem;
+  font-weight: 600;
+  white-space: nowrap;
+
+  /* Smaller font for small screens */
+  @media (max-width: 400px) {
+    font-size: 0.9rem;
+  }
 `;
 
 
@@ -785,7 +837,7 @@ const BalanceWrapper = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  margin-top: 15px;
+  margin-top: 7px;
   gap: 5px;
   padding-left: 5px;
 
@@ -805,7 +857,7 @@ const IconValueWrapper = styled.div`
     padding: 5px 13px;
     border-radius: 10px;
     border: none;
-    font-size: 14px;
+    font-size: 8px;
     font-weight: 700;
     cursor: pointer;
     display: flex;
@@ -816,7 +868,7 @@ const IconValueWrapper = styled.div`
     transition: background-color 0.3s;
 `
 
-const BalanceIcon = styled.img`
+const BalanceIcon = styled.div`
   width: 18px;
   height: 18px;
 `;
@@ -857,6 +909,37 @@ const DisclaimerText = styled.span`
   font-size: 12px;
   font-weight: 700;
   text-align : justify;
+`;
+
+
+const Balance = styled.div`
+  display: flex;
+  justify-content: flex-start; /* Align content to the left */
+  align-items: center;
+  flex-direction: column;
+  font-size: 22px;
+  color: black;
+  margin-bottom: 1rem;
+
+  p {
+    display: flex;
+    align-items: center;
+    margin-left: 8px;
+    margin-top: 15px; 
+    margin-right: 0; /* Remove right margin to keep content aligned */
+    font-weight: bold;
+    background-color: #2b9178;
+    border-radius: 4px;
+    color: white;
+    width: 100%; /* Allow p to take full width for left alignment */
+    justify-content: flex-start; /* Align contents inside p to the left */
+  }
+
+  img {
+    margin-left: 5px;
+    width: 26px;
+    height: 26px;
+  }
 `;
 
 const Deposit = () => {
@@ -1183,12 +1266,34 @@ const Deposit = () => {
               </BalanceText>
 
               <IconValueWrapper>
-                <BalanceIcon src={usdtimg}  style={{ width: "26px", height: "26px" }}alt={"currency"} >
-                </BalanceIcon>
+              <Balance>
+      <p>
+        <span style={{
+          backgroundColor: "#d3d3d3",
+          paddingTop: "5px",
+          paddingRight: "2px",
+          borderRadius: "4px 0px 0px 4px"
+        }}>
+          <img src={usdtimg} alt="coin" />
+        </span>
+        <span style={{
+          marginLeft: "8px",
+          marginRight: "8px", 
+          fontSize: "16px",
+          paddingLeft : "10px",
+          fontWeight : "700",
+          minWidth: "40px", // Set a minimum width
+          width: "auto", // Allow the width to grow as needed
+          display: "inline-block" // Ensure it behaves like a block element
+        }}>
+          {walletAmount}
+        </span>
+      </p>
+    </Balance>
 
-                <AvailableBalanceValue>
+                {/* <AvailableBalanceValue>
                   {walletAmount}
-                </AvailableBalanceValue>
+                </AvailableBalanceValue> */}
               </IconValueWrapper>
             </BalanceWrapper>
 

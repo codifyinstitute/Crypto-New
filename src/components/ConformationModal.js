@@ -116,12 +116,12 @@ const Button = styled.button`
 `;
 
 const CancelButton = styled(Button)`
-  background-color: #ccc;
+   background-color: #ccc;
   color: black;
-
-  &:hover {
-    background-color: #bbb;
-  }
+  padding : 15px;
+  display: flex;          // Add flex display
+  align-items: center;    // Center items vertically
+  justify-content: center; // Center items horizontally
 `;
 
 

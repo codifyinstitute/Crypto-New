@@ -241,10 +241,26 @@ const WithdrawUSDT = () => {
           <FormGroup>
             <CurrencyRow>
               <InputLabel>Currency</InputLabel>
-              <CurrencyButton className="active">
+              {/* <CurrencyButton className="active">
                 <NetworkIcon src={usdtimg} alt="USDT" />
-                USDT
-              </CurrencyButton>
+                <span>USDT</span>
+              </CurrencyButton> */}
+
+<Balance>
+               <p style={{marginLeft: "8px",
+                  marginTop : "15px",
+                  marginRight: "77px", fontWeight: "700", backgroundColor: "#2b9178", 
+                  borderRadius: "4px", color: "white", display: "flex", 
+                  alignItems: "center" }}>
+                 <span style={{ backgroundColor: "#d3d3d3", paddingTop : "5px",paddingRight: "2px", borderRadius: "4px  0px 0px  4px ", 
+                   
+                 }}>
+                   <img src={usdtimg} alt="coin" />
+                 </span>
+                 <span style={{  minWidth: "40px", // Set a minimum width
+          width: "auto", marginLeft: "4px", marginRight: "8px" , fontSize : "16px"}}>USDT</span> 
+                </p>
+               </Balance>
             </CurrencyRow>
           </FormGroup>
           <FormGroup>
@@ -347,11 +363,30 @@ const WithdrawUSDT = () => {
           {/* </BalanceInfo> */}
           <CurrencyRow>
             <InputLabel>Available</InputLabel>
-            <CurrencyButton className="active">
+            {/* <CurrencyButton className="active">
               <NetworkIcon src={usdtimg} alt="USDT" />
 
               <span> {walletAmount} </span> USDT
-            </CurrencyButton>
+            </CurrencyButton> */}
+
+
+              <Balance>
+               <p style={{marginLeft: "8px",
+                  marginTop : "15px",
+                  marginRight: "77px", fontWeight: "700", backgroundColor: "#2b9178", 
+                  borderRadius: "4px", color: "white", display: "flex", 
+                  alignItems: "center" }}>
+                 <span style={{ backgroundColor: "#d3d3d3", paddingTop : "5px",paddingRight: "2px", borderRadius: "4px  0px 0px  4px ", 
+                   
+                 }}>
+                   <img src={usdtimg} alt="coin" />
+                 </span>
+                 <span style={{  minWidth: "40px", // Set a minimum width
+          width: "auto", marginLeft: "4px",paddingLeft : "10px" ,marginRight: "8px" , fontWeight: "700",fontSize : "16px"}}>{walletAmount}</span> 
+                </p>
+               </Balance>
+
+
           </CurrencyRow>
           <ProceedButton onClick={handleConfirmClick} disabled={!isFormValid}>
             Confirm
@@ -373,10 +408,42 @@ const TradingEnvironment = styled.div`
   align-items: center;
   padding: 20px;
   background-color: black;
+
   @media (max-width: 480px) {
     padding-top: 80px;
   }
+
+  /* Targeting specific viewport sizes for improved responsiveness */
+  @media (max-width: 360px) and (max-height: 640px) {
+    padding: 10px;
+  }
+
+  @media (max-width: 360px) and (max-height: 740px) {
+    padding: 15px;
+  }
+
+  @media (max-width: 320px) and (max-height: 658px) {
+    padding: 5px;
+  }
+
+  @media (max-width: 375px) and (max-height: 667px) {
+    padding: 15px;
+  }
+
+  @media (max-width: 344px) and (max-height: 882px) {
+    padding: 20px;
+  }
+
+  @media (max-width: 320px) and (max-height: 568px) {
+    padding: 8px;
+  }
+
+  @media (max-width: 344px) {
+    padding-top: 40px;
+    padding: 5px;
+  }
 `;
+
 
 const ExchangeCard = styled.div`
   background-color: white;
@@ -527,12 +594,13 @@ const CurrencyLabel = styled.span`
 const MoneyIcon = styled.img`
   width: 20px;
   height: 20px;
-  margin-right: 5px; // Space between icon and text
+  margin-right: 1px; // Space between icon and text
 `;
 
 const BoldText = styled.span`
   font-weight: 700;
   color : black;
+  font-size : 12px;
 `;
 
 const BalanceInfo = styled.div`
@@ -649,12 +717,14 @@ const Button = styled.button`
   }
 
   @media (max-width: 576px) { // Adjust for extra small devices
-    width: 45%; // Width for extra small devices
+    width: 46%; // Width for extra small devices
     font-size: 12px; // Optional: Reduce font size for better fit
     padding: 10px; // Optional: Adjust padding for smaller buttons
-    gap : 10px;
-
+    gap : 0px;
+    
   }
+
+  
 `;
 
 const ActiveButton = styled(Button)`
@@ -726,5 +796,29 @@ const AvailableBalanceValue = styled.div`
 
   &:active {
     background-color: #d1d1d1; /* Slightly darker on click */
+  }
+`;
+
+
+
+const Balance = styled.div`
+  display: flex;
+     width: 20px;
+    height: 20px;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  font-size: 22px;
+  // background-color : red;
+  color: black;
+  margin-bottom: 1rem;
+  p{
+  display: flex;
+  align-items: center;
+  }
+  img {
+    margin-left: 5px;
+    width: 25px;
+    height: 25px;
   }
 `;

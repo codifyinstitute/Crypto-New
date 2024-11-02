@@ -10,6 +10,7 @@ import { GiWallet } from "react-icons/gi";
 import { RiHome5Fill } from "react-icons/ri";
 import { RiExchangeFill } from "react-icons/ri";
 import { CgProfile } from "react-icons/cg";
+import newWallet from "../assets/new icon/newWallet.png";
 
 
 
@@ -206,6 +207,24 @@ const DepositButton = styled.button`
   }
 `;
 
+// const DepositButton2 = styled.button`
+//   border: none;
+//   color: black;
+//   font-size: 18px;
+//   cursor: pointer;
+//   display: flex;
+//   align-items: center;
+//   padding: 5px;
+//   border-radius: 5px;
+//   background: white;
+//   img {
+//     width: 24px;
+//     height: 22px;
+//     margin-right: 2px;
+//   }
+// `;
+
+
 const DepositButton2 = styled.button`
   border: none;
   color: black;
@@ -213,13 +232,47 @@ const DepositButton2 = styled.button`
   cursor: pointer;
   display: flex;
   align-items: center;
-  padding: 5px;
+  padding: 3px;
   border-radius: 5px;
-  background: white;
+  // background: white;
+    background-color: #2b9178;
+
+
+  // Adjust styles to match the Balance component
+  // &:hover {
+  //   background-color: #f0f0f0; // Optional hover effect
+  // }
+
+  .logo-container {
+    display: flex;
+    align-items: center;
+    // background-color: #d3d3d3;
+    padding: 5px;
+    border-radius: 4px 0 0 4px;
+    margin-right: 8px;
+  }
+
   img {
     width: 24px;
-    height: 22px;
+    height: 24px;
     margin-right: 2px;
+  }
+
+  .amount-container {
+    display: flex;
+    align-items: center;
+    min-width: 50px; // Set a minimum width
+    margin-right: 8px;
+    font-weight: bold;
+    padding-left: 10px;
+    background-color: #2b9178;
+    border-radius: 4px;
+    color: white;
+  }
+
+  .wallet-icon {
+    width: 18px; // Set width for the new wallet icon
+    height: 18px; // Set height for the new wallet icon
   }
 `;
 // Dropdown menu styling
@@ -280,6 +333,54 @@ img{
   @media (max-width: 350px) {
     top: 69px;
   }
+`;
+
+const StyledCard = styled.button`
+  // display: inline-flex;
+  align-items: center;
+  // border-radius : 5px;
+    background-color: black;
+  border-radius : 4px 0px 0px 4px;
+
+  // padding: 0.5rem 0.75rem;
+  // background-color: white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+  border : 2px solid;
+  // &:hover {
+  //   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  // }
+`;
+
+const IconContainer = styled.div`
+  display: flex;
+  align-items: center;
+  // gap: 0.5rem;
+    background-color: #2b9178;
+  border-radius : 4px 4px 4px 4px;
+
+`;
+
+const Icon = styled.img`
+  width: 1.5rem;
+  height: 1.5rem;
+  // image-size : cover;
+  background-color : gray;
+//  border-radius : 4px 0px 0px 4px;
+  // margin-left : 0px;
+`;
+
+const BalanceText = styled.span`
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #2b9178;
+  color: white;
+  display: inline-block; 
+  padding-right : 5px;
+  margin-left : 0px;
+  border-radius : 4px 0px 0px 4px;
+  min-width :40px;
+  width: auto,
 `;
 
 const countryFlags = {
@@ -421,18 +522,34 @@ const Navbar = () => {
             }}
           >
           </NavLink>
-          <DepositButton2 onClick={handleWalletClick}>
-            <img src={Tether} alt="logo" />
 
+    
+      {/* <img src={newWallet} alt="Wallet Icon" className="wallet-icon" /> Use the new wallet image */}
+        {/* <img src={Tether} alt="logo" /> */}
+      {/* </div> */}
+      {/* <span className="amount-container">{amount}</span> */}
+    {/* </DepositButton2> */}
 
-            <span style={{ textAlign: "center", fontWeight: "bold" }}>
-              {amount}
-            </span>{" "}
-            &nbsp;
-            &nbsp;
-            <GiWallet style={{ fontSize: "18px", color: "black" }} />
-            {/* Balance display below avatar */}
-          </DepositButton2>
+    <StyledCard onClick={handleWalletClick}>
+      <IconContainer>
+      <img 
+  src={newWallet} 
+  alt="Wallet" 
+  style={{
+    width: '1.6rem',            
+    height: '1.6rem',
+    padding: '0.25rem',          
+    backgroundColor: '#f0f0f0',  
+    borderRadius : " 4px 0px 0px 4px"
+    // borderRadius: '50%'          
+  }} 
+/>
+        <Icon src={Tether} alt="USDT" />
+        <BalanceText>{amount}</BalanceText>
+      </IconContainer>
+    </StyledCard>
+  
+
           {/* <NavLink to="/deposit" style={{ textDecoration: 'none' }}>
             <DepositButton onClick={handleDepositClick}>
                 <CirclePlus size={20}/>DEPOSIT

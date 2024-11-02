@@ -8,9 +8,15 @@ import { ChevronLeft } from "lucide-react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import wallet from "../assets/wallet3.png";
+import newWallet from "../assets/new icon/newWallet.png";
+
+
 import coin from "../assets/tether2.png";
 import deposit from "../assets/depositimg.jpg";
 import withdraw from "../assets/withdraw.jpg";
+import withdrawicon from "../assets/withdrawicon-removebg-preview.png";
+import DEPOSIT__2_ from "../assets/DEPOSIT__2_-removebg-preview.png";
+
 import { AiOutlineHistory } from "react-icons/ai";
 import { PiSpeakerHighFill } from "react-icons/pi";
 import { useSelector } from "react-redux";
@@ -55,10 +61,11 @@ const FormContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
- 
+  height : 750px;
   @media (max-width: 380px) {
     /* padding: 1rem; */
-    margin: 0px 15px;
+    // margin: 0px 15px;
+  height : 750px;
     width: 100%;
   }
 `;
@@ -98,16 +105,25 @@ const Balance = styled.div`
   font-size: 22px;
   color: black;
   margin-bottom: 1rem;
-  p{
-  display: flex;
-  align-items: center;
+
+  p {
+    display: flex;
+    align-items: center;
+    margin-left: 8px;
+    margin-right: 12px;
+    font-weight: bold;
+    background-color: #2b9178;
+    border-radius: 4px;
+    color: white;
   }
+
   img {
     margin-left: 5px;
     width: 25px;
     height: 25px;
   }
 `;
+
 
 const LoginButton = styled.button`
   background-color: black;
@@ -152,7 +168,7 @@ transition: transform 0.2s ease; /* Smooth transition for hover effect */
 }
 
 div {
-  border-radius: 50%;
+  border-radius: 5px;
   width: 60px;
   height: 50px;
   overflow: hidden; /* Ensures image fits in rounded div */
@@ -168,8 +184,8 @@ div {
 
 img {
   width: 50px;
-  height: 40px;
-  border-radius: 50%;
+  height: 50px;
+  // border-radius: 50%;
  
 }
 `;
@@ -418,7 +434,7 @@ const Wallet = () => {
   const handleBackClick = () => {
     const token = localStorage.getItem('token');
     if (token) {
-      navigate('/wallet');
+      navigate('/');
     } else {
       navigate('/');
     }
@@ -446,23 +462,49 @@ const Wallet = () => {
                 </p>
               </BackButton>
               <WalletIcon>
-                <img src={wallet} alt="wallet"></img>
+                <img src={newWallet} alt="wallet"></img>
               </WalletIcon>
               <Balance>
-                <p style={{ fontWeight: "bold" }}> {walletAmount} <img src={coin} alt="coin" /></p>
-                <p style={{ fontSize: "11px" }}>Total balance</p>
-              </Balance>
+      <p>
+        <span style={{
+          backgroundColor: "#d3d3d3",
+          paddingTop: "5px",
+          paddingRight: "6px",
+           borderRadius: "4px 0px 0px 4px"
+        }}>
+          <img src={coin} alt="coin" />
+        </span>
+        <span style={{
+          marginLeft: "8px",
+          marginRight: "8px",
+          paddingLeft: "10px",
+          minWidth: "50px", // Set a minimum width
+          width: "auto", // Allow the width to grow as needed
+          display: "inline-block" // Ensure it behaves like a block element
+        }}>
+          {walletAmount}
+        </span>
+      </p>
+      <span style={{ fontSize: "16px", marginTop: "7px", fontWeight: "700" }}>Wallet balance</span>
+    </Balance>
             </Part>
             {login ? null : <LoginButton>Login to Deposit</LoginButton>}
+
             <ActionButtons>
-              <Deposit onClick={handleDepositclick}>
-                <div><img src={deposit} alt="Deposit" /></div>
-                Deposit
-              </Deposit>
-              <Deposit onClick={handleWithdrawclick}>
-                <div><img src={withdraw} alt="Withdraw" /></div>
-                Withdraw
-              </Deposit>
+                <Deposit onClick={handleDepositclick}>
+                  <div>
+                    <img src={DEPOSIT__2_} style={{ height: "80px", width: "80px" ,marginTop :  "10px" }} alt="Deposit"  />
+                  </div>
+                  <span style={{ fontWeight: 700 }}>Deposit</span>
+                </Deposit>
+
+                
+               <Deposit onClick={handleWithdrawclick}>
+                  <div>
+                    <img src={withdrawicon} alt="Withdraw" style={{ height: "60px", width: "65px" }} />
+                  </div>
+                  <span style={{ fontWeight: 700 }}>Withdraw</span>
+                </Deposit>
             </ActionButtons>
 
             <Banner>

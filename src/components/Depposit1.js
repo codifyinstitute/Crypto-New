@@ -482,28 +482,58 @@ const TimerContainer = styled.div`
   justify-content: center;
   align-items: center;
   margin-top: 10px;
-  height : 10px;
+  height : 5px;
 `;
 
 const TimerCard = styled.div`
   background-color: #f0f0f0; // Light gray background
   border-radius: 5px;
-  padding: 5px;
-  margin: 0 5px; // Minimal gap between cards
+  padding: 2px;
+  margin: 0 3px; // Minimal gap between cards
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   text-align: center;
   flex: 1; // Makes each card take equal space
 `;
 
 const TimerValue = styled.div`
-  font-size: 16px; // Larger font size for visibility
-  font-weight: bold;
+  font-size: 14px; // Larger font size for visibility
+  font-weight: 700;
   color: #333; // Dark text color for contrast
 `;
 
 const TimerLabel = styled.div`
-  font-size: 12px; // Smaller font size for the label
+  font-size: 10px; // Smaller font size for the label
   color: #666; // Lighter text color for the label
+`;
+
+const Balance = styled.div`
+  display: flex;
+  justify-content: flex-start; /* Align content to the left */
+  align-items: center;
+  flex-direction: column;
+  font-size: 16px;
+  color: black;
+  margin-bottom: 1rem;
+
+  p {
+    display: flex;
+    align-items: center;
+    margin-left: 8px;
+    margin-top: 5px; 
+    margin-right: 0; /* Remove right margin to keep content aligned */
+    font-weight: bold;
+    background-color: #2b9178;
+    border-radius: 4px;
+    color: white;
+    width: 100%; /* Allow p to take full width for left alignment */
+    justify-content: flex-start; /* Align contents inside p to the left */
+  }
+
+  img {
+    margin-left: 5px;
+    width: 26px;
+    height: 26px;
+  }
 `;
 
 // const CountDownWrapper = Styled.div 
@@ -998,7 +1028,7 @@ const Depposit1 = () => {
             </InfoRow> */}
 
 <InfoRow style={{ textAlign: "center" }}>
-<Label1 style={{ fontWeight: 700, fontSize: '16px', marginBottom: '10px', color: '#333' }}>
+<Label1 style={{ fontWeight: 700, fontSize: '14px', marginBottom: '10px', color: '#333' }}>
   Time Remaining
 </Label1>
         <TimerContainer>
@@ -1012,49 +1042,43 @@ const Depposit1 = () => {
       </InfoRow>
 
             {/* Timer ended */}
+            <InfoRow
+  style={{
+    display: "flex",
+    alignItems: "center",
+    flexWrap: "nowrap",
+    marginTop: "15px",
+    width: "100%", // Ensures it fits within the container
+    paddingRight: "10px", // Adds a buffer to the right side
+    boxSizing: "border-box",
+  }}
+>
+  <Label>TxID:</Label>
+  <input
+    style={{
+      padding: "5px",
+      margin: "0 5px",
+      fontSize: "16px",
+      flexGrow: 1,
+      maxWidth: "65%", // Adjusts to keep both elements visible
+      border: "black solid 1px",
+      borderRadius: "5px",
+      boxSizing: "border-box",
+    }}
+    type="text"
+    value={transaction}
+    onChange={handleTransactionChange}
+    disabled={submited}
+  />
+  {submited ? (
+    <SubmitButton onClick={editId}>Edit</SubmitButton>
+  ) : (
+    <SubmitButton onClick={submitTrans} disabled={isSubmitDisabled}>
+      Submit
+    </SubmitButton>
+  )}
+</InfoRow>
 
-            <InfoRow style={{ marginTop: "15px" }}>
-              <Label>TxID:</Label>
-              {submited ? (
-                <input
-                  style={{
-                    padding: "5px",
-                    margin: "0 5px",
-                    fontSize: "16px",
-                    flexGrow: 1,
-                    border: "black solid 1px",
-                    borderRadius: "5px",
-
-                  }}
-                  type="text"
-                  value={transaction}
-                  onChange={handleTransactionChange}
-                  disabled
-                />
-              ) : (
-                <input
-                  style={{
-                    padding: "5px",
-                    margin: "0 5px",
-                    fontSize: "16px",
-                    flexGrow: 1,
-                    border: "black solid 1px",
-                    borderRadius: "5px",
-                  }}
-                  type="text"
-                  value={transaction}
-                  onChange={handleTransactionChange}
-                />
-              )}
-
-              {submited ? (
-                <SubmitButton onClick={editId}>Edit</SubmitButton>
-              ) : (
-                <SubmitButton onClick={submitTrans} disabled={isSubmitDisabled}>
-                  Submit
-                </SubmitButton>
-              )}
-            </InfoRow>
             {showSubmitAnimation && (
               <SubmitAnimation>TxID submitted successfully!</SubmitAnimation>
             )}
@@ -1072,14 +1096,38 @@ const Depposit1 = () => {
                 <DepositAmountHeading>
                   Deposit Amount
                 </DepositAmountHeading>
-                <DepositAmountvalues>
+                {/* <DepositAmountvalues>
                   <DepositAmountvalues1 src={usdtimg}style={{ width: "22px", height: "22px" }} alt="image" />
                   <DepositAmountvalues2>
                     <span>
                       {amount}
                     </span>
                   </DepositAmountvalues2>
-                </DepositAmountvalues>
+                </DepositAmountvalues> */}
+                  <Balance>
+      <p>
+        <span style={{
+          backgroundColor: "#d3d3d3",
+          paddingTop: "5px",
+          paddingRight: "2px",
+          borderRadius: "4px 0px 0px 4px"
+        }}>
+          <img src={usdtimg} alt="coin" />
+        </span>
+        <span style={{
+          marginLeft: "8px",
+          marginRight: "8px", 
+          fontSize: "16px",
+          paddingLeft : "10px",
+          fontWeight : "700",
+          minWidth: "40px", // Set a minimum width
+          width: "auto", // Allow the width to grow as needed
+          display: "inline-block" // Ensure it behaves like a block element
+        }}>
+          {amount}
+        </span>
+      </p>
+    </Balance>
               </DepositAmountWrapper>
 
 
@@ -1089,7 +1137,7 @@ const Depposit1 = () => {
     strokeWidth={3}
     style={{
       position: "absolute",
-      bottom: "5px",
+      bottom: "15px",
       right: "5px",
       backgroundColor: "#FFF176",
       
@@ -1178,3 +1226,15 @@ const Depposit1 = () => {
 };
 
 export default Depposit1;
+
+
+
+
+// <DepositAmountvalues>
+// <DepositAmountvalues1 src={usdtimg}style={{ width: "22px", height: "22px" }} alt="image" />
+// <DepositAmountvalues2>
+//   <span>
+//     {amount}
+//   </span>
+// </DepositAmountvalues2>
+// </DepositAmountvalues>

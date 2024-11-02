@@ -13,6 +13,7 @@ import "react-toastify/dist/ReactToastify.css";
 import usdtIcon from '../assets/usdtt.png'; // Import your icon here
 import usdtimg from "./../assets/usdt1-removebg-preview(2).png";
 import { TbLockPlus } from "react-icons/tb";
+import empty from "./../assets/empty.png";
 
 
 const PageContainer = styled.div`
@@ -285,18 +286,37 @@ const StyledLockIcon = styled(TbLockPlus)`
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); // Shadow for depth
 `;
 
+
+const NoHistoryContainer = styled.div`
+  display: flex;
+  margin-top : 55px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; // Center the entire container
+`;
+
+
+
 const CenteredValueContainer = styled.div`
   display: flex;
   justify-content: center; // Center horizontally
   align-items: center; // Center vertically
-  height: 10px; // Full height to center in the viewport
+  margin-top: 10px; // Gap between icon and text
 `;
 
 const TextValue = styled.div`
   font-size: 16px; // Font size for the text
-  color: black; // Color for the text
+  color: black; // Text color
+  font-weight : 600;
   text-align: center; // Center align the text
+  margin-top: 35px; // Additional margin for consistency
 `;
+
+// const IconContainer = styled.div`
+//   height: 70px; // Set a fixed height to ensure alignment
+//   width: 70px; // Set a fixed width to ensure alignment
+// `;
+
 
 const WithdrawHistory = () => {
   const [WithdrawHistory, setWithdrawHistory] = useState([]);
@@ -351,16 +371,26 @@ const WithdrawHistory = () => {
               {/* <Title>Your Deposit History</Title> */}
             </StickyContainer>
             {WithdrawHistory.length === 0 ? (
-                        <>
-                        <IconContainer>
-                          <StyledLockIcon />
-                        </IconContainer>
-                        <CenteredValueContainer>
-                          <TextValue>No withdraw history available.</TextValue>
-                        </CenteredValueContainer>
-                                  </>
-           
-            ) : (
+                      <NoHistoryContainer>
+                      <IconContainer>
+                        <img
+                          src={empty}
+                          alt="Empty Icon"
+                          style={{
+                            height: "70px",
+                            width: "70px",
+                            backgroundColor: "#f0f0f0",
+                            padding: "10px",
+                            borderRadius: "20px",
+                            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
+                          }}
+                        />
+                      </IconContainer>
+                      <CenteredValueContainer>
+                        <TextValue>No deposit history available.</TextValue>
+                      </CenteredValueContainer>
+                    </NoHistoryContainer>
+                   ): (
                 WithdrawHistory.map((data, index) => (
                 <DepositHistoryCard key={index}>
                   {/* <InfoRow>

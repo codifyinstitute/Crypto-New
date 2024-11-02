@@ -12,6 +12,8 @@ import "react-toastify/dist/ReactToastify.css";
 import usdtIcon from '../assets/usdtt.png';
 import usdtimg from "./../assets/usdt1-removebg-preview(2).png";
 import { TbLockPlus } from "react-icons/tb";
+import empty from "./../assets/empty.png";
+
 const PageContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -187,26 +189,36 @@ const IconContainer = styled.div`
   height: 20%; // Full height to center vertically in the viewport
 `;
 
-const StyledLockIcon = styled(TbLockPlus)`
-  height: 70px; // Desired height
-  width: 70px; // Desired width
-  background-color: #f0f0f0; // Gray background color
-  padding: 10px; // Padding for better appearance
-  border-radius: 20px; // More rounded corners
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); // Shadow for depth
+// const StyledLockIcon = styled(empty)`
+//   height: 70px; // Desired height
+//   width: 70px; // Desired width
+//   background-color: #f0f0f0; // Gray background color
+//   padding: 10px; // Padding for better appearance
+//   border-radius: 20px; // More rounded corners
+//   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); // Shadow for depth
+// `;
+const NoHistoryContainer = styled.div`
+  display: flex;
+  margin-top : 55px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; // Center the entire container
 `;
+
 
 const CenteredValueContainer = styled.div`
   display: flex;
   justify-content: center; // Center horizontally
   align-items: center; // Center vertically
-  height: 10px; // Full height to center in the viewport
+   margin-top: 10px; 
 `;
 
 const TextValue = styled.div`
   font-size: 16px; // Font size for the text
-  color: black; // Color for the text
+  color: black; // Text color
+  font-weight : 600;
   text-align: center; // Center align the text
+  margin-top: 35px; // Additional margin for consistency
 `;
 
 // Component for status with dynamic color styling
@@ -257,17 +269,27 @@ const DepositHistory = () => {
               </TabContainer>
             </StickyContainer>
             {depositHistory.length === 0 ? (
-              <>
+ <NoHistoryContainer>                                    
     <IconContainer>
-      <StyledLockIcon />
+      <img
+        src={empty}
+        alt="Empty Icon"
+        style={{
+          height: "70px",
+          width: "70px",
+          backgroundColor: "#f0f0f0",
+          padding: "10px",
+          borderRadius: "20px",
+          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
+        }}
+      />
     </IconContainer>
     <CenteredValueContainer>
       <TextValue>No deposit history available.</TextValue>
     </CenteredValueContainer>
-    
-                <MakeDepositButton onClick={handleMakeDeposit}>Make Deposit</MakeDepositButton>
-              </>
-            ) : (
+    <MakeDepositButton onClick={handleMakeDeposit}>Make Deposit</MakeDepositButton>
+    </NoHistoryContainer>
+): (
               depositHistory.map((data, index) => (
                 <DepositHistoryCard key={index}>
                   <InfoRow>
