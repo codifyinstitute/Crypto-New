@@ -145,7 +145,7 @@ const Home = () => {
 
   useEffect(() => {
     axios
-      .get(`https://crypto-backend-main.onrender.com/currencies/${countryObject[selectedCountry].urlName}/all`)
+      .get(`https://crypto-backend-main.onrender.com/currencies/${countryObject[selectedCountry]?.urlName}/all`)
       .then((response) => {
         setCurrencies(response.data);
         setSelectedCurrency(response.data[0] || null);
@@ -170,7 +170,7 @@ const Home = () => {
 
     // Set default fiat currency based on selectedCountry
     const defaultFiatCurrency = fiatCurrencies.find(currency =>
-      currency.name === countryObject[selectedCountry].name
+      currency?.name === countryObject[selectedCountry]?.name
     );
 
     setSelectedFiatCurrency(defaultFiatCurrency || fiatCurrencies[0]);
@@ -178,7 +178,7 @@ const Home = () => {
 
   useEffect(() => {
     const defaultFiatCurrency = filteredFiatCurrencies.find(currency =>
-      currency.name === countryObject[selectedCountry].name
+      currency?.name === countryObject[selectedCountry]?.name
     );
 
     setSelectedFiatCurrency(defaultFiatCurrency || filteredFiatCurrencies[0]); // Fallback to the first currency

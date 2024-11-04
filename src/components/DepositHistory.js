@@ -335,8 +335,8 @@ const DepositHistory = () => {
           </ScrollableArea>
         </Card>
       </PageContainer>
-      <HomeContact />
-      <Footer />
+      {/* <HomeContact />
+      <Footer /> */}
     </>
   );
 };

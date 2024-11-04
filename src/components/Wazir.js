@@ -183,8 +183,8 @@ const CryptoPriceCard = ({ exchange, avgPrice, usdtPrice, minPrice, maxPrice, im
       <img src={image} alt={exchange} />
     </CoinIcon>
     <ExchangeName>{exchange}</ExchangeName>
-    <Price>Avg {countryObject[selectedCountry].symbol} {avgPrice}</Price>
-    <SubText>1 USDT = {countryObject[selectedCountry].symbol} {usdtPrice}</SubText>
+    <Price>Avg {countryObject[selectedCountry]?.symbol} {avgPrice}</Price>
+    <SubText>1 USDT = {countryObject[selectedCountry]?.symbol} {usdtPrice}</SubText>
 {  /*  <MinMaxPrice>
       <PriceInfo>Min ₹ {minPrice}</PriceInfo>
       <PriceInfo>Max ₹ {maxPrice}</PriceInfo>
