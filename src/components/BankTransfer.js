@@ -299,12 +299,12 @@ const BankTransfer = () => {
       submissionData.Address = values.address;
       submissionData.ZipCode = values.zipCode;
       submissionData.AccountType = values.accountType;
+      submissionData.ABACode = values.abaCode;
     } else if (selectedCountry === "Brazil") {
       submissionData.AccountType = values.accountType;
       submissionData.IDType = values.idType;
       submissionData.IDNumber = values.idNumber;
       submissionData.BranchCode = values.bankBranchCode;
-      submissionData.ABACode = values.abaCode;
     } else if (selectedCountry === "UK") {
       submissionData.SortCode = values.sortCode;
       submissionData.Address = values.address;
@@ -417,6 +417,10 @@ const BankTransfer = () => {
                             <option value="Checking">Checking</option>
                           </Field>
                           <ErrorMessage name="accountType" component="div" style={{ color: "red", marginBottom: "1rem" }} />
+
+                          <FormLabel>ABA Code</FormLabel>
+                          <Field name="abaCode" as={FormInput} placeholder="Enter Your ABA Code" />
+                          <ErrorMessage name="abaCode" component="div" style={{ color: "red", marginBottom: "1rem" }} />
                         </>
                       )}
 
@@ -445,10 +449,6 @@ const BankTransfer = () => {
                           <FormLabel>Branch Code</FormLabel>
                           <Field name="bankBranchCode" as={FormInput} placeholder="Enter Your Branch Code" />
                           <ErrorMessage name="bankBranchCode" component="div" style={{ color: "red", marginBottom: "1rem" }} />
-
-                          <FormLabel>ABA Code</FormLabel>
-                          <Field name="abaCode" as={FormInput} placeholder="Enter Your ABA Code" />
-                          <ErrorMessage name="abaCode" component="div" style={{ color: "red", marginBottom: "1rem" }} />
                         </>
                       )}
 
@@ -504,23 +504,23 @@ const BankTransfer = () => {
               </Formik>
             ) : (
               <>
-              <CardsSection>
-                {accounts.map((account, index) => (
-                  <Card
-                    key={index}
-                    onClick={() => handleCardClick(account)}
-                  >
-                    <CardTitle><span>Bank Name</span> <span>{account.BankName}</span></CardTitle>
-                    <Crosss>
-                      <strong>Account Number:</strong> {account.AccountNo}
-                    </Crosss>
-                    {/* <Crosss>
+                <CardsSection>
+                  {accounts.map((account, index) => (
+                    <Card
+                      key={index}
+                      onClick={() => handleCardClick(account)}
+                    >
+                      <CardTitle><span>Bank Name</span> <span>{account.BankName}</span></CardTitle>
+                      <Crosss>
+                        <strong>Account Number:</strong> {account.AccountNo}
+                      </Crosss>
+                      {/* <Crosss>
                       <strong>IFSC:</strong> {account.IFSC}
                     </Crosss> */}
-                  </Card>
-                ))}
-              </CardsSection>
-            </>
+                    </Card>
+                  ))}
+                </CardsSection>
+              </>
             )}
           </FormContainer>
         </FormWrapper>

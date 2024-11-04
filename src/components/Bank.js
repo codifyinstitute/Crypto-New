@@ -941,19 +941,21 @@ const countrySchemas = {
     zipCode: Yup.string()
       .matches(/^\d+$/, "Zip code must be a number")
       .required("Zip code is required"),
+    address: Yup.string().required("Address is required"),
     accountType: Yup.string().required("Account type is required"),
+    abaCode: Yup.string()
+    .matches(/^\d{9}$/, "ABA code must be a 9-digit number")
+    .required("ABA code is required"),
   }),
-
+  
   Brazil: Yup.object().shape({
     ...baseSchema,
     idType: Yup.string().required("ID type is required"),
     idNumber: Yup.string()
-      .matches(/^\d+$/, "ID number must be a number")
-      .required("ID number is required"),
+    .matches(/^\d+$/, "ID number must be a number")
+    .required("ID number is required"),
     bankBranchCode: Yup.string().required("Bank branch code is required"),
-    abaCode: Yup.string()
-      .matches(/^\d{9}$/, "ABA code must be a 9-digit number")
-      .required("ABA code is required"),
+    accountType: Yup.string().required("Account type is required"),
   }),
 
   UK: Yup.object().shape({
@@ -1068,22 +1070,24 @@ const Bank = () => {
                   AccountNo: values.accountNumber,
                 };
 
-                // Add country-specific fields
                 if (selectedCountry === "USA") {
                   submissionData.City = values.city;
                   submissionData.State = values.state;
                   submissionData.Address = values.address;
                   submissionData.ZipCode = values.zipCode;
                   submissionData.AccountType = values.accountType;
+                  submissionData.ABACode = values.abaCode;
                 } else if (selectedCountry === "Brazil") {
                   submissionData.AccountType = values.accountType;
                   submissionData.IDType = values.idType;
                   submissionData.IDNumber = values.idNumber;
                   submissionData.BranchCode = values.bankBranchCode;
-                  submissionData.ABACode = values.abaCode;
                 } else if (selectedCountry === "UK") {
                   submissionData.SortCode = values.sortCode;
                   submissionData.Address = values.address;
+                } else if (selectedCountry === "Euro") {
+                  submissionData.ABACode = values.abaCode;
+                  submissionData.SwiftCode = values.swiftCode;
                 } else if (selectedCountry === "Dubai") {
                   submissionData.OpeningBranch = values.accountOpeningBranch;
                   submissionData.IBAN = values.iban;
@@ -1180,19 +1184,82 @@ const Bank = () => {
                               placeholder="Enter Your State"
                             />
                             {errors.state && touched.state && <div style={{ color: "red", marginBottom: "1rem" }}>{errors.state}</div>}
+
+                            <FormLabel>Address</FormLabel>
+                            <FormInput
+                              name="address"
+                              value={values.address}
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              placeholder="Please enter address"
+                            />
+                            {errors.address && touched.address && <div style={{ color: "red", marginBottom: "1rem" }}>{errors.address}</div>}
+
+                            <FormLabel>Zip Code</FormLabel>
+                            <FormInput
+                              name="zipCode"
+                              value={values.zipCode}
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              placeholder="Please enter zipCode"
+                            />
+                            {errors.zipCode && touched.zipCode && <div style={{ color: "red", marginBottom: "1rem" }}>{errors.zipCode}</div>}
+
+                            <FormLabel>Account Type</FormLabel>
+                            <Select
+                              name="accountType"
+                              value={values.accountType}
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              placeholder="Please enter accountType"
+                            >
+                              <option value="">Select Account Type</option>
+                              <option value="Saving">Saving</option>
+                              <option value="Checking">Checking</option>
+                            </Select>
+                            {errors.accountType && touched.accountType && <div style={{ color: "red", marginBottom: "1rem" }}>{errors.accountType}</div>}
+
+                            <FormLabel>ABA Code</FormLabel>
+                            <FormInput
+                              name="abaCode"
+                              value={values.abaCode}
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              placeholder="Please enter abaCode"
+                            />
+                            {errors.abaCode && touched.abaCode && <div style={{ color: "red", marginBottom: "1rem" }}>{errors.abaCode}</div>}
+
                           </>
                         )}
 
                         {selectedCountry === "Brazil" && (
                           <>
+                            <FormLabel>Account Type</FormLabel>
+                            <Select
+                              name="accountType"
+                              value={values.accountType}
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              placeholder="Please enter accountType"
+                            >
+                              <option value="">Select Account Type</option>
+                              <option value="Saving">Saving</option>
+                              <option value="Checking">Checking</option>
+                            </Select>
+                            {errors.accountType && touched.accountType && <div style={{ color: "red", marginBottom: "1rem" }}>{errors.accountType}</div>}
+
                             <FormLabel>ID Type</FormLabel>
-                            <FormInput
+                            <Select
                               name="idType"
                               value={values.idType}
                               onChange={handleChange}
                               onBlur={handleBlur}
                               placeholder="Enter Your Id Type"
-                            />
+                            >
+                              <option value="">Select ID Type</option>
+                              <option value="Passport">Passport</option>
+                              <option value="ID Card">ID Card</option>
+                            </Select>
                             {errors.idType && touched.idType && <div style={{ color: "red", marginBottom: "1rem" }}>{errors.idType}</div>}
 
                             <FormLabel>ID Number</FormLabel>
@@ -1228,6 +1295,41 @@ const Bank = () => {
                               placeholder="Enter Your Sort Code"
                             />
                             {errors.sortCode && touched.sortCode && <div style={{ color: "red", marginBottom: "1rem" }}>{errors.sortCode}</div>}
+
+                            <FormLabel>Address</FormLabel>
+                            <FormInput
+                              name="address"
+                              value={values.address}
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              placeholder="Please enter address"
+                            />
+                            {errors.address && touched.address && <div style={{ color: "red", marginBottom: "1rem" }}>{errors.address}</div>}
+
+                          </>
+                        )}
+
+                        {selectedCountry === "Euro" && (
+                          <>
+                            <FormLabel>ABA Code</FormLabel>
+                            <FormInput
+                              name="abaCode"
+                              value={values.abaCode}
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              placeholder="Enter Your Branch"
+                            />
+                            {errors.abaCode && touched.abaCode && <div style={{ color: "red", marginBottom: "1rem" }}>{errors.abaCode}</div>}
+
+                            <FormLabel>Swift Code</FormLabel>
+                            <FormInput
+                              name="swiftCode"
+                              value={values.swiftCode}
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              placeholder="Enter Your swiftCode"
+                            />
+                            {errors.swiftCode && touched.swiftCode && <div style={{ color: "red", marginBottom: "1rem" }}>{errors.swiftCode}</div>}
                           </>
                         )}
 
@@ -1281,13 +1383,153 @@ const Bank = () => {
           ) : (
             accounts.map((account) => (
               <AccountCard key={account.AccountNumber}>
-                <AccountInfo><br /><br />
-                  <AccountName><Maincol><Col1><Label>   Bank Name:  </Label></Col1>   <Col2>      {account.BankName} </Col2> </Maincol> </AccountName>
-                  <AccountDetails><Maincol><Col1><Label>Account Name: </Label></Col1>     <Col2>          {account.FirstName}  {account.LastName}</Col2>  </Maincol> </AccountDetails>
-
-                  <AccountNumberValue><Maincol><Col1><Label>Account No: </Label> </Col1>    <Col2>        {account.AccountNo}</Col2> </Maincol> </AccountNumberValue>
-                  {/* <AccountDetails><Maincol><Col1><Label>IFSC</Label>      </Col1>       <Col2>   {account.IFSC}</Col2></Maincol> </AccountDetails>
-                <AccountDetails><Maincol><Col1><Label>Country</Label> </Col1>       <Col2>         {account.Country}</Col2></Maincol>  </AccountDetails> */}
+                <AccountInfo>
+                  <br /><br />
+                  <AccountName>
+                    <Maincol>
+                      <Col1><Label>Bank Name:</Label></Col1>
+                      <Col2>{account.BankName}</Col2>
+                    </Maincol>
+                  </AccountName>
+                  <AccountDetails>
+                    <Maincol>
+                      <Col1><Label>Account Name:</Label></Col1>
+                      <Col2>{account.FirstName} {account.LastName}</Col2>
+                    </Maincol>
+                  </AccountDetails>
+                  <AccountNumberValue>
+                    <Maincol>
+                      <Col1><Label>Account No:</Label></Col1>
+                      <Col2>{account.AccountNo}</Col2>
+                    </Maincol>
+                  </AccountNumberValue>
+            
+                  {/* Conditional rendering based on country */}
+                  {selectedCountry === "USA" && (
+                    <>
+                      <AccountDetails>
+                        <Maincol>
+                          <Col1><Label>City:</Label></Col1>
+                          <Col2>{account.City}</Col2>
+                        </Maincol>
+                      </AccountDetails>
+                      <AccountDetails>
+                        <Maincol>
+                          <Col1><Label>State:</Label></Col1>
+                          <Col2>{account.State}</Col2>
+                        </Maincol>
+                      </AccountDetails>
+                      <AccountDetails>
+                        <Maincol>
+                          <Col1><Label>Zip Code:</Label></Col1>
+                          <Col2>{account.ZipCode}</Col2>
+                        </Maincol>
+                      </AccountDetails>
+                      <AccountDetails>
+                        <Maincol>
+                          <Col1><Label>Account Type:</Label></Col1>
+                          <Col2>{account.AccountType}</Col2>
+                        </Maincol>
+                      </AccountDetails>
+                      <AccountDetails>
+                        <Maincol>
+                          <Col1><Label>ABA Code:</Label></Col1>
+                          <Col2>{account.ABACode}</Col2>
+                        </Maincol>
+                      </AccountDetails>
+                    </>
+                  )}
+            
+                  {selectedCountry === "Brazil" && (
+                    <>
+                      <AccountDetails>
+                        <Maincol>
+                          <Col1><Label>Account Type:</Label></Col1>
+                          <Col2>{account.AccountType}</Col2>
+                        </Maincol>
+                      </AccountDetails>
+                      <AccountDetails>
+                        <Maincol>
+                          <Col1><Label>ID Type:</Label></Col1>
+                          <Col2>{account.IDType}</Col2>
+                        </Maincol>
+                      </AccountDetails>
+                      <AccountDetails>
+                        <Maincol>
+                          <Col1><Label>ID Number:</Label></Col1>
+                          <Col2>{account.IDNumber}</Col2>
+                        </Maincol>
+                      </AccountDetails>
+                      <AccountDetails>
+                        <Maincol>
+                          <Col1><Label>Bank Branch Code:</Label></Col1>
+                          <Col2>{account.BankBranchCode}</Col2>
+                        </Maincol>
+                      </AccountDetails>
+                    </>
+                  )}
+            
+                  {selectedCountry === "UK" && (
+                    <>
+                      <AccountDetails>
+                        <Maincol>
+                          <Col1><Label>Sort Code:</Label></Col1>
+                          <Col2>{account.SortCode}</Col2>
+                        </Maincol>
+                      </AccountDetails>
+                      <AccountDetails>
+                        <Maincol>
+                          <Col1><Label>Address:</Label></Col1>
+                          <Col2>{account.Address}</Col2>
+                        </Maincol>
+                      </AccountDetails>
+                    </>
+                  )}
+            
+                  {selectedCountry === "Euro" && (
+                    <>
+                      <AccountDetails>
+                        <Maincol>
+                          <Col1><Label>ABA Code:</Label></Col1>
+                          <Col2>{account.ABACode}</Col2>
+                        </Maincol>
+                      </AccountDetails>
+                      <AccountDetails>
+                        <Maincol>
+                          <Col1><Label>Swift Code:</Label></Col1>
+                          <Col2>{account.SwiftCode}</Col2>
+                        </Maincol>
+                      </AccountDetails>
+                    </>
+                  )}
+            
+                  {selectedCountry === "Dubai" && (
+                    <>
+                      <AccountDetails>
+                        <Maincol>
+                          <Col1><Label>Account Opening Branch:</Label></Col1>
+                          <Col2>{account.OpeningBranch}</Col2>
+                        </Maincol>
+                      </AccountDetails>
+                      <AccountDetails>
+                        <Maincol>
+                          <Col1><Label>IBAN:</Label></Col1>
+                          <Col2>{account.IBAN}</Col2>
+                        </Maincol>
+                      </AccountDetails>
+                    </>
+                  )}
+            
+                  {selectedCountry === "India" && (
+                    <>
+                      <AccountDetails>
+                        <Maincol>
+                          <Col1><Label>IFSC:</Label></Col1>
+                          <Col2>{account.IFSC}</Col2>
+                        </Maincol>
+                      </AccountDetails>
+                    </>
+                  )}
                 </AccountInfo>
                 <DeleteButton onClick={() => handleDelete(account._id)}>
                   Delete

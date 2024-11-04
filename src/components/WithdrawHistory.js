@@ -336,9 +336,9 @@ const WithdrawHistory = () => {
       if (!response.ok) throw new Error('Network response was not ok');
       const data = await response.json();
       console.log(data); // Log the entire data to check its structure
-    //   setDepositHistory(data.reverse()); // Reverse the order if needed
-    setWithdrawHistory(data.reverse()); // Reverse the order if needed
-    
+      //   setDepositHistory(data.reverse()); // Reverse the order if needed
+      setWithdrawHistory(data.reverse()); // Reverse the order if needed
+
     } catch (error) {
       toast.error("Error fetching deposit history");
     }
@@ -351,11 +351,11 @@ const WithdrawHistory = () => {
     let style;
 
     if (status === 'Pending') {
-      style = { color: 'red', fontWeight:"bold" };
+      style = { color: 'red', fontWeight: "bold" };
     } else if (status === 'Successful') {
-      style = { color: 'green', fontWeight:"bold" };
+      style = { color: 'green', fontWeight: "bold" };
     } else {
-      style = { color: 'black', fontWeight:"bold" }; // Default color
+      style = { color: 'black', fontWeight: "bold" }; // Default color
     }
 
     return <span style={style}>{children}</span>;
@@ -425,7 +425,7 @@ const WithdrawHistory = () => {
                   {/* <InfoRow>
                     <Label>Wallet Address:</Label>
                     <Value>{data.WalletAddress}</Value> {/* Combine Date and Time */}
-                  {/* </InfoRow> */} 
+                  {/* </InfoRow> */}
                   <InfoRow>
                     <Label>Withdraw Amount:</Label>
                     <AmountContainer>

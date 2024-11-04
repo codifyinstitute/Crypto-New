@@ -113,6 +113,35 @@ const Button = styled.button`
   }
 `;
 
+const ModalBackground = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+`;
+
+const ModalContent = styled.div`
+  background-color: white;
+  color: black;
+  padding: 20px;
+  border-radius: 10px;
+  width: 400px;
+`;
+
+const CloseButton = styled.button`
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  float: right;
+`;
+
 const AdminWithdraw = () => {
     const navigate = useNavigate();
     const [modalVisible, setModalVisible] = useState(false);
@@ -126,6 +155,8 @@ const AdminWithdraw = () => {
     const [tokens, setTokens] = useState([]);
     const [searchOrderId, setSearchOrderId] = useState('');
     const [searchEmail, setSearchEmail] = useState('');
+    const [confirmModalVisible, setConfirmModalVisible] = useState(false);
+    const [currentTransaction, setCurrentTransaction] = useState(null);
 
     useEffect(() => {
         const Id = localStorage.getItem("Login");
@@ -207,6 +238,48 @@ const AdminWithdraw = () => {
         }
     };
 
+    const openConfirmModal = (transaction) => {
+        setCurrentTransaction(transaction);
+        setConfirmModalVisible(true);
+    };
+
+    const closeConfirmModal = () => {
+        setConfirmModalVisible(false);
+        setCurrentTransaction(null);
+    };
+
+    const handelReject = async () => {
+        setConfirmModalVisible(false)
+        if (currentTransaction) {
+            // const { transaction } = currentTransaction;
+            try {
+                const url = `https://crypto-backend-main.onrender.com/withdraw/reject/${currentTransaction._id}`;
+
+                const response = await fetch(url, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ amount: currentTransaction.WithdrawAmount }),
+                });
+
+                if (!response.ok) {
+                    throw new Error("Failed to submit transaction");
+                }
+
+                toast.success(`Transaction rejected successfully!`);
+
+                const updatedTransactions = await fetch('https://crypto-backend-main.onrender.com/withdraw/all').then(res => res.json());
+                setTransactions(updatedTransactions.reverse());
+                setFilteredTransactions(updatedTransactions.reverse());
+            } catch (error) {
+                toast.error(`Error: ${error.message}`);
+            } finally {
+                setCurrentTransaction(null);
+            }
+        }
+    }
+
     return (
         <DashboardContainer>
             <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} pauseOnHover />
@@ -257,7 +330,7 @@ const AdminWithdraw = () => {
                                     <th>Status</th>
                                     <th>Date</th>
                                     <th>Time</th>
-                                    <th>Update Status</th>
+                                    {/* <th>Update Status</th> */}
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -270,7 +343,7 @@ const AdminWithdraw = () => {
                                         <td>{transaction.Status}</td>
                                         <td>{transaction.Date}</td>
                                         <td>{transaction.Time}</td>
-                                        <td>
+                                        {/* <td>
                                             <Select
                                                 value={selectedTransactionId === transaction._id ? status : ''}
                                                 onChange={(e) => {
@@ -286,9 +359,10 @@ const AdminWithdraw = () => {
                                                 <option value="Pending">Pending</option>
                                                 <option value="Failed">Failed</option>
                                             </Select>
-                                        </td>
+                                        </td> */}
                                         <td>
-                                            <Button onClick={handleUpdateStatus}>Update</Button>
+                                            {transaction.Status === "Failed" ? "Failed" :
+                                                <Button style={{ backgroundColor: "red" }} onClick={() => openConfirmModal(transaction)}>Reject</Button>}
                                         </td>
                                     </tr>
                                 ))}
@@ -297,6 +371,17 @@ const AdminWithdraw = () => {
                     </TableContainer>
                 </Section>
             </Content>
+
+            {confirmModalVisible && (
+                <ModalBackground onClick={closeConfirmModal}>
+                    <ModalContent onClick={(e) => e.stopPropagation()}>
+                        <CloseButton onClick={closeConfirmModal}>&times;</CloseButton>
+                        <h2>{"Confirm Rejection"}</h2>
+                        <Paragraph>Are you sure you want to reject this transaction?</Paragraph>
+                        <Button onClick={handelReject}>Yes, Reject</Button>
+                    </ModalContent>
+                </ModalBackground>
+            )}
         </DashboardContainer>
     );
 };
