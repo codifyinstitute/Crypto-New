@@ -119,6 +119,7 @@ const CancelButton = styled(Button)`
    background-color: #ccc;
   color: black;
   padding : 15px;
+  width : 140px;
   display: flex;          // Add flex display
   align-items: center;    // Center items vertically
   justify-content: center; // Center items horizontally

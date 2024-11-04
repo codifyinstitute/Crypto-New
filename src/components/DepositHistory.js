@@ -235,6 +235,13 @@ const TextValue = styled.div`
   margin-top: 35px; // Additional margin for consistency
 `;
 
+const LoadingText = styled.div`
+  font-size: 18px;
+  color: #ffa500;
+  font-weight: bold;
+  margin-top: 20px;
+`;
+
 // Component for status with dynamic color styling
 const StatusValue = ({ status, children }) => {
   const color = status === "Completed" ? "green" : status === "Pending" ? "#b89c00" : "red";
@@ -246,6 +253,7 @@ const DepositHistory = () => {
   const navigate = useNavigate();
 
   const fetchDepositHistory = async () => {
+    setLoading(true);
     const email = localStorage.getItem("token");
     try {
       const response = await fetch(`https://crypto-backend-main.onrender.com/deposit-transactions/get/email/${email}`);
@@ -254,6 +262,9 @@ const DepositHistory = () => {
       setDepositHistory(data.reverse());
     } catch (error) {
       toast.error("Error fetching deposit history");
+    }
+    finally {
+      setLoading(false); 
     }
   };
 
@@ -264,6 +275,8 @@ const DepositHistory = () => {
   useEffect(() => {
     fetchDepositHistory();
   }, []);
+
+  const [loading, setLoading] = useState(true); // Add loading state
 
   return (
     <>
@@ -282,7 +295,9 @@ const DepositHistory = () => {
                 </TabWrapper>
               </TabContainer>
             </StickyContainer>
-            {depositHistory.length === 0 ? (
+            { loading ? (
+              <LoadingText>Loading...</LoadingText>
+            ) : depositHistory.length === 0 ? (
  <NoHistoryContainer>                                    
     <IconContainer>
       <img

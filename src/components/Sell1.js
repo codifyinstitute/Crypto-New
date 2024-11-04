@@ -130,6 +130,9 @@ const CurrencyToggle = styled.div`
   padding-top: 5px;
   padding-bottom: 5px;
   border-radius: 16px;
+  width : 9.2rem;
+  height : 3.5rem;
+  gap : 5px;
 `;
 
 const UpdateText = styled.div`
@@ -341,7 +344,7 @@ const CurrencyInfo = styled.div`
 const CurrencySymbol = styled.span`
   font-size: 12px;
   color: #888;
-  margin-top: 6%;
+  // margin-top: 6%;
 `;
 
 const CurrencyName = styled.span`
@@ -992,7 +995,7 @@ const Sell1 = () => {
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                 >
                   {selectedCurrency && (
-                    <CurrencyIcon src={usdtimg} style={{ width: "30px", height: "30px" }} alt={selectedCurrency.Symbol} />
+                    <CurrencyIcon src={usdtimg} style={{width: "44px", height: "44px", marginLeft : "-10px" }} alt={selectedCurrency.Symbol} />
                   )}
                   <Rocks>
                     <Buddy>
@@ -1024,7 +1027,7 @@ const Sell1 = () => {
                       key={currency._id}
                       onClick={() => handleCurrencySelect(currency)}
                     >
-                      <CurrencyIcon src={usdtimg} style={{ width: "30px", height: "30px" }} alt={currency.Symbol} />
+                      <CurrencyIcon src={usdtimg} style={{ width: "44px", height: "44px" }} alt={currency.Symbol} />
                       <CurrencyInfo>
                         <Buddy>
                           <CurrencyName>{currency.Name}</CurrencyName>
@@ -1093,7 +1096,7 @@ const Sell1 = () => {
                       {selectedFiatCurrency?.symbol}
                     </CurrencySymbols>
                   </Rocks>
-                  <ChevronDown size={16} />
+                  <ChevronDown size={16}  style={{ marginLeft: '5px' }}/>
                 </CurrencyToggle>
               </InputWrapper>
               <AnimatedDropdownContainer isOpen={isFiatDropdownOpen}>
