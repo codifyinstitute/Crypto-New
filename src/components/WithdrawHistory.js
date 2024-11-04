@@ -318,10 +318,18 @@ const TextValue = styled.div`
 // `;
 
 
+const LoadingText = styled.div`
+  font-size: 18px;
+  color: #ffa500;
+  font-weight: bold;
+  margin-top: 20px;
+`;
+
 const WithdrawHistory = () => {
   const [WithdrawHistory, setWithdrawHistory] = useState([]);
-
+  const [loading, setLoading] = useState(true); // Add loading state
   const fetchDepositHistory = async () => {
+    setLoading(true);
     const email = localStorage.getItem("token");
     try {
       const response = await fetch(`https://crypto-backend-main.onrender.com/withdraw/get/email/${email}`);
@@ -333,6 +341,9 @@ const WithdrawHistory = () => {
     
     } catch (error) {
       toast.error("Error fetching deposit history");
+    }
+    finally {
+      setLoading(false); 
     }
   };
 
@@ -370,7 +381,9 @@ const WithdrawHistory = () => {
               </TabContainer>
               {/* <Title>Your Deposit History</Title> */}
             </StickyContainer>
-            {WithdrawHistory.length === 0 ? (
+            {loading ? (
+              <LoadingText>Loading...</LoadingText>
+            ) :  WithdrawHistory.length === 0 ? (
                       <NoHistoryContainer>
                       <IconContainer>
                         <img

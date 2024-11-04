@@ -321,7 +321,7 @@ const Home = () => {
                     onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                   >
                     {selectedCurrency && (
-                      <CurrencyIcon src={usdtimg} style={{ width: "30px", height: "30px"}} alt={selectedCurrency.Symbol} />
+                      <CurrencyIcon src={usdtimg} style={{ width: "44px", height: "44px", marginLeft : "-10px"}} alt={selectedCurrency.Symbol} />
                     )}
                     <Rocks>
                       <Buddy>
@@ -359,7 +359,7 @@ const Home = () => {
                           key={currency._id}
                           onClick={() => handleCurrencySelect(currency)}
                         >
-                          <CurrencyIcon src={usdtimg} style={{ width: "30px", height: "30px"}}alt={currency.Symbol} />
+                          <CurrencyIcon src={usdtimg} style={{ width: "44px", height: "44px"}}alt={currency.Symbol} />
                           <CurrencyInfo>
                             <Buddy>
                               <CurrencyName>{currency.Name}</CurrencyName>
@@ -401,7 +401,8 @@ const Home = () => {
                         {selectedFiatCurrency?.symbol}
                       </CurrencySymbols>
                     </Rocks>
-                    <ChevronDown size={16} />
+                    {/* <ChevronDown size={16} /> */}
+                    <ChevronDown size={18} style={{ marginLeft: '8px' }} />
                   </CurrencyToggle>
                 </InputWrapper>
 
@@ -714,6 +715,7 @@ const CurrencyToggle = styled.div`
   height: 3.2rem;
   padding: 5px 15px;
   border-radius: 16px;
+  width : 9.2rem;
 `;
 
 const Rocks = styled.div`
