@@ -194,8 +194,8 @@ const AmountContainer = styled.div`
 //   const fetchDepositHistory = async () => {
 //     const email = localStorage.getItem("token");    
 //     try {
-//       const response = await fetch(`https://crypto-backend-main.onrender.com/deposit-transactions/get/email/${email}`);
-//       // https://crypto-backend-main.onrender.com/deposit-transactions/get/email/
+//       const response = await fetch(`http://localhost:8000/deposit-transactions/get/email/${email}`);
+//       // http://localhost:8000/deposit-transactions/get/email/
 //       if (!response.ok) throw new Error('Network response was not ok');
 //       const data = await response.json();
 //       console.log(data);
@@ -324,13 +324,13 @@ const WithdrawHistory = () => {
   const fetchDepositHistory = async () => {
     const email = localStorage.getItem("token");
     try {
-      const response = await fetch(`https://crypto-backend-main.onrender.com/withdraw/get/email/${email}`);
+      const response = await fetch(`http://localhost:8000/withdraw/get/email/${email}`);
       if (!response.ok) throw new Error('Network response was not ok');
       const data = await response.json();
       console.log(data); // Log the entire data to check its structure
-    //   setDepositHistory(data.reverse()); // Reverse the order if needed
-    setWithdrawHistory(data.reverse()); // Reverse the order if needed
-    
+      //   setDepositHistory(data.reverse()); // Reverse the order if needed
+      setWithdrawHistory(data.reverse()); // Reverse the order if needed
+
     } catch (error) {
       toast.error("Error fetching deposit history");
     }
@@ -340,11 +340,11 @@ const WithdrawHistory = () => {
     let style;
 
     if (status === 'Pending') {
-      style = { color: 'red', fontWeight:"bold" };
+      style = { color: 'red', fontWeight: "bold" };
     } else if (status === 'Successful') {
-      style = { color: 'green', fontWeight:"bold" };
+      style = { color: 'green', fontWeight: "bold" };
     } else {
-      style = { color: 'black', fontWeight:"bold" }; // Default color
+      style = { color: 'black', fontWeight: "bold" }; // Default color
     }
 
     return <span style={style}>{children}</span>;
@@ -371,27 +371,28 @@ const WithdrawHistory = () => {
               {/* <Title>Your Deposit History</Title> */}
             </StickyContainer>
             {WithdrawHistory.length === 0 ? (
-                      <NoHistoryContainer>
-                      <IconContainer>
-                        <img
-                          src={empty}
-                          alt="Empty Icon"
-                          style={{
-                            height: "70px",
-                            width: "70px",
-                            backgroundColor: "#f0f0f0",
-                            padding: "10px",
-                            borderRadius: "20px",
-                            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
-                          }}
-                        />
-                      </IconContainer>
-                      <CenteredValueContainer>
-                        <TextValue>No Withdraw history available.</TextValue>
-                      </CenteredValueContainer>
-                    </NoHistoryContainer>
-                   ): (
-                WithdrawHistory.map((data, index) => (
+              <NoHistoryContainer>
+                    
+                <IconContainer>
+                  <img
+                    src={empty}
+                    alt="Empty Icon"
+                    style={{
+                      height: "70px",
+                      width: "70px",
+                      backgroundColor: "#f0f0f0",
+                      padding: "10px",
+                      borderRadius: "20px",
+                      boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
+                    }}
+                  />
+                </IconContainer>
+                <CenteredValueContainer>
+                  <TextValue>No Withdraw history available.</TextValue>
+                </CenteredValueContainer>
+              </NoHistoryContainer>
+            ) : (
+              WithdrawHistory.map((data, index) => (
                 <DepositHistoryCard key={index}>
                   {/* <InfoRow>
                     <Label>Transaction:</Label>
@@ -412,7 +413,7 @@ const WithdrawHistory = () => {
                   {/* <InfoRow>
                     <Label>Wallet Address:</Label>
                     <Value>{data.WalletAddress}</Value> {/* Combine Date and Time */}
-                  {/* </InfoRow> */} 
+                  {/* </InfoRow> */}
                   <InfoRow>
                     <Label>Withdraw Amount:</Label>
                     <AmountContainer>

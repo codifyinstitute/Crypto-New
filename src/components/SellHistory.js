@@ -268,7 +268,7 @@ const SellHistory = () => {
       if (email) {
         try {
           const response = await fetch(
-            `https://crypto-backend-main.onrender.com/transactions/get/email/${email}`
+            `http://localhost:8000/transactions/get/email/${email}`
           );
           if (!response.ok) throw new Error("Failed to fetch transactions");
           const data = await response.json();

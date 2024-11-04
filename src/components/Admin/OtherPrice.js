@@ -129,7 +129,7 @@ const OtherPrice = () => {
     // console.log(countryObject[country]?.urlName);
     const fetchData = async () => {
       try {
-        const response = await axios.get(`https://crypto-backend-main.onrender.com/static/${countryObject[country]?.urlName}/one`);
+        const response = await axios.get(`http://localhost:8000/static/${countryObject[country]?.urlName}/one`);
         setFormData(response.data);
         setId(response.data._id)
         console.log(response.data._id)
@@ -158,7 +158,7 @@ const OtherPrice = () => {
     // console.log(id)
     // console.log(countryObject[country]?.urlName)
     try {
-      const response = await axios.put(`https://crypto-backend-main.onrender.com/static/${countryObject[country]?.urlName}/put/${id}`, formData);
+      const response = await axios.put(`http://localhost:8000/static/${countryObject[country]?.urlName}/put/${id}`, formData);
       alert('Data updated successfully');
       //console.log(response.data);
     } catch (error) {

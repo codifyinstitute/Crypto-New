@@ -68,7 +68,7 @@ const AdminLogin = () => {
         }
 
         try {
-            const response = await fetch('https://crypto-backend-main.onrender.com/admin/login', {
+            const response = await fetch('http://localhost:8000/admin/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
