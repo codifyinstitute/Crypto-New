@@ -288,10 +288,10 @@ const Home = () => {
           <Newcomp />
           <ExchangeRateBox>
             <RateValue>
-              {countryObject[selectedCountry].symbol} {selectedCurrency ? selectedCurrency.Rate : "N/A"}{" "}
+              {countryObject[selectedCountry]?.symbol} {selectedCurrency ? selectedCurrency.Rate : "N/A"}{" "}
             </RateValue>
             <RateLabel>
-              1 USDT = {countryObject[selectedCountry].symbol} {selectedCurrency ? selectedCurrency.Rate : "N/A"}{" "}
+              1 USDT = {countryObject[selectedCountry]?.symbol} {selectedCurrency ? selectedCurrency.Rate : "N/A"}{" "}
             </RateLabel>
           </ExchangeRateBox>
         </motion.div>
@@ -321,7 +321,7 @@ const Home = () => {
                     onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                   >
                     {selectedCurrency && (
-                      <CurrencyIcon src={usdtimg} style={{ width: "44px", height: "44px", marginLeft : "-10px"}} alt={selectedCurrency.Symbol} />
+                      <CurrencyIcon src={usdtimg} style={{ width: "44px", height: "44px", marginLeft : "-10px"}} alt={selectedCurrency?.Symbol} />
                     )}
                     <Rocks>
                       <Buddy>
