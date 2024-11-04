@@ -198,7 +198,7 @@ const CryptoPriceGrid = () => {
 
   const fetchTransactionFee = async () => {
     try {
-      const response = await fetch(`http://localhost:8000/static/${countryObject[selectedCountry]?.urlName}/one`);
+      const response = await fetch(`https://crypto-backend-main.onrender.com/static/${countryObject[selectedCountry]?.urlName}/one`);
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }

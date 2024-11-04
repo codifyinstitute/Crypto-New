@@ -233,7 +233,7 @@ const CardTransfer = () => {
   useEffect(() => {
     const email = localStorage.getItem("token");
     axios
-      .get(`http://localhost:8000/account-details/${countryObject[selectedCountry].urlName}/card/${email}`)
+      .get(`https://crypto-backend-main.onrender.com/account-details/${countryObject[selectedCountry].urlName}/card/${email}`)
       .then((response) => {
         setAccounts(response.data);
       })
@@ -271,7 +271,7 @@ const CardTransfer = () => {
       ...values,
     };
 
-    const url = `http://localhost:8000/account-details/${countryObject[selectedCountry].urlName}/card/add`;
+    const url = `https://crypto-backend-main.onrender.com/account-details/${countryObject[selectedCountry].urlName}/card/add`;
 
     try {
       await axios.post(url, submissionData);

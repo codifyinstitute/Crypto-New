@@ -274,7 +274,7 @@
 //     const fetchAccounts = async () => {
 //       try {
 //         const token = localStorage.getItem('token');
-//         const response = await axios.get(`http://localhost:8000/users/get/${token}`);
+//         const response = await axios.get(`https://crypto-backend-main.onrender.com/users/get/${token}`);
 //         setAccounts(response.data.Accounts);
 //       } catch (error) {
 //         console.error('Error fetching accounts:', error);
@@ -287,7 +287,7 @@
 //   const handleDelete = async (accountNumber) => {
 //     try {
 //       const token = localStorage.getItem('token');
-//       await axios.delete(`http://localhost:8000/users/del/${token}/accounts/${accountNumber}`);
+//       await axios.delete(`https://crypto-backend-main.onrender.com/users/del/${token}/accounts/${accountNumber}`);
 
 //       setAccounts((prevAccounts) =>
 //         prevAccounts.filter((account) => account.AccountNumber !== accountNumber)
@@ -993,7 +993,7 @@ const Bank = () => {
   useEffect(() => {
     const email = localStorage.getItem("token");
     axios
-      .get(`http://localhost:8000/account-details/bank/all/${email}`)
+      .get(`https://crypto-backend-main.onrender.com/account-details/bank/all/${email}`)
       .then((response) => {
         const filData = response.data.filter(val => val.Country === countryObject[selectedCountry].name);
         setAccounts(filData.reverse());
@@ -1006,10 +1006,10 @@ const Bank = () => {
   const handleDelete = async (id) => {
     try {
       const token = localStorage.getItem('token');
-      await axios.delete(`http://localhost:8000/account-details/${countryObject[selectedCountry].urlName}/${id}`);
+      await axios.delete(`https://crypto-backend-main.onrender.com/account-details/${countryObject[selectedCountry].urlName}/${id}`);
       toast.success('Account deleted successfully!');
       axios
-        .get(`http://localhost:8000/account-details/bank/all/${token}`)
+        .get(`https://crypto-backend-main.onrender.com/account-details/bank/all/${token}`)
         .then((response) => {
           const filData = response.data.filter(val => val.Country === countryObject[selectedCountry].name);
           setAccounts(filData.reverse());
@@ -1095,7 +1095,7 @@ const Bank = () => {
                   submissionData.IFSC = values.ifsc;
                 }
 
-                const url = `http://localhost:8000/account-details/${countryObject[selectedCountry].urlName}/add`;
+                const url = `https://crypto-backend-main.onrender.com/account-details/${countryObject[selectedCountry].urlName}/add`;
 
                 try {
                   await axios.post(url, submissionData);
@@ -1383,13 +1383,153 @@ const Bank = () => {
           ) : (
             accounts.map((account) => (
               <AccountCard key={account.AccountNumber}>
-                <AccountInfo><br /><br />
-                  <AccountName><Maincol><Col1><Label>   Bank Name:  </Label></Col1>   <Col2>      {account.BankName} </Col2> </Maincol> </AccountName>
-                  <AccountDetails><Maincol><Col1><Label>Account Name: </Label></Col1>     <Col2>          {account.FirstName}  {account.LastName}</Col2>  </Maincol> </AccountDetails>
-
-                  <AccountNumberValue><Maincol><Col1><Label>Account No: </Label> </Col1>    <Col2>        {account.AccountNo}</Col2> </Maincol> </AccountNumberValue>
-                  {/* <AccountDetails><Maincol><Col1><Label>IFSC</Label>      </Col1>       <Col2>   {account.IFSC}</Col2></Maincol> </AccountDetails>
-                <AccountDetails><Maincol><Col1><Label>Country</Label> </Col1>       <Col2>         {account.Country}</Col2></Maincol>  </AccountDetails> */}
+                <AccountInfo>
+                  <br /><br />
+                  <AccountName>
+                    <Maincol>
+                      <Col1><Label>Bank Name:</Label></Col1>
+                      <Col2>{account.BankName}</Col2>
+                    </Maincol>
+                  </AccountName>
+                  <AccountDetails>
+                    <Maincol>
+                      <Col1><Label>Account Name:</Label></Col1>
+                      <Col2>{account.FirstName} {account.LastName}</Col2>
+                    </Maincol>
+                  </AccountDetails>
+                  <AccountNumberValue>
+                    <Maincol>
+                      <Col1><Label>Account No:</Label></Col1>
+                      <Col2>{account.AccountNo}</Col2>
+                    </Maincol>
+                  </AccountNumberValue>
+            
+                  {/* Conditional rendering based on country */}
+                  {selectedCountry === "USA" && (
+                    <>
+                      <AccountDetails>
+                        <Maincol>
+                          <Col1><Label>City:</Label></Col1>
+                          <Col2>{account.City}</Col2>
+                        </Maincol>
+                      </AccountDetails>
+                      <AccountDetails>
+                        <Maincol>
+                          <Col1><Label>State:</Label></Col1>
+                          <Col2>{account.State}</Col2>
+                        </Maincol>
+                      </AccountDetails>
+                      <AccountDetails>
+                        <Maincol>
+                          <Col1><Label>Zip Code:</Label></Col1>
+                          <Col2>{account.ZipCode}</Col2>
+                        </Maincol>
+                      </AccountDetails>
+                      <AccountDetails>
+                        <Maincol>
+                          <Col1><Label>Account Type:</Label></Col1>
+                          <Col2>{account.AccountType}</Col2>
+                        </Maincol>
+                      </AccountDetails>
+                      <AccountDetails>
+                        <Maincol>
+                          <Col1><Label>ABA Code:</Label></Col1>
+                          <Col2>{account.ABACode}</Col2>
+                        </Maincol>
+                      </AccountDetails>
+                    </>
+                  )}
+            
+                  {selectedCountry === "Brazil" && (
+                    <>
+                      <AccountDetails>
+                        <Maincol>
+                          <Col1><Label>Account Type:</Label></Col1>
+                          <Col2>{account.AccountType}</Col2>
+                        </Maincol>
+                      </AccountDetails>
+                      <AccountDetails>
+                        <Maincol>
+                          <Col1><Label>ID Type:</Label></Col1>
+                          <Col2>{account.IDType}</Col2>
+                        </Maincol>
+                      </AccountDetails>
+                      <AccountDetails>
+                        <Maincol>
+                          <Col1><Label>ID Number:</Label></Col1>
+                          <Col2>{account.IDNumber}</Col2>
+                        </Maincol>
+                      </AccountDetails>
+                      <AccountDetails>
+                        <Maincol>
+                          <Col1><Label>Bank Branch Code:</Label></Col1>
+                          <Col2>{account.BankBranchCode}</Col2>
+                        </Maincol>
+                      </AccountDetails>
+                    </>
+                  )}
+            
+                  {selectedCountry === "UK" && (
+                    <>
+                      <AccountDetails>
+                        <Maincol>
+                          <Col1><Label>Sort Code:</Label></Col1>
+                          <Col2>{account.SortCode}</Col2>
+                        </Maincol>
+                      </AccountDetails>
+                      <AccountDetails>
+                        <Maincol>
+                          <Col1><Label>Address:</Label></Col1>
+                          <Col2>{account.Address}</Col2>
+                        </Maincol>
+                      </AccountDetails>
+                    </>
+                  )}
+            
+                  {selectedCountry === "Euro" && (
+                    <>
+                      <AccountDetails>
+                        <Maincol>
+                          <Col1><Label>ABA Code:</Label></Col1>
+                          <Col2>{account.ABACode}</Col2>
+                        </Maincol>
+                      </AccountDetails>
+                      <AccountDetails>
+                        <Maincol>
+                          <Col1><Label>Swift Code:</Label></Col1>
+                          <Col2>{account.SwiftCode}</Col2>
+                        </Maincol>
+                      </AccountDetails>
+                    </>
+                  )}
+            
+                  {selectedCountry === "Dubai" && (
+                    <>
+                      <AccountDetails>
+                        <Maincol>
+                          <Col1><Label>Account Opening Branch:</Label></Col1>
+                          <Col2>{account.OpeningBranch}</Col2>
+                        </Maincol>
+                      </AccountDetails>
+                      <AccountDetails>
+                        <Maincol>
+                          <Col1><Label>IBAN:</Label></Col1>
+                          <Col2>{account.IBAN}</Col2>
+                        </Maincol>
+                      </AccountDetails>
+                    </>
+                  )}
+            
+                  {selectedCountry === "India" && (
+                    <>
+                      <AccountDetails>
+                        <Maincol>
+                          <Col1><Label>IFSC:</Label></Col1>
+                          <Col2>{account.IFSC}</Col2>
+                        </Maincol>
+                      </AccountDetails>
+                    </>
+                  )}
                 </AccountInfo>
                 <DeleteButton onClick={() => handleDelete(account._id)}>
                   Delete

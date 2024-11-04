@@ -168,7 +168,7 @@ const AdminWithdraw = () => {
     useEffect(() => {
         const fetchTransactions = async () => {
             try {
-                const response = await fetch('http://localhost:8000/withdraw/all');
+                const response = await fetch('https://crypto-backend-main.onrender.com/withdraw/all');
                 if (!response.ok) throw new Error('Network response was not ok');
                 const data = await response.json();
 
@@ -215,7 +215,7 @@ const AdminWithdraw = () => {
         }
 
         try {
-            const response = await fetch(`http://localhost:8000/withdraw/update/${selectedTransactionId}`, {
+            const response = await fetch(`https://crypto-backend-main.onrender.com/withdraw/update/${selectedTransactionId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -230,7 +230,7 @@ const AdminWithdraw = () => {
             setStatus('');
             setSelectedTransactionId('');
 
-            const updatedTransactions = await fetch('http://localhost:8000/withdraw/all').then(res => res.json());
+            const updatedTransactions = await fetch('https://crypto-backend-main.onrender.com/withdraw/all').then(res => res.json());
             setTransactions(updatedTransactions.reverse());
         } catch (error) {
             console.error('Error updating transaction status:', error);
@@ -253,7 +253,7 @@ const AdminWithdraw = () => {
         if (currentTransaction) {
             // const { transaction } = currentTransaction;
             try {
-                const url = `http://localhost:8000/withdraw/reject/${currentTransaction._id}`;
+                const url = `https://crypto-backend-main.onrender.com/withdraw/reject/${currentTransaction._id}`;
 
                 const response = await fetch(url, {
                     method: 'PUT',
@@ -269,7 +269,7 @@ const AdminWithdraw = () => {
 
                 toast.success(`Transaction rejected successfully!`);
 
-                const updatedTransactions = await fetch('http://localhost:8000/withdraw/all').then(res => res.json());
+                const updatedTransactions = await fetch('https://crypto-backend-main.onrender.com/withdraw/all').then(res => res.json());
                 setTransactions(updatedTransactions.reverse());
                 setFilteredTransactions(updatedTransactions.reverse());
             } catch (error) {

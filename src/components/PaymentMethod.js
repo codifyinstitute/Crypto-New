@@ -272,7 +272,7 @@ const PaymentMethod = () => {
   useEffect(()=>{
     const email = localStorage.getItem("token");
     axios
-      .get(`http://localhost:8000/account-details/${countryObject[selectedCountry].urlName}/${email}`)
+      .get(`https://crypto-backend-main.onrender.com/account-details/${countryObject[selectedCountry].urlName}/${email}`)
       .then((response) => {
         console.log(response.data)
         setAccounts(response.data);

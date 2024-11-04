@@ -141,7 +141,7 @@ const AdminQueries = () => {
 
   const fetchTransactions = async () => {
     try {
-      const response = await fetch('http://localhost:8000/contacts/all');
+      const response = await fetch('https://crypto-backend-main.onrender.com/contacts/all');
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
@@ -158,7 +158,7 @@ const AdminQueries = () => {
   const updateStatus = async(que) =>{
     // console.log(que)
     try {
-        const response = await fetch(`http://localhost:8000/contacts/update/${que._id}/status`, {
+        const response = await fetch(`https://crypto-backend-main.onrender.com/contacts/update/${que._id}/status`, {
           method: 'PATCH',
           headers: {
             'Content-Type': 'application/json',
