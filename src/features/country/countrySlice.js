@@ -4,7 +4,7 @@ var country = localStorage.getItem("Country");
 export const countrySlice = createSlice({
     name: 'country',
     initialState: {
-        value: country
+        value: country || "India"
     },
     reducers: {
         changeCountry: (state, action) => {

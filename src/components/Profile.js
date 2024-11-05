@@ -175,11 +175,63 @@ const ArrowIcon = styled.span`
   font-size: 20px;
 `;
 
+const ModalOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+`;
+
+const ModalContent = styled.div`
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  max-width: 300px;
+  width: 90%;
+`;
+
+const ModalTitle = styled.h2`
+  margin-bottom: 20px;
+  color: #333;
+`;
+
+const ModalButton = styled.button`
+  padding: 10px 20px;
+  margin: 0 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s;
+
+  &:hover {
+    opacity: 0.8;
+  }
+`;
+
+const ConfirmButton = styled(ModalButton)`
+  background-color: #ccc;
+  color: #333;
+`;
+
+const CancelButton = styled(ModalButton)`
+  background-color: #FFA500;
+  color: black;
+`; 
+
 const Profile = () => {
   const [userEmail, setUserEmail] = useState('');
   const [walletBalance, setWalletBalance] = useState(null);
   const [loading, setLoading] = useState(true);
   const [profileImage, setProfileImage] = useState(null);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
   const fileInputRef = useRef(null);
   const navigate = useNavigate();
 
@@ -221,6 +273,19 @@ const Profile = () => {
         toast.error(error.message);
       }
     }
+  };
+
+  const openLogoutModal = () => {
+    setShowLogoutModal(true);
+  };
+
+  const closeLogoutModal = () => {
+    setShowLogoutModal(false);
+  };
+
+  const confirmLogout = () => {
+    localStorage.removeItem('token');
+    navigate('/');
   };
 
   useEffect(() => {
@@ -321,7 +386,7 @@ const Profile = () => {
               <ArrowIcon>▶</ArrowIcon>
             </MenuLink>
           </MenuItem>
-          <MenuItem onClick={logout}>
+          <MenuItem onClick={openLogoutModal}>
             <MenuLink>
               <IconText>
                 <Icon>🚪</Icon>
@@ -332,6 +397,15 @@ const Profile = () => {
           </MenuItem>
         </MenuList>
       </Container>
+      {showLogoutModal && (
+        <ModalOverlay>
+          <ModalContent>
+            <ModalTitle>Are you sure you want to log out?</ModalTitle>
+            <ConfirmButton onClick={confirmLogout}>Leave</ConfirmButton>
+            <CancelButton onClick={closeLogoutModal}>Stay</CancelButton>
+          </ModalContent>
+        </ModalOverlay>
+      )}
     </>
   );
 };

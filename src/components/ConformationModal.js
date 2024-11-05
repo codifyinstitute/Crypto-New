@@ -105,7 +105,8 @@ const Button = styled.button`
   color: black;
   font-weight: 700;
   border: none;
-  padding: 9px 57px;
+  width: 140px;
+  /* padding: 9px 57px; */
   border-radius: 5px;
   cursor: pointer;
   margin-right: 10px;
@@ -129,37 +130,37 @@ const CancelButton = styled(Button)`
 
 const Modal = ({ title,
   message,
-    onConfirm, 
-    onCancel,
-    showDoneButton }) => (
-    <Overlay>
-        <ModalContainer>
-            <Header>{title}</Header>
-            <div style={{display:"flex",justifyContent:"center", width: "80%", maxWidth:"500px"}}>
-            {showDoneButton ? (
-              <SuccessContainer>
-                <SuccessCenter>
+  onConfirm,
+  onCancel,
+  showDoneButton }) => (
+  <Overlay>
+    <ModalContainer>
+      <Header>{title}</Header>
+      <div style={{ display: "flex", justifyContent: "center", width: "80%", maxWidth: "500px" }}>
+        {showDoneButton ? (
+          <SuccessContainer>
+            <SuccessCenter>
               <CheckMark viewBox="0 0 24 24">
                 <path d="M5 13l4 4L19 7" />
               </CheckMark>
-              </SuccessCenter>
-              <SuccessMessage>{message}</SuccessMessage>
-            </SuccessContainer>
-                ) : null}
-            </div>
-            <div style={{display:"flex",justifyContent:"space-around", marginTop:"1rem",width:"100%",}}>
-                {showDoneButton ? (
-                    <Button onClick={onConfirm}>Done</Button>
-                ) : (
-                    <>
-                    <CancelButton onClick={onCancel}>Not yet</CancelButton>
-                        <Button onClick={onConfirm}>Confirm</Button>
-                    
-                    </>
-                )}
-            </div>
-        </ModalContainer>
-    </Overlay>
+            </SuccessCenter>
+            <SuccessMessage>{message}</SuccessMessage>
+          </SuccessContainer>
+        ) : null}
+      </div>
+      <div style={{ display: "flex", justifyContent: "space-around", marginTop: "1rem", width: "100%", }}>
+        {showDoneButton ? (
+          <Button onClick={onConfirm}>Done</Button>
+        ) : (
+          <>
+            <CancelButton onClick={onCancel}>Not yet</CancelButton>
+            <Button onClick={onConfirm}>Confirm</Button>
+
+          </>
+        )}
+      </div>
+    </ModalContainer>
+  </Overlay>
 );
 
 export default Modal;

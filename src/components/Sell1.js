@@ -791,7 +791,7 @@ const Sell1 = () => {
           axios.get(`https://crypto-backend-main.onrender.com/currencies/${countryObject[selectedCountry].urlName}/all`),
           fetch(`https://crypto-backend-main.onrender.com/static/${countryObject[selectedCountry]?.urlName}/one`),
         ]);
-
+        console.log(currenciesResponse.data[0])
         setCurrencies(currenciesResponse.data);
         setSelectedCurrency(
           currenciesResponse.data.find((c) => c.Symbol === "ACH") ||

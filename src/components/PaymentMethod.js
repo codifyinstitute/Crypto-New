@@ -127,6 +127,9 @@ const ProceedButton = styled.button`
   margin-top: auto;
   width: 100%;
   text-align: center;
+  &:disabled {
+    background: gray;
+  }
 `;
 
 const Button = styled.button`
@@ -258,12 +261,12 @@ const PaymentMethod = () => {
     const existingTransactionDetails =
       JSON.parse(localStorage.getItem("transactionDetails")) || {};
 
-      const { _id, __v, ...filteredAccount } = account;
+    const { _id, __v, ...filteredAccount } = account;
 
-      const updatedTransactionDetails = {
-        ...existingTransactionDetails,
-        AccountDetail: { ...filteredAccount }
-      };
+    const updatedTransactionDetails = {
+      ...existingTransactionDetails,
+      AccountDetail: { ...filteredAccount }
+    };
 
     localStorage.setItem(
       "transactionDetails",
@@ -272,7 +275,7 @@ const PaymentMethod = () => {
     navigate("/sell4");
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     const email = localStorage.getItem("token");
     axios
       .get(`https://crypto-backend-main.onrender.com/account-details/${countryObject[selectedCountry].urlName}/${email}`)
@@ -283,7 +286,7 @@ const PaymentMethod = () => {
       .catch((error) => {
         console.error("Error fetching Accounts:", error);
       });
-  },[selectedCountry])
+  }, [selectedCountry])
 
   const AddAccount = () => {
     setForm(!form);
@@ -360,14 +363,12 @@ const PaymentMethod = () => {
                 </PaymentOption>
               ) : null}
 
-              {selectedOption && ( // Show the Proceed button only if an option is selected
-                <ProceedButton onClick={handleProceedClick}>
-                  Proceed
-                </ProceedButton>
-              )}
+              <ProceedButton onClick={handleProceedClick} disabled={!selectedOption}>
+                Proceed
+              </ProceedButton>
             </>) : (<>
               <CardsSection>
-                {accounts.map((account, index) => (
+                {accounts.length > 0 ? accounts.map((account, index) => (
                   <Card
                     key={index}
                     onClick={() => handleCardClick(account)}
@@ -380,7 +381,12 @@ const PaymentMethod = () => {
                       <strong>IFSC:</strong> {account.IFSC}
                     </Crosss> 
                   </Card>
-                ))}
+                )) : <>
+                  <OptionTitle>No Bank Details is Added</OptionTitle>
+                  <ProceedButton style={{ width: "fit-content" }} onClick={() => navigate('/bank-transfer')}>
+                    Add Bank Details
+                  </ProceedButton>
+                </>}
               </CardsSection>
             </>)}
 

@@ -120,6 +120,25 @@ const FormButton = styled.button`
   gap: 0.5rem;
 `;
 
+const ProceedButton = styled.button`
+  background-color: #f7a600;
+  color: black;
+  font-weight : 700;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: auto;
+  width: 100%;
+  text-align: center;
+`;
+
+const OptionTitle = styled.div`
+  font-weight: bold;
+  font-size: 16px;
+`;
+
 const CardsSection = styled.div`
   width: 100%;
   border-radius: 1rem;
@@ -365,7 +384,7 @@ const CardTransfer = () => {
               </Formik>
             ) : (
               <CardsSection>
-                {accounts.map((account, index) => (
+                {accounts.length > 0 ? accounts.map((account, index) => (
                   <Card key={index} onClick={() => handleCardClick(account)}>
                     <CardTitle>
                       <span>Card Number</span> <span>{account.CardNumber}</span>
@@ -377,14 +396,19 @@ const CardTransfer = () => {
                       <strong>CVV:</strong> {account.CVV}
                     </Crosss>
                   </Card>
-                ))}
+                )) : <>
+                  <OptionTitle>No Bank Details is Added</OptionTitle>
+                  <ProceedButton style={{ width: "fit-content" }} onClick={AddAccount}>
+                    Add Bank Details
+                  </ProceedButton>
+                </>}
               </CardsSection>
             )}
           </FormContainer>
         </FormWrapper>
       </PageContainer>
-      <HomeContact />
-      <Footer />
+      {/* <HomeContact />
+      <Footer /> */}
       <ToastContainer />
     </>
   );

@@ -20,6 +20,7 @@ import DEPOSIT__2_ from "../assets/DEPOSIT__2_-removebg-preview.png";
 import { AiOutlineHistory } from "react-icons/ai";
 import { PiSpeakerHighFill } from "react-icons/pi";
 import { useSelector } from "react-redux";
+import axios from "axios";
 
 const PageContainer = styled.div`
   display: flex;
@@ -379,6 +380,8 @@ const Wallet = () => {
   const selectedCountry = useSelector((state) => state.country.value);
   const navigate = useNavigate();
   const [walletAmount, setWalletAmount] = useState("0");
+  const [loading, setLoading] = useState(false);
+  const [selectedCurrency, setSelectedCurrency] = useState(null);
   const [login, setLogin] = useState(false);
   const handleDepositclick = () => {
     navigate('/deposit')
@@ -397,6 +400,30 @@ const Wallet = () => {
   ];
 
   const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const [currenciesResponse] = await Promise.all([
+          axios.get(`https://crypto-backend-main.onrender.com/currencies/${countryObject[selectedCountry].urlName}/all`),
+        ]);
+        // console.log(currenciesResponse.data[0])
+        setSelectedCurrency(
+          currenciesResponse.data.find((c) => c.Symbol === "ACH") ||
+          currenciesResponse.data[0]
+        );
+
+  
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [selectedCountry]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -465,45 +492,45 @@ const Wallet = () => {
                 <img src={newWallet} alt="wallet"></img>
               </WalletIcon>
               <Balance>
-      <p>
-        <span style={{
-          backgroundColor: "#d3d3d3",
-          paddingTop: "5px",
-          paddingRight: "6px",
-           borderRadius: "4px 0px 0px 4px"
-        }}>
-          <img src={coin} alt="coin" />
-        </span>
-        <span style={{
-          marginLeft: "8px",
-          marginRight: "8px",
-          paddingLeft: "10px",
-          minWidth: "50px", // Set a minimum width
-          width: "auto", // Allow the width to grow as needed
-          display: "inline-block" // Ensure it behaves like a block element
-        }}>
-          {walletAmount}
-        </span>
-      </p>
-      <span style={{ fontSize: "16px", marginTop: "7px", fontWeight: "700" }}>Wallet balance</span>
-    </Balance>
+                <p>
+                  <span style={{
+                    backgroundColor: "#d3d3d3",
+                    paddingTop: "5px",
+                    paddingRight: "6px",
+                    borderRadius: "4px 0px 0px 4px"
+                  }}>
+                    <img src={coin} alt="coin" />
+                  </span>
+                  <span style={{
+                    marginLeft: "8px",
+                    marginRight: "8px",
+                    paddingLeft: "10px",
+                    minWidth: "50px", // Set a minimum width
+                    width: "auto", // Allow the width to grow as needed
+                    display: "inline-block" // Ensure it behaves like a block element
+                  }}>
+                    {walletAmount}
+                  </span>
+                </p>
+                <span style={{ fontSize: "16px", marginTop: "7px", fontWeight: "700" }}>Wallet balance</span>
+              </Balance>
             </Part>
-            {login ? null : <LoginButton>Login to Deposit</LoginButton>}
+            {login ? null : <LoginButton onClick={() => navigate('/sell2')}>Login to Deposit</LoginButton>}
             <ActionButtons>
-                <Deposit onClick={handleDepositclick}>
-                  <div>
-                    <img src={DEPOSIT__2_} style={{ height: "80px", width: "80px" ,marginTop :  "10px" }} alt="Deposit"  />
-                  </div>
-                  <span style={{ fontWeight: 700 }}>Deposit</span>
-                </Deposit>
+              <Deposit onClick={handleDepositclick}>
+                <div>
+                  <img src={DEPOSIT__2_} style={{ height: "80px", width: "80px", marginTop: "10px" }} alt="Deposit" />
+                </div>
+                <span style={{ fontWeight: 700 }}>Deposit</span>
+              </Deposit>
 
-                
-               <Deposit onClick={handleWithdrawclick}>
-                  <div>
-                    <img src={withdrawicon} alt="Withdraw" style={{ height: "60px", width: "65px" }} />
-                  </div>
-                  <span style={{ fontWeight: 700 }}>Withdraw</span>
-                </Deposit>
+
+              <Deposit onClick={handleWithdrawclick}>
+                <div>
+                  <img src={withdrawicon} alt="Withdraw" style={{ height: "60px", width: "65px" }} />
+                </div>
+                <span style={{ fontWeight: 700 }}>Withdraw</span>
+              </Deposit>
             </ActionButtons>
 
             <Banner>
@@ -517,12 +544,13 @@ const Wallet = () => {
               />
               <Text>{dataEntries[index]}</Text>
             </Banner>
+            {loading?null:<>
             <Part2>
               <Container>
                 <PriceDisplay>
-                  <Price> {countryObject[selectedCountry].symbol} 90</Price>
+                  <Price> {countryObject[selectedCountry].symbol} {selectedCurrency?.Rate}</Price>
                 </PriceDisplay>
-                <Subtext>1 USDT = {countryObject[selectedCountry].symbol} 1111</Subtext>
+                <Subtext>1 USDT = {countryObject[selectedCountry].symbol} {selectedCurrency?.Rate}</Subtext>
                 <Center>
                   <TableContainer>
                     <Table>
@@ -538,7 +566,7 @@ const Wallet = () => {
                             <b>1075 + USDT </b>
                           </TableCell>
                           <TableCell>
-                            <b>11111 + 0.25</b>
+                            <b>{selectedCurrency?.Rate} + 0.25</b>
                           </TableCell>
                         </tr>
                         <tr>
@@ -546,7 +574,7 @@ const Wallet = () => {
                             <b>2150 + USDT </b>
                           </TableCell>
                           <TableCell>
-                            <b>1111+ 0.5</b>
+                            <b>{selectedCurrency?.Rate}+ 0.5</b>
                           </TableCell>
                         </tr>
                         <tr>
@@ -554,7 +582,7 @@ const Wallet = () => {
                             <b>3255 + USDT </b>
                           </TableCell>
                           <TableCell>
-                            <b>11111 + 1</b>
+                            <b>{selectedCurrency?.Rate} + 1</b>
                           </TableCell>
                         </tr>
                       </tbody>
@@ -566,6 +594,7 @@ const Wallet = () => {
                 </Center>
               </Container>
             </Part2>
+            </>}
           </FormContainer>
         </FormWrapper>
       </PageContainer>
