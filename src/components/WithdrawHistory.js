@@ -351,11 +351,11 @@ const WithdrawHistory = () => {
     let style;
 
     if (status === 'Pending') {
-      style = { color: 'red', fontWeight: "bold" };
+      style = { color: '#b89c00', fontWeight: "bold" };
     } else if (status === 'Successful') {
       style = { color: 'green', fontWeight: "bold" };
     } else {
-      style = { color: 'black', fontWeight: "bold" }; // Default color
+      style = { color: 'red', fontWeight: "bold" }; // Default color
     }
 
     return <span style={style}>{children}</span>;
@@ -377,7 +377,7 @@ const WithdrawHistory = () => {
                 <BackButton onClick={() => window.history.back()}>
                   <ChevronLeft />
                 </BackButton>
-                <Tab active>Withdraw History</Tab>
+                <Tab active>Withdrawal History</Tab>
               </TabContainer>
               {/* <Title>Your Deposit History</Title> */}
             </StickyContainer>
@@ -439,7 +439,7 @@ const WithdrawHistory = () => {
           </ScrollableArea>
         </Card>
       </PageContainer>
-      <HomeContact />
+      {/* <HomeContact /> */}
       <Footer />
     </>
   );

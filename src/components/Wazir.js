@@ -216,7 +216,7 @@ const CryptoPriceGrid = () => {
 
   return (
     <>
-      <Title><Yellow>Live</Yellow> Rates</Title>
+      <Title><Yellow>Exchange</Yellow> Rates</Title>
       <Grid>
         <CryptoPriceCard
           exchange="Binance"

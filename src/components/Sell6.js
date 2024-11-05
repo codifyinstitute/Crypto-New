@@ -294,7 +294,7 @@ const Sell5 = () => {
                 {" "}
                 <ChevronLeft></ChevronLeft>
               </BackButton>
-              <Tab active>Almost Done</Tab>
+              <Tab active>Deposit Order</Tab>
             </TabContainer>
           </Header>
 
@@ -348,7 +348,7 @@ const Sell5 = () => {
           <InfoBox>
             <InfoTitle>
               {/* <AlertCircle size={20} style={{ marginRight: "10px" }} /> */}
-              Transaction Details
+              Deposit Details
             </InfoTitle>
             <InfoText>
               <span style={{fontWeight:"bold"}}>Order Id :</span> <span>{location.state?.data?.transaction?.OrderId}</span>

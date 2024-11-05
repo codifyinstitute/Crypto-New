@@ -18,7 +18,7 @@ const PageContainer = styled.div`
   flex-direction: column;
   min-height: 100vh;
   background-color: black;
-  padding-top: 140px;
+  padding-top: 80px;
 
 
 `;
@@ -341,7 +341,7 @@ const PaymentMethod = () => {
                 <OptionText>
                   <OptionTitle>Bank Transfer</OptionTitle>
                   <OptionDescription>
-                    Processing time can take up to 1 day
+                    Processing time can take up to 2 hours
                   </OptionDescription>
                 </OptionText>
               </PaymentOption>

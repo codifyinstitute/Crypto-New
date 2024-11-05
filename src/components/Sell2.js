@@ -39,7 +39,7 @@ const Card = styled.div`
   width: 380px;
   /* height: 610px; */
   color: black;
-
+  // margin-bottom: 240px;
   @media (max-width: 430px) {
     width: 100%;
   }
@@ -188,6 +188,7 @@ const BackButton = styled.button`
 const Sell2 = () => {
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
+  const  [countryCode, setCountryCode] = useState('')
   const [isChecked, setIsChecked] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -200,6 +201,18 @@ const Sell2 = () => {
       setPhone(value);
     }
   };
+
+  const handleCountryCode = (e) => {
+    const inputValue = e.target.value;
+    
+    // Remove the '+' sign for validation
+    const numericValue = inputValue.replace('+', '');
+    
+    // Allow only digits and limit to 10 digits
+    if (/^\d{0,10}$/.test(numericValue)) {
+      setCountryCode(numericValue);
+    }
+  }; 
 
   const handleProceed = async () => {
     if (isFormValid) {
@@ -243,13 +256,31 @@ const Sell2 = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
-              <Label>What is your Phone Number?</Label>
+              {/* <Label>What is your Phone Number?</Label>
               <Input
                 type="tel"
                 placeholder="Enter your Phone Number"
                 value={phone}
                 onChange={handlePhoneChange}
-              />
+              /> */}
+              <Label>What is your Phone Number?</Label>
+<div style={{ display: 'flex', alignItems: 'center' }}>
+<Input
+  type="tel"
+  placeholder="Code"
+  value={countryCode ? `+${countryCode}` : ''} // Display the '+' symbol
+  onChange={handleCountryCode}
+  style={{ width: '80px', marginRight: '10px' }} // Adjust width and margin as needed
+/>
+  <Input
+    type="tel"
+    placeholder="Enter your Phone Number"
+    value={phone}
+    onChange={handlePhoneChange}
+    style={{ flex: 1 }} // This will allow it to take the remaining space
+  />
+</div>
+              
               <CheckboxLabel>
                 <Checkbox
                   type="checkbox"
@@ -270,7 +301,7 @@ const Sell2 = () => {
           </Forg>
         </Card>
       </PageContainer>
-      <HomeContact />
+      {/* <HomeContact /> */}
       <Footer />
       <ToastContainer />
     </>

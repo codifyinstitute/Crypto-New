@@ -103,7 +103,7 @@ const MoonPaySteps = () => {
         <StepNumber>2</StepNumber>
         <StepContent>
           <StepTitle>Deposit USDT</StepTitle>
-          <StepDescription>Deposit USDT to your unique Moon Pay's wallet address</StepDescription>
+          <StepDescription>Deposit USDT to your unique Moon Pay's Wallet </StepDescription>
         </StepContent>
         <IconWrapper>
           <Coins size={24} />

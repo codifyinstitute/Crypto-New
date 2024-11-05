@@ -292,7 +292,7 @@ const Sell5 = () => {
                 {" "}
                 <ChevronLeft></ChevronLeft>
               </BackButton>
-              <Tab active>Almost Done</Tab>
+              <Tab active>Order Successful</Tab>
             </TabContainer>
           </Header>
 
@@ -339,7 +339,7 @@ const Sell5 = () => {
             </TimelineItem>
             <TimelineItem>
               <TimelineDot />
-              <TimelineLabel>Sent</TimelineLabel>
+              <TimelineLabel>Completed</TimelineLabel>
             </TimelineItem>
           </Timeline>
 

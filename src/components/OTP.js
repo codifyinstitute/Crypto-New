@@ -14,12 +14,16 @@ const PageContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-height: 100vh;
-  justify-content: center;
-  gap: 10rem;
+  min-height: fit-content;
+  justify-content: space-between;
   background-color: black;
   color: white;
   padding: 20px;
+  /* padding-top: 140px; */
+  @media (max-width: 480px) {
+  padding-top: 80px;
+
+  }
 `;
 const Moonn = styled.img`
  
@@ -29,14 +33,15 @@ const Moonn = styled.img`
 `;
 const Card = styled.div`
   background-color: white;
-  border-radius: 10px;
+  border-radius: 0.5rem;
   padding: 20px;
-  width: 100%;
-  max-width: 380px;
-  height: 610px;
+  width: 380px;
+   height: 650px;
   color: black;
-  margin-top: 4%;
-  margin-bottom: 20px;
+  // margin-bottom: 240px;
+  @media (max-width: 430px) {
+    width: 100%;
+  }
 `;
 
 const Title = styled.h1`
@@ -50,6 +55,9 @@ const Logo = styled.div`
   font-size: 24px;
   font-weight: bold;
   margin-bottom: 20px;
+  display : flex;
+  justify-content : center;
+  align-items: center;
 `;
 
 const Subtitle = styled.h2`
@@ -260,7 +268,7 @@ const OTPPage = () => {
             </BackButton>
             <Tab active>Verification Code</Tab>
           </TabContainer>
-          <Logo>LOGO</Logo>
+          <Logo><Moonn style={{height : "60px", width :  "160px"}} src={logoM}/></Logo>
        
           <FormContainer>
             <div>
@@ -292,7 +300,7 @@ const OTPPage = () => {
         </PoweredBy>
         </Card>
       </PageContainer>
-      <HomeContact />
+      {/* <HomeContact /> */}
       <Footer />
       <ToastContainer />
     </>

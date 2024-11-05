@@ -69,6 +69,7 @@ const FormContainer = styled.div`
     width: 300px;
     height : 670px;
   }
+    
 `;
 
 const TabContainer = styled.div`

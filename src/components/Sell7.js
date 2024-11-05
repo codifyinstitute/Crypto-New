@@ -293,7 +293,7 @@ const Sell7 = () => {
                 {" "}
                 <ChevronLeft></ChevronLeft>
               </BackButton>
-              <Tab active>Almost Done</Tab>
+              <Tab active>Withdraw Order</Tab>
             </TabContainer>
           </Header>
 
@@ -347,7 +347,7 @@ const Sell7 = () => {
           <InfoBox>
             <InfoTitle>
               {/* <AlertCircle size={20} style={{ marginRight: "10px" }} /> */}
-              Transaction Details
+              Withdrawal Status
             </InfoTitle>
             <InfoText>
               <span style={{fontWeight:"bold"}}> Network :</span> <span>{location.state?.data?.Network}</span>

@@ -906,9 +906,9 @@ const DisclaimerIcon = styled.div`
 `
 
 const DisclaimerText = styled.span`
-  font-size: 12px;
+  font-size: 10px;
   font-weight: 700;
-  text-align : justify;
+  // text-align : justify;
 `;
 
 

@@ -12,6 +12,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useSelector } from "react-redux";
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
+import nocard from "./../assets/no-credit-card-no-bank-card-icon-cash-only-no-credit-cards-accepted-vector-removebg-preview.png";
 
 const PageContainer = styled.div`
   display: flex;
@@ -210,6 +211,43 @@ const Button = styled.button`
   }
 `;
 
+const NoHistoryContainer = styled.div`
+  display: flex;
+  margin-top : 85px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; // Center the entire container
+`;
+
+const IconContainer = styled.div`
+  display: flex;
+  justify-content: center; // Center the icon horizontally
+  align-items: center; // Center the icon vertically
+  height: 20%; // Full height to center vertically in the viewport
+`;
+
+const CenteredValueContainer = styled.div`
+  display: flex;
+  justify-content: center; // Center horizontally
+  align-items: center; // Center vertically
+   margin-top: 10px; 
+`;
+
+const TextValue = styled.div`
+  font-size: 16px; // Font size for the text
+  color: black; // Text color
+  font-weight : 600;
+  text-align: center; // Center align the text
+  margin-top: 55px; // Additional margin for consistency
+`;
+
+const LoadingText = styled.div`
+  font-size: 18px;
+  color: #ffa500;
+  font-weight: bold;
+  margin-top: 20px;
+`;
+
 const countryObject = {
   India: {
     urlName: "india",
@@ -325,9 +363,9 @@ const CardTransfer = () => {
                 >
                   <ChevronLeft />
                 </button>
-                <Tab>Choose payment method</Tab>
+                <Tab>Payment Method</Tab>
               </Left>
-              <Button onClick={AddAccount}>{form ? "Choose Card" : "Add Card +"}</Button>
+              <Button onClick={AddAccount}>{form ? " My Cards" : "Add Card +"}</Button>
             </TabContainer>
             {form ? (
               <Formik
@@ -397,9 +435,30 @@ const CardTransfer = () => {
                     </Crosss>
                   </Card>
                 )) : <>
-                  <OptionTitle>No Bank Details is Added</OptionTitle>
+
+<NoHistoryContainer>
+<IconContainer>
+              <img
+                src={nocard}
+                alt="Empty Icon"
+                style={{
+                  height: "100px",
+                  width: "100px",
+                  backgroundColor: "#f0f0f0",
+                  padding: "10px",
+                  borderRadius: "20px",
+                  boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
+                }}
+              />
+            </IconContainer>
+            <CenteredValueContainer>
+              <TextValue>No Card Details Available.</TextValue>
+            </CenteredValueContainer>
+</NoHistoryContainer>
+
+                  {/* <OptionTitle>No Card Details is Added</OptionTitle> */}
                   <ProceedButton style={{ width: "fit-content" }} onClick={AddAccount}>
-                    Add Bank Details
+                    Add Card Details
                   </ProceedButton>
                 </>}
               </CardsSection>
@@ -407,8 +466,7 @@ const CardTransfer = () => {
           </FormContainer>
         </FormWrapper>
       </PageContainer>
-      {/* <HomeContact />
-      <Footer /> */}
+      <Footer></Footer>
       <ToastContainer />
     </>
   );

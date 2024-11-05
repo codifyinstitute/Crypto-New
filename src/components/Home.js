@@ -305,7 +305,7 @@ const Home = () => {
           <ExchangeCard>
             <div>
               <TabContainer>
-                <Tab active>Sell Crypto</Tab>
+                <Tab active>Sell USDT</Tab>
               </TabContainer>
 
               <InputLabel>You sell</InputLabel>
@@ -337,7 +337,7 @@ const Home = () => {
 
                 <AnimatedDropdownContainer isOpen={isDropdownOpen}>
                   <DropdownHeader>
-                    <DropdownTitle>Select crypto</DropdownTitle>
+                    <DropdownTitle>Select Network</DropdownTitle>
                     <CloseButton onClick={() => setIsDropdownOpen(false)}>
                       <X size={24} />
                     </CloseButton>
@@ -372,12 +372,12 @@ const Home = () => {
                 </AnimatedDropdownContainer>
                 <InputMessage isValid={isValid} inSufficientBalance={inSufficientBalance}>
                   {isValid
-                    ?inSufficientBalance?"Insufficient Balance": `You can proceed with this amount.`
-                    : ` Minimum sell order is ${minAmount} USDT.`}
+                    ?inSufficientBalance?"Insufficient Balance": `Proceed with this amount.`
+                    : ` Minimum  order is ${minAmount} USDT.`}
                   {/* -{inSufficientBalance?"Insufficient Balance":null} */}
                 </InputMessage>
               </InputContainer>
-              <InputLabel>Receive</InputLabel>
+              <InputLabel>You Receive</InputLabel>
               <InputContainer>
                 <InputWrapper>
                   <Input type="text" value={`${countryObject[selectedCountry].symbol} ${inr.toFixed(2)}`} readOnly />
@@ -408,7 +408,7 @@ const Home = () => {
 
                 <AnimatedDropdownContainersec isOpen={isFiatDropdownOpen}>
                   <DropdownHeader>
-                    <DropdownTitle>Select fiat currency</DropdownTitle>
+                    <DropdownTitle>Select Currency</DropdownTitle>
                     <CloseButton onClick={() => setIsFiatDropdownOpen(false)}>
                       <X size={24} />
                     </CloseButton>
@@ -476,7 +476,7 @@ const Home = () => {
                           </TooltipText>
                         </TooltipContainer>
                       </span>
-                      <span>as low as {countryObject[selectedCountry].symbol} {transactionFee}</span>
+                      <span> {countryObject[selectedCountry].symbol} {transactionFee}</span>
                     </OrderDetail>
                     <OrderDetail>
                       <span>
@@ -489,17 +489,17 @@ const Home = () => {
                           </TooltipText>
                         </TooltipContainer>
                       </span>
-                      <span>as low as {countryObject[selectedCountry].symbol} {networkFee}</span>
+                      <span>{countryObject[selectedCountry].symbol} {networkFee}</span>
                     </OrderDetail>
                   </>
                 )}
               </OrderSummary>
               {inSufficientBalance?
-              <ProceedButton style={{backgroundColor:"gray"}} onClick={()=>navigate('/deposit')}>
-              Add USDT to Wallet
+              <ProceedButton style={{backgroundColor:"#e1dcdc"}} onClick={()=>navigate('/deposit')}>
+              Add USDT to Wallet 
             </ProceedButton>
               :<ProceedButton onClick={handleSellNowClick}>
-                Sell Now
+                Proceed · Sell {selectedCurrency?.Name} <ChevronRight />
               </ProceedButton>}
               
               <PaymentMethods>

@@ -979,7 +979,7 @@ const Sell1 = () => {
               <BackButton onClick={handleBackClick}>
                 <ChevronLeft />
               </BackButton>
-              <Tab active>Sell Crypto</Tab>
+              <Tab active>Sell USDT</Tab>
             </TabContainer>
 
             <InputLabel>You sell</InputLabel>
@@ -1040,14 +1040,14 @@ const Sell1 = () => {
               </AnimatedDropdownContainer1>
               <InputMessage isValid={isValid} inSufficientBalance={inSufficientBalance}>
                 {isValid
-                  ? inSufficientBalance ? "Insufficient Balance" : `You can proceed with this amount.`
-                  : ` Minimum sell order is ${minAmount} USDT.`}
+                  ? inSufficientBalance ? "Insufficient Balance" : `Proceed with this amount.`
+                  : ` Minimum order is ${minAmount} USDT.`}
                 {/* -{inSufficientBalance?"Insufficient Balance":null} */}
               </InputMessage>
             </InputContainer>
 
             <InputLabel>
-              You receive (estimate)
+              You receive 
               <TooltipContainer>
                 <Info size={14} />
                 <TooltipText>
@@ -1168,7 +1168,7 @@ const Sell1 = () => {
                         </TooltipText>
                       </TooltipContainer>
                     </span>
-                    <span>as low as {countryObject[selectedCountry].symbol} {transactionFee}</span>
+                    <span> {countryObject[selectedCountry].symbol} {transactionFee}</span>
                   </OrderDetail>
                   <OrderDetail>
                     <span>
@@ -1181,7 +1181,7 @@ const Sell1 = () => {
                         </TooltipText>
                       </TooltipContainer>
                     </span>
-                    <span>as low as {countryObject[selectedCountry].symbol} {networkFee}</span>
+                    <span> {countryObject[selectedCountry].symbol} {networkFee}</span>
                   </OrderDetail>
                 </>
               )}

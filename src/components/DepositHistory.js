@@ -19,6 +19,8 @@ const PageContainer = styled.div`
   flex-direction: column;
   align-items: center;
   padding: 20px;
+
+  min-height : 100vh;
   background-color: black;
   font-family: 'Roboto', sans-serif;
 
@@ -244,7 +246,7 @@ const LoadingText = styled.div`
 
 // Component for status with dynamic color styling
 const StatusValue = ({ status, children }) => {
-  const color = status === "Completed" ? "green" : status === "Pending" ? "#b89c00" : "red";
+  const color = status === "successful" ? "green" : status === "Pending" ? "#b89c00" : "red";
   return <span style={{ color, fontWeight: "bold" }}>{children}</span>;
 };
 

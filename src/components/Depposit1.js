@@ -308,9 +308,9 @@ const DisclaimerIcon = styled.div`
 `;
 
 const DisclaimerText = styled.span`
-  font-size: 12px;
-  font-weight: 700;
-  text-align : justify;
+  font-size: 10px;
+  font-weight: 550;
+  // text-align : justify;
 `;
 
 // 
@@ -977,7 +977,7 @@ const Depposit1 = () => {
             <div>
               <QRcodeHeading>
                 <QRcodeHeadingText>
-                  Scan The QRcode To Deposit
+                  Scan The QR code To Deposit
                 </QRcodeHeadingText>
               </QRcodeHeading>
             </div>

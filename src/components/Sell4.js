@@ -17,10 +17,10 @@ const PageContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
+  // min-height: 100vh;
   background-color: black;
   padding: 20px;
-  padding-top: 140px;
+  padding-top: 80px;
   @media (max-width: 480px) {
     padding-top: 80px;
   }
@@ -494,7 +494,7 @@ const Sell4 = () => {
               <BackButton onClick={() => window.history.back()}>
                 <ChevronLeft />
               </BackButton>
-              <Tab active>How to Complete Your Sell</Tab>
+              <Tab active>Sell USDT</Tab>
             </TabContainer>
             <div style={{display:"flex",flexDirection:"column", justifyContent:"space-between",height:"100%"}}>
               <div>
@@ -523,15 +523,15 @@ const Sell4 = () => {
                       />
                     </Value>
                   </InfoRow>
-                  <Heading>Transaction Summary</Heading>
+                  <Heading>Order Summary</Heading>
                   <InfoRow>
-                    <Label1>You're Selling</Label1>
+                    <Label1>Sell Order</Label1>
                     <Value>
                       {localData.amountPay} {coinName}{" "}
                     </Value>
                   </InfoRow>
                   <InfoRow>
-                    <Label1>Transaction Fee</Label1>
+                    <Label1>Processing Fee</Label1>
                     <Value>{countryObject[selectedCountry].symbol} {transactionFee}</Value>
                   </InfoRow>
                   <InfoRow>
@@ -539,7 +539,7 @@ const Sell4 = () => {
                     <Value>{countryObject[selectedCountry].symbol} {networkFee}</Value>
                   </InfoRow>
                   <InfoRow>
-                    <Label1>You'll Receive</Label1>
+                    <Label1>You Receive</Label1>
                     <Value>{countryObject[selectedCountry].symbol} {calculateReceivedAmount()}</Value>
                   </InfoRow>
                 </div>
@@ -649,12 +649,11 @@ const Sell4 = () => {
             <hr /> */}
                 <Heading style={{ marginTop: "15px" }}>What Happens Next?</Heading>
                 <Text>
-                  Once We've received your crypto deposit, we'll send the pay-out
-                  within 1-2 hours max.
+                After selling your USDT, the fiat amount will be deposited into your selected account within 2 hours
                 </Text>
               </div>
               <Button onClick={handleProceedClick}>
-                Deposit Sent
+                Complete Order
               </Button>
             </div>
           </Card>
@@ -665,7 +664,7 @@ const Sell4 = () => {
 
       {showConfirmation && (
         <Modal
-          title="I have transferred the crypto to the indicated address and network"
+          title="I consent to exchange my USDT for fiat currency through MoonPay."
           message="Are you sure you want to proceed with this transaction?"
           onConfirm={confirmTransaction}
           onCancel={cancelConfirmation}

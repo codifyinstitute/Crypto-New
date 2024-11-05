@@ -73,8 +73,11 @@ const VerifiedBadge = styled.div`
 const Username = styled.h2`
   color: white;
   margin: 5px 0;
+  
+    font-size: 14px;
+
   @media (max-width: 320px) {
-    font-size: 18px;
+    font-size: 14px;
   }
 `;
 
@@ -345,7 +348,7 @@ const Profile = () => {
               <IconText>
                 <Icon>📥</Icon>
 
-                Your Deposit History
+                 Deposit History
               </IconText>
               <ArrowIcon>▶</ArrowIcon>
             </MenuLink>
@@ -363,7 +366,7 @@ const Profile = () => {
             <MenuLink href="/WithdrawHistory">
               <IconText>
                 <Icon>💸</Icon>
-                Withdraw History
+                Withdrawal History
               </IconText>
               <ArrowIcon>▶</ArrowIcon>
             </MenuLink>

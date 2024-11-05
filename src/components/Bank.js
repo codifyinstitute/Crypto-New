@@ -110,7 +110,7 @@
 
 // const Overlay = styled.div`
 //   position: fixed;
-//   top: 0;
+//   top: 0;F
 //   left: 0;
 //   right: 0;
 //   bottom: 0;
@@ -381,6 +381,8 @@ import { X } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { IoArrowForwardOutline } from "react-icons/io5";
 import { useSelector } from "react-redux";
+import empty from "./../assets/empty.png";
+import nobankdetails from "./../assets/no-bank-building-icon-with-textured-only-for-girls-vector-27765593-removebg-preview.png";
 
 
 
@@ -404,7 +406,7 @@ const FormContainer = styled.div`
   flex-direction: column;
   // justify-content: space-between;
   overflow-y: hidden;
-  min-height : auto;
+  height : auto;
 
 
   @media (max-width: 440px) {
@@ -460,8 +462,8 @@ const FormInput = styled.input`
   width: 100%;
   padding: 0.75rem;
   font-size: 14px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
+  border: 0.5px solid #ddd;
+  border-radius: 1px;
   /* margin-bottom: 1rem; */
 `;
 
@@ -664,9 +666,10 @@ const FormSection = styled.div`
 
 
 const AccountCard = styled.div`
-  background-color: #1E1E1E;
+  background-color: white;
   border-radius: 10px;
   padding: 20px;
+  color : black;
   margin-bottom: 20px;
   /* margin-left: 30%; */
   margin-top: 3%;
@@ -696,22 +699,22 @@ const AccountInfo = styled.div`
 `;
 
 const AccountName = styled.span`
-  font-weight: bold;
+  font-weight: 400;
   /* margin-bottom: 5px; */
   font-size: 18px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-
+  color : black;
   @media (max-width: 430px) {
     font-size: 14px;
   }
 `;
 
 const AccountDetails = styled.span`
-  color: white;
+  color: black;
   font-size: 18px;
-  font-weight: bold;
+  font-weight: 400;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -722,13 +725,13 @@ const AccountDetails = styled.span`
 `;
 
 const AccountNumberValue = styled.span`
-  font-weight: bold;
+  font-weight: 400  ;
   margin-bottom: 5px;
   font-size: 18px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  
+  color: black;
   @media (max-width: 430px) {
     font-size: 14px;
   }
@@ -762,7 +765,7 @@ const DeleteButton = styled.button`
 `;
 
 const Label = styled.p`
-  color: white;
+  color: black;
   /* white-space: pre; */
   font-size: 14px;
   font-weight: bold;
@@ -785,7 +788,41 @@ margin-top: 2%;
 `;
 
 
+const NoHistoryContainer = styled.div`
+  display: flex;
+  margin-top : 85px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; // Center the entire container
+`;
+const IconContainer = styled.div`
+  display: flex;
+  justify-content: center; // Center the icon horizontally
+  align-items: center; // Center the icon vertically
+  height: 20%; // Full height to center vertically in the viewport
+`;
 
+const CenteredValueContainer = styled.div`
+  display: flex;
+  justify-content: center; // Center horizontally
+  align-items: center; // Center vertically
+   margin-top: 10px; 
+`;
+
+const TextValue = styled.div`
+  font-size: 16px; // Font size for the text
+  color: white; // Text color
+  font-weight : 600;
+  text-align: center; // Center align the text
+  margin-top: 35px; // Additional margin for consistency
+`;
+
+const LoadingText = styled.div`
+  font-size: 18px;
+  color: #ffa500;
+  font-weight: bold;
+  margin-top: 20px;
+`;
 
 // Base schema for common fields
 const baseSchema = {
@@ -866,55 +903,84 @@ const Bank = () => {
   const [showForm, setShowForm] = useState(false);
   const navigate = useNavigate();
   const selectedCountry = useSelector((state) => state.country.value);
+  const [loading, setLoading] = useState(true); // Add loading state
 
-  useEffect(() => {
+ 
+useEffect(() => {
+  const fetchAccounts = async () => {
+    setLoading(true); // Start loading
     const email = localStorage.getItem("token");
-    axios
-      .get(`https://crypto-backend-main.onrender.com/account-details/bank/all/${email}`)
-      .then((response) => {
-        const filData = response.data.filter(val => val.Country === countryObject[selectedCountry].name);
-        setAccounts(filData.reverse());
-      })
-      .catch((error) => {
-        console.error("Error fetching Accounts:", error);
-      });
-  }, [selectedCountry]);
-
-  const handleDelete = async (id) => {
     try {
-      const token = localStorage.getItem('token');
-      await axios.delete(`https://crypto-backend-main.onrender.com/account-details/${countryObject[selectedCountry].urlName}/${id}`);
-      toast.success('Account deleted successfully!');
-      axios
-        .get(`https://crypto-backend-main.onrender.com/account-details/bank/all/${token}`)
-        .then((response) => {
-          const filData = response.data.filter(val => val.Country === countryObject[selectedCountry].name);
-          setAccounts(filData.reverse());
-        })
-        .catch((error) => {
-          console.error("Error fetching Accounts:", error);
-        });
+      const response = await axios.get(`https://crypto-backend-main.onrender.com/account-details/bank/all/${email}`);
+      const filteredData = response.data.filter(val => val.Country === countryObject[selectedCountry].name);
+      setAccounts(filteredData.reverse());
     } catch (error) {
-      console.error('Error deleting account:', error);
-      toast.error('Failed to delete account.');
+      console.error("Error fetching Accounts:", error);
+    } finally {
+      setLoading(false); // Always set loading to false after fetching
     }
   };
 
+  fetchAccounts();
+}, [selectedCountry]);
+
+
+const handleDelete = async (id) => {
+  setLoading(true);
+  try {
+    const token = localStorage.getItem('token');
+    await axios.delete(`https://crypto-backend-main.onrender.com/account-details/${countryObject[selectedCountry].urlName}/${id}`);
+    toast.success('Account deleted successfully!');
+    const response = await axios.get(`https://crypto-backend-main.onrender.com/account-details/bank/all/${token}`);
+    const filteredData = response.data.filter(val => val.Country === countryObject[selectedCountry].name);
+    setAccounts(filteredData.reverse());
+  } catch (error) {
+    console.error('Error deleting account:', error);
+    toast.error('Failed to delete account.');
+  } finally {
+    setLoading(false); // Always set loading to false after the operation
+  }
+};
   return (
     <>
       <Navbar />
       <Container>
         <Header>
-          <div style={{ display: "flex", gap: "20px" }}>
+          <div style={{ display: "flex" }}>
             <BackButton onClick={() => window.history.back()}><ChevronLeft /></BackButton>
             <Title>Bank Accounts</Title>
           </div>
           {showForm ? <AddButton onClick={() => setShowForm(false)}>View Bank</AddButton> : <AddButton onClick={() => setShowForm(true)}>Add Bank</AddButton>}
-
+          
         </Header>
 
         <Maindiv>
-          {showForm ? (
+          {
+            loading ? (
+              <LoadingText>Loading...</LoadingText>
+            ) : 
+          accounts.length === 0  && !showForm  ? (
+            // Fallback view when there are no bank details
+            <NoHistoryContainer>                                    
+            <IconContainer>
+              <img
+                src={nobankdetails}
+                alt="Empty Icon"
+                style={{
+                  height: "100px",
+                  width: "100px",
+                  backgroundColor: "#f0f0f0",
+                  padding: "10px",
+                  borderRadius: "20px",
+                  boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
+                }}
+              />
+            </IconContainer>
+            <CenteredValueContainer>
+              <TextValue>No Bank Details Available.</TextValue>
+            </CenteredValueContainer>
+            </NoHistoryContainer>
+          )  : (showForm ? (
 
             <Formik
               initialValues={{
@@ -979,6 +1045,7 @@ const Bank = () => {
                   await axios.post(url, submissionData);
                   toast.success("Data saved successfully!");
                   resetForm(); // Reset the form fields after successful submission
+                  setShowForm(false);
                 } catch (error) {
                   toast.error("Failed to save data.");
                   console.error("Error:", error.response ? error.response.data : error.message);
@@ -1266,7 +1333,7 @@ const Bank = () => {
                 </FormWrapper>
               )}
             </Formik>
-          ) : (
+          )  : (
             accounts.map((account) => (
               <AccountCard key={account.AccountNumber}>
                 <AccountInfo>
@@ -1422,6 +1489,7 @@ const Bank = () => {
                 </DeleteButton>
               </AccountCard>
             ))
+          )
           )}
         </Maindiv>
       </Container>
