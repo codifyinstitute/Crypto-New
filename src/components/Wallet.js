@@ -569,7 +569,7 @@ const Wallet = () => {
           </FormContainer>
         </FormWrapper>
       </PageContainer>
-      <HomeContact />
+      {/* <HomeContact /> */}
       <Footer />
     </>
   );

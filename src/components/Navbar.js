@@ -64,8 +64,8 @@ const TopLogo = styled.div`
   width: 115px;
   margin-left: 16px;
   img {
-    height: 100%;
-    width: 100%;
+    height: 70%;
+    width: 70%;
   }
 
   @media (min-width: 769px) {

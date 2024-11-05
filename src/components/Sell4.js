@@ -660,7 +660,7 @@ const Sell4 = () => {
           </Card>
         </Center>
       </PageContainer>
-      <HomeContact />
+      {/* <HomeContact /> */}
       <Footer />
 
       {showConfirmation && (

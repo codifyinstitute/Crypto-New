@@ -7,7 +7,8 @@ import Navbar from './Navbar';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { UserRound, CircleUser, CirclePlus } from 'lucide-react';
-
+import editpng from "./../assets/edit-icon-511x512-ir85i9io(1).png";
+import { FaPen } from "react-icons/fa6";
 
 const Container = styled.div`
   display: flex;
@@ -57,7 +58,7 @@ const VerifiedBadge = styled.div`
   position: absolute;
   bottom: 0;
   right: 0;
-  background-color:#76b83f;
+  background-color:black;
   border-radius: 50%;
   border: 1px black solid;
   width: 20px;
@@ -248,7 +249,7 @@ const Profile = () => {
                 getInitial(userEmail)
               )}
             </Avatar>
-            <VerifiedBadge>✓</VerifiedBadge>
+            <VerifiedBadge><FaPen /></VerifiedBadge>
           </AvatarContainer>
           <input
             type="file"
@@ -259,10 +260,10 @@ const Profile = () => {
           />
           <Username>{userEmail}</Username>
           <Subtitle>Email</Subtitle>
-          <WalletBalanceButton onClick={fetchWalletBalance}>
+          {/* <WalletBalanceButton onClick={fetchWalletBalance}>
             <CircleUser size={20} />
             {walletBalance !== null ? `Balance: ${walletBalance}` : 'Show Wallet Balance'}
-          </WalletBalanceButton>
+          </WalletBalanceButton> */}
         </ProfileSection>
         <MenuList>
           <MenuItem>

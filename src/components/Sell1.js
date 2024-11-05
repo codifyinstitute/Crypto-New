@@ -1265,8 +1265,8 @@ const Sell1 = () => {
           </Center>
         </Container>
       </TradingEnvironment>
-      <HomeContact />
-      <Footer />
+      {/* <HomeContact /> */}
+      {/* <Footer /> */}
     </>
   );
 };

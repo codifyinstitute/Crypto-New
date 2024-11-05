@@ -384,19 +384,7 @@ import { useSelector } from "react-redux";
 
 
 
-const PageContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  background-color: black;
-  padding-top: 140px;
 
-  @media (max-width: 480px) {
-    align-items: center;
-    justify-content: center;
-    padding-top: 80px;
-  }
-`;
 
 const FormWrapper = styled.div`
   flex: 1;
@@ -414,42 +402,58 @@ const FormContainer = styled.div`
   max-width: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  overflow-y: auto;
+  // justify-content: space-between;
+  overflow-y: hidden;
+  min-height : auto;
+
+
+  @media (max-width: 440px) {
+    padding: 1rem;
+    // padding-top : 2rem;
+    margin: 0px 15px;
+    width: 380px;
+    height : auto;
+  }
+
+  @media (max-width: 400px) {
+    padding: 1rem;
+    // padding-top : 2rem;
+    margin: 0px 15px;
+    width: 360px;
+    // height : 1000px;
+  }
 
   @media (max-width: 380px) {
     padding: 1rem;
+    // padding-top : 2rem;
     margin: 0px 15px;
-    width: 100%;
+    width: 330px;
+    // height : 1000px;
+  }
+     @media (max-width: 320px) {
+    padding: 0.75rem;
+    margin: 0px 5px;
+    width: 300px;
+
+  }
+     @media (max-width: 300px) {
+    padding: 0.75rem;
+    margin: 0px 5px;
+    width: 270px;
   }
 `;
 
-const TabContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1.5rem;
-`;
 
-const Left = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const Tab = styled.div`
-  padding: 0.5rem 0;
-  color: #f7a600;
-  font-size: 20px;
-  font-weight: 700;
-`;
 
 
 const FormLabel = styled.label`
+  
   display: block;
   font-size: 14px;
   font-weight: 500;
   color: #333;
   margin-bottom: 0.5rem;
+  margin-top : 1rem;
 `;
 
 const FormInput = styled.input`
@@ -471,10 +475,6 @@ const Select = styled.select`
   color: #333;
 `;
 
-const FormWarning = styled.p`
-  font-size: 12px;
-  margin-bottom: 1rem;
-`;
 
 const FormButton = styled.button`
   background-color: #f7a600;
@@ -491,59 +491,35 @@ const FormButton = styled.button`
   justify-content: center;
   align-items: center;
   gap: 0.5rem;
+   margin-top : 100px;  
+
+  //  @media (max-width: 380px) {
+  //   padding: 1rem;
+  //   margin-top : 100px;
+  // }
+  //    @media (max-width: 320px) {
+  //   padding: 0.75rem;
+  //   margin-top : 30px;
+  //   margin-top : 100px;
+
+  // }
+
+  //   @media (max-width: 360px) {
+  //   padding: 0.75rem;
+  //   margin-top : 180px;
+  // }
+  //    @media (max-width: 300px) {
+  //   padding: 0.75rem;
+  //   margin-top : 100px;
+  // }
+
+  // @media (max-width: 400px) {
+  //   padding: 0.75rem;
+  //   margin-top : 100px;
+  // }
+
 `;
 
-const Button = styled.button`
-  background-color: #f7a600;
-  color: black;
-  font-weight : 700;
-  border: none;
-  padding: 10px;
-  font-size: .7rem;
-  border-radius: 4px;
-  cursor: pointer;
-  opacity: ${({ disabled }) => (disabled ? 0.5 : 1)};
-  pointer-events: ${({ disabled }) => (disabled ? "none" : "auto")};
-
-  &:hover {
-    background-color: #e69500;
-  }
-`;
-
-const CardsSection = styled.div`
-  width: 100%;
-  border-radius: 1rem;
-  margin-top: 1rem;
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 2%;
-  justify-content: space-around;
-  flex-wrap: wrap;
-`;
-
-const CardTitle = styled.h4`
-  display: flex;
-  justify-content: space-between;
-  color: inherit;
-  cursor: pointer;
-  font-size: 18px;
-  padding: 0.3rem 0;
-  border-bottom: 2px solid inherit;
-  font-weight: 500;
-  margin-bottom: 1%;
-  @media (max-Width:480px){
-    font-size: 16px;
-  }
-`;
-
-const Crosss = styled.p`
-  display: flex;
-  width: 100%;
-  justify-content: space-between;
-  @media (max-Width:480px){
-    font-size: 14px;
-  }
-`;
 
 const countryObject = {
   India: {
@@ -618,8 +594,8 @@ const AddButton = styled.a`
   color: black;
   text-decoration: none;
   border: none;
-  padding: 8px 16px;
-  border-radius: 20px;
+  padding: 8px ;
+  border-radius: 8px;
   cursor: pointer;
   font-size: 18px;
   font-weight: bold;
@@ -627,7 +603,8 @@ const AddButton = styled.a`
   @media (max-width: 430px) {
     font-size: 14px;
     display: flex;
-    width: 93px;
+    width: 90px;
+    padding-left : 0.7rem;
   }
 `;
 
@@ -671,107 +648,15 @@ align-items: center;
 flex-direction: column;
 `;
 
-const Card = styled.div`
-  background-color: white;
-  border-radius: 10px;
-  padding: 20px;
-  margin-bottom: 20px;
-  width: 380px;
-  height: fit-content;
-  max-width: 500px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  position: fixed; /* Changed to fixed to keep it on top */
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 2000;
-  overflow: hidden; /* Hide the scrollbar */
-
-  /* Custom scrollbar styling for WebKit browsers */
-  &::-webkit-scrollbar {
-    width: 0; /* Hide scrollbar */
-    background: transparent; /* Optional: make background transparent */
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: transparent; /* Optional: style the scrollbar thumb */
-  }
-
-  /* Ensuring scroll functionality remains */
-  &:hover {
-    overflow-y: auto; /* Show scrollbar on hover */
-  }
-
-  @media (max-width: 430px) {
-    padding: 15px;
-  }
-`;
 
 
-const Overlay = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 1000; /* Ensure this is lower than Card's z-index */
-`;
-
-
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  z-index: 2000;
-`;
-
-const FormTitle = styled.h2`
-  font-size: 18px;
-  margin-top: 0;
-  margin-bottom: 20px;
-  color: #FFA500;
-`;
 
 const FormSection = styled.div`
-  margin-bottom: 20px;
+  margin-bottom: 1rem;
+   overflow: hidden; /* Prevents scrolling */
 `;
 
-const FormSectionTitle = styled.h3`
-  font-size: 16px;
-  margin-bottom: 10px;
-  color: black;
-`;
 
-const Input = styled.input`
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 10px;
-  border: 1px solid #333;
-  background-color: white;
-  color: black;
-  border-radius: 5px;
-
-  @media (max-width: 430px) {
-    font-size: 14px;
-  }
-`;
-
-const SubmitButton = styled.button`
-  background-color: #FFA500;
-  color: white;
-  border: none;
-  padding: 10px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-weight: bold;
-  width: 100%;
-  margin-top: 20px;
-
-  @media (max-width: 430px) {
-    font-size: 14px;
-  }
-`;
 
 const AccountCard = styled.div`
   background-color: #1E1E1E;
@@ -838,26 +723,13 @@ const AccountNumberValue = styled.span`
   display: flex;
   align-items: center;
   justify-content: space-between;
-
-  @media (max-width: 430px) {
-    font-size: 14px;
-  }
-`;
-
-const AccountBalance = styled.span`
-  color: #4CAF50;
-  font-weight: bold;
-  font-size: 18px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   
-  /* justify-content: space-between; */
-
   @media (max-width: 430px) {
     font-size: 14px;
   }
 `;
+
+
 
 const DeleteButton = styled.button`
   background-color: #FF4C4C;
@@ -1038,6 +910,7 @@ const Bank = () => {
 
         <Maindiv>
           {showForm ? (
+
             <Formik
               initialValues={{
                 firstName: "",
@@ -1120,6 +993,9 @@ const Bank = () => {
               }) => (
                 <FormWrapper>
                   <FormContainer>
+                  <CloseButton onClick={() => setShowForm(false)}>
+    <X size={24} /> {/* Replace <X /> with an icon of your choice */}
+  </CloseButton>
                     <form onSubmit={handleSubmit}>
                       <FormSection>
                         <FormLabel>First Name</FormLabel>
@@ -1539,6 +1415,7 @@ const Bank = () => {
           )}
         </Maindiv>
       </Container>
+      {/* <Footer/> */}
       <ToastContainer />
     </>
   );

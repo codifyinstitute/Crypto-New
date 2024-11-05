@@ -65,7 +65,7 @@ const countryObject = {
   USA: {
     urlName: "usa",
     symbol: "$",
-    name: "United States of America"
+    name: "United States"
   }
 }
 
@@ -160,10 +160,10 @@ const Home = () => {
   useEffect(() => {
     const fiatCurrencies = [
       { name: "India", symbol: "INR", image: indiaFlag, short: "India" },
-      { name: "United States of America", symbol: "USD", image: usaFlag, short: "USA" },
+      { name: "United States", symbol: "USD", image: usaFlag, short: "USA" },
       { name: "United Kingdom", symbol: "GBP", image: ukFlag, short: "UK" },
       { name: "European Union", symbol: "EUR", image: EuropeFlag, short: "EU" },
-      { name: "Dubai", symbol: "AED", image: dubaiFlag, short: "Dubai" },
+      { name: "UAE", symbol: "AED", image: dubaiFlag, short: "Dubai" },
       { name: "Brazil", symbol: "BRL", image: BrazilFlag, short: "Brazil" },
     ];
     setFilteredFiatCurrencies(fiatCurrencies);
@@ -715,7 +715,7 @@ const CurrencyToggle = styled.div`
   height: 3.2rem;
   padding: 5px 15px;
   border-radius: 16px;
-  width : 9.2rem;
+  width : 8.8rem;
 `;
 
 const Rocks = styled.div`

@@ -16,7 +16,9 @@ import { Formik, Form, Field, ErrorMessage } from 'formik'; // Import Formik
 const PageContainer = styled.div`
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  // min-height: 100vh;
+   min-height : 750px;
+
   background-color: black;
   padding-top: 140px;
 
@@ -25,6 +27,8 @@ const PageContainer = styled.div`
     justify-content: center;
     padding-top: 80px;
   }
+
+  
 `;
 
 const FormWrapper = styled.div`
@@ -45,10 +49,25 @@ const FormContainer = styled.div`
   flex-direction: column;
   overflow-y: auto;
 
-  @media (max-width: 380px) {
+  //  @media (max-width: 360px) {
+  //   padding: 1rem;
+  //   margin: 0px 15px;
+  //   width: 300px;
+  //   height : 650px;
+  // }
+
+  // @media (max-width: 380px) {
+  //   padding: 1rem;
+  //   margin: 0px 15px;
+  //   width: 350px;
+  //   height : 650px;
+  // }
+
+  @media (max-width: 360px) {
     padding: 1rem;
     margin: 0px 15px;
-    width: 100%;
+    width: 300px;
+    height : 670px;
   }
 `;
 
@@ -80,7 +99,7 @@ const FormLabel = styled.label`
   font-size: 14px;
   font-weight: 500;
   color: #333;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.3rem;
 `;
 
 const FormInput = styled.input`
@@ -89,7 +108,7 @@ const FormInput = styled.input`
   font-size: 14px;
   border: 1px solid #ddd;
   border-radius: 5px;
-  /* margin-bottom: 1rem; */
+   margin-bottom: 1rem; 
 `;
 
 const Select = styled.select`
@@ -359,10 +378,10 @@ const BankTransfer = () => {
                 >
                   <ChevronLeft />
                 </button>
-                <Tab>Fill in the Information</Tab>
+                <Tab>Add Bank Details</Tab>
               </Left>
               {form ? (
-                <Button onClick={AddAccount}>Choose Account</Button>
+                <Button onClick={AddAccount}>My Accounts</Button>
               ) : (
                 <Button onClick={AddAccount}>Add Account +</Button>
               )}
@@ -415,6 +434,8 @@ const BankTransfer = () => {
                             <option value="">Select Account Type</option>
                             <option value="Saving">Saving</option>
                             <option value="Checking">Checking</option>
+                            <option value="Deposit">Deposit</option>
+
                           </Field>
                           <ErrorMessage name="accountType" component="div" style={{ color: "red", marginBottom: "1rem" }} />
 

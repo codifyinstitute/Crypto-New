@@ -20,12 +20,7 @@ const PageContainer = styled.div`
   background-color: black;
   padding-top: 140px;
 
-  @media (max-width: 480px) {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding-top: 80px;
-  }
+
 `;
 
 const FormWrapper = styled.div`
@@ -50,6 +45,14 @@ const FormContainer = styled.div`
     padding: 1rem;
     margin: 0px 15px;
     width: 100%;
+    height : 650px;
+  }
+
+  @media (max-width: 430px) {
+    padding: 1rem;
+    margin: 0px 15px;
+    width: 90%;
+    height : 670px;
   }
 `;
 
@@ -68,7 +71,7 @@ const Left = styled.div`
 const Tab = styled.div`
   padding: 0.5rem 0;
   color: #f7a600;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 700;
 `;
 
@@ -319,9 +322,9 @@ const PaymentMethod = () => {
                 <Menu />
               </button> */}
               {form ? (
-                <Button onClick={AddAccount}>Choose Account</Button>
+                <Button onClick={AddAccount}>My Accounts</Button>
               ) : (
-                <Button onClick={AddAccount}>Choose Method</Button>
+                <Button onClick={AddAccount}>My Accounts</Button>
               )}
             </TabContainer>
             {form ? (<>
@@ -373,9 +376,9 @@ const PaymentMethod = () => {
                     <Crosss>
                       <strong>Account Number:</strong> {account.AccountNo}
                     </Crosss>
-                    {/* <Crosss>
+                     <Crosss>
                       <strong>IFSC:</strong> {account.IFSC}
-                    </Crosss> */}
+                    </Crosss> 
                   </Card>
                 ))}
               </CardsSection>
@@ -384,7 +387,7 @@ const PaymentMethod = () => {
           </FormContainer>
         </FormWrapper>
       </PageContainer>
-      <HomeContact />
+      {/* <HomeContact /> */}
       <Footer />
     </>
   );
