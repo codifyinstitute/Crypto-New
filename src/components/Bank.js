@@ -474,6 +474,7 @@ const Select = styled.select`
 const FormWarning = styled.p`
   font-size: 12px;
   margin-bottom: 1rem;
+  margin-top: 1rem;
 `;
 
 const FormButton = styled.button`
@@ -944,16 +945,16 @@ const countrySchemas = {
     address: Yup.string().required("Address is required"),
     accountType: Yup.string().required("Account type is required"),
     abaCode: Yup.string()
-    .matches(/^\d{9}$/, "ABA code must be a 9-digit number")
-    .required("ABA code is required"),
+      .matches(/^\d{9}$/, "ABA code must be a 9-digit number")
+      .required("ABA code is required"),
   }),
-  
+
   Brazil: Yup.object().shape({
     ...baseSchema,
     idType: Yup.string().required("ID type is required"),
     idNumber: Yup.string()
-    .matches(/^\d+$/, "ID number must be a number")
-    .required("ID number is required"),
+      .matches(/^\d+$/, "ID number must be a number")
+      .required("ID number is required"),
     bankBranchCode: Yup.string().required("Bank branch code is required"),
     accountType: Yup.string().required("Account type is required"),
   }),
@@ -1371,6 +1372,11 @@ const Bank = () => {
                           </>
                         )}
 
+                        <FormWarning>
+                          Attention: Please ensure the bank account belongs to you and
+                          the information is accurate.
+                        </FormWarning>
+
                         <FormButton type="submit" disabled={isSubmitting}>
                           Add Bank Account
                         </FormButton>
@@ -1403,7 +1409,7 @@ const Bank = () => {
                       <Col2>{account.AccountNo}</Col2>
                     </Maincol>
                   </AccountNumberValue>
-            
+
                   {/* Conditional rendering based on country */}
                   {selectedCountry === "USA" && (
                     <>
@@ -1439,7 +1445,7 @@ const Bank = () => {
                       </AccountDetails>
                     </>
                   )}
-            
+
                   {selectedCountry === "Brazil" && (
                     <>
                       <AccountDetails>
@@ -1468,7 +1474,7 @@ const Bank = () => {
                       </AccountDetails>
                     </>
                   )}
-            
+
                   {selectedCountry === "UK" && (
                     <>
                       <AccountDetails>
@@ -1485,7 +1491,7 @@ const Bank = () => {
                       </AccountDetails>
                     </>
                   )}
-            
+
                   {selectedCountry === "Euro" && (
                     <>
                       <AccountDetails>
@@ -1502,7 +1508,7 @@ const Bank = () => {
                       </AccountDetails>
                     </>
                   )}
-            
+
                   {selectedCountry === "Dubai" && (
                     <>
                       <AccountDetails>
@@ -1519,7 +1525,7 @@ const Bank = () => {
                       </AccountDetails>
                     </>
                   )}
-            
+
                   {selectedCountry === "India" && (
                     <>
                       <AccountDetails>

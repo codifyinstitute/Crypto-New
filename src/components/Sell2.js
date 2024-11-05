@@ -226,7 +226,7 @@ const Sell2 = () => {
       <PageContainer>
         <Card>
           <TabContainer>
-            <BackButton onClick={() => window.history.back()}>
+            <BackButton onClick={() => navigate('/')}>
               <ChevronLeft />
             </BackButton>
             <Tab active>Login To Moon Pay</Tab>

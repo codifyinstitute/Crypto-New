@@ -59,6 +59,11 @@ const TabContainer = styled.div`
   margin-bottom: 1.5rem;
 `;
 
+const OptionTitle = styled.div`
+  font-weight: bold;
+  font-size: 16px;
+`;
+
 const Left = styled.div`
   display: flex;
   align-items: center;
@@ -227,6 +232,20 @@ const countryObject = {
     name: "United States of America"
   }
 }
+
+const ProceedButton = styled.button`
+  background-color: #f7a600;
+  color: black;
+  font-weight : 700;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: auto;
+  width: 100%;
+  text-align: center;
+`;
 
 
 const BankTransfer = () => {
@@ -496,16 +515,22 @@ const BankTransfer = () => {
                         </>
                       )}
                     </FormSection>
-                    <FormButton type="submit" disabled={isSubmitting}>
-                      Submit
-                    </FormButton>
+                    <div>
+                      <FormWarning>
+                        Attention: Please ensure the bank account belongs to you and
+                        the information is accurate.
+                      </FormWarning>
+                      <FormButton type="submit" disabled={isSubmitting}>
+                        Submit
+                      </FormButton>
+                    </div>
                   </Form>
                 )}
               </Formik>
             ) : (
               <>
                 <CardsSection>
-                  {accounts.map((account, index) => (
+                  {accounts.length > 0 ? accounts.map((account, index) => (
                     <Card
                       key={index}
                       onClick={() => handleCardClick(account)}
@@ -518,7 +543,12 @@ const BankTransfer = () => {
                       <strong>IFSC:</strong> {account.IFSC}
                     </Crosss> */}
                     </Card>
-                  ))}
+                  )) : <>
+                    <OptionTitle>No Bank Details is Added</OptionTitle>
+                    <ProceedButton style={{ width: "fit-content" }} onClick={AddAccount}>
+                      Add Bank Details
+                    </ProceedButton>
+                  </>}
                 </CardsSection>
               </>
             )}
