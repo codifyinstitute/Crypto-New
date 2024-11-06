@@ -582,7 +582,7 @@ const Depposit1 = () => {
   const [currencyRate, setCurrencyRate] = useState(0);
   const [coinName, setCoinName] = useState("");
   const [orderId, setOrderId] = useState(0);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
@@ -737,8 +737,6 @@ const Depposit1 = () => {
       }
     } catch (error) {
       setError("Error fetching currency data");
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -963,13 +961,6 @@ const Depposit1 = () => {
     setSelectNetwork('BEP20');
   };
 
-  if (loading) {
-    return(
-      <div style={{display:"flex", justifyContent:"center", alignItems:"center", width:"100vw", height:"100vh", backgroundColor:"black"}}>
-        <div class="loader"></div>
-      </div>
-    )
-  }
 
   return (
     <>
@@ -1217,7 +1208,7 @@ const Depposit1 = () => {
 
 
             <Button onClick={handleProceedClick} disabled={!submited}>
-              Deposit Sent
+            {loading?<div style={{display:"flex", justifyContent:"center"}}><div class="loader"></div></div>:"Deposit Sent"}
             </Button>
           </Card>
         </Center>

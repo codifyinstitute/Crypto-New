@@ -405,7 +405,7 @@ const WithdrawUSDT = () => {
 
           </CurrencyRow>
           <ProceedButton onClick={handleConfirmClick} disabled={!isFormValid}>
-            Confirm
+            {loading?<div style={{display:"flex", justifyContent:"center"}}><div class="loader"></div></div>:"Confirm"}
           </ProceedButton>
         </ExchangeCard>
       </TradingEnvironment>
