@@ -120,6 +120,7 @@ const Home = () => {
 
 
   const fetchTransactionFee = async () => {
+    console.log(selectedCountry);
     try {
       const response = await fetch(
         `https://crypto-backend-main.onrender.com/static/${countryObject[selectedCountry]?.urlName}/one`
@@ -139,7 +140,8 @@ const Home = () => {
     }
   };
 
-  useEffect(() => {
+  useEffect(() => { 
+    console.log(selectedCountry);
     fetchTransactionFee();
   }, [selectedCountry]);
 
@@ -274,8 +276,8 @@ const Home = () => {
           transition={{ duration: 0.5, delay: 0.2 }}
         >
           <Subtitle>
-            Easily transform your digital currency into cash with our trusted
-            conversion service. We prioritize <Yellow>security </Yellow>and{" "}
+            Easily transform your crypto currency into fiat with our trusted
+            off-ramp service. We prioritize <Yellow>security </Yellow>and{" "}
             <Yellow>speed</Yellow>, so you can access your funds without hassle.
           </Subtitle>
         </motion.div>
@@ -373,14 +375,14 @@ const Home = () => {
                 <InputMessage isValid={isValid} inSufficientBalance={inSufficientBalance}>
                   {isValid
                     ?inSufficientBalance?"Insufficient Balance": `Proceed with this amount.`
-                    : ` Minimum  order is ${minAmount} USDT.`}
+                    : ` Minimum Order is ${minAmount} USDT.`}
                   {/* -{inSufficientBalance?"Insufficient Balance":null} */}
                 </InputMessage>
               </InputContainer>
               <InputLabel>You Receive</InputLabel>
               <InputContainer>
                 <InputWrapper>
-                  <Input type="text" value={`${countryObject[selectedCountry].symbol} ${inr.toFixed(2)}`} readOnly />
+                  <Input type="text" value={`${countryObject[selectedCountry]?.symbol} ${inr.toFixed(2)}`} readOnly />
                   <CurrencyToggle
                     onClick={() => setIsFiatDropdownOpen(!isFiatDropdownOpen)}
                   >
@@ -476,7 +478,7 @@ const Home = () => {
                           </TooltipText>
                         </TooltipContainer>
                       </span>
-                      <span> {countryObject[selectedCountry].symbol} {transactionFee}</span>
+                      <span>{countryObject[selectedCountry].symbol} {transactionFee}</span>
                     </OrderDetail>
                     <OrderDetail>
                       <span>
@@ -484,8 +486,7 @@ const Home = () => {
                         <TooltipContainer>
                           <Info size={14} />
                           <TooltipText>
-                            Fee charged by the network for sending the
-                            transaction.
+                            Fee charged by the Blockchain Network
                           </TooltipText>
                         </TooltipContainer>
                       </span>
@@ -570,7 +571,7 @@ const Title = styled.h1`
 `;
 
 const Subtitle = styled.p`
-  font-size: 1.2em;
+  font-size: 1 em;
   color: white;
   margin-bottom: 2rem;
   width: 80%;

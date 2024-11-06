@@ -706,7 +706,7 @@ const countryObject = {
   USA: {
     urlName: "usa",
     symbol: "$",
-    name: "United States of America",
+    name: "United States",
     fait: "USD"
   }
 }
@@ -821,7 +821,7 @@ const Sell1 = () => {
     const fiatCurrencies = [
       { name: "India", symbol: "INR", image: indiaFlag, short: "India" },
       {
-        name: "United States of America",
+        name: "United States",
         symbol: "USD",
         image: usaFlag,
         short: "USA",
@@ -1010,7 +1010,7 @@ const Sell1 = () => {
               </InputWrapper>
               <AnimatedDropdownContainer1 isOpen={isDropdownOpen}>
                 <DropdownHeader>
-                  <DropdownTitle>Select crypto</DropdownTitle>
+                  <DropdownTitle>Select Network</DropdownTitle>
                   <CloseButton onClick={() => setIsDropdownOpen(false)}>
                     <X size={24} />
                   </CloseButton>
@@ -1101,7 +1101,7 @@ const Sell1 = () => {
               </InputWrapper>
               <AnimatedDropdownContainer isOpen={isFiatDropdownOpen}>
                 <DropdownHeader>
-                  <DropdownTitle>Select fiat currency</DropdownTitle>
+                  <DropdownTitle>Select Currency</DropdownTitle>
                   <CloseButton onClick={() => setIsFiatDropdownOpen(false)}>
                     <X size={24} />
                   </CloseButton>
@@ -1176,8 +1176,7 @@ const Sell1 = () => {
                       <TooltipContainer>
                         <Info size={14} />
                         <TooltipText>
-                          Fee charged by the network for sending the
-                          transaction.
+                          Fee charged by the Blockchain Network
                         </TooltipText>
                       </TooltipContainer>
                     </span>
@@ -1189,7 +1188,7 @@ const Sell1 = () => {
           </div>
           <div>
             {inSufficientBalance ?
-              <ProceedButton onClick={() => navigate('/deposit')}>
+              <ProceedButton style={{backgroundColor:"#e1dcdc"}} onClick={() => navigate('/deposit')}>
                 Add USDT to Wallet
               </ProceedButton>
               :

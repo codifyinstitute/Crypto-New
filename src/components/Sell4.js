@@ -668,6 +668,8 @@ const Sell4 = () => {
           message="Are you sure you want to proceed with this transaction?"
           onConfirm={confirmTransaction}
           onCancel={cancelConfirmation}
+          confirmText="Agree"
+          cancelText="Cancel"
         />
       )}
 

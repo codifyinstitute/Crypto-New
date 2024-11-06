@@ -15,25 +15,25 @@ import { TbLockPlus } from "react-icons/tb";
 import empty from "./../assets/empty.png";
 
 const PageContainer = styled.div`
-  display: flex;
+ display: flex;
   flex-direction: column;
   align-items: center;
   padding: 20px;
-
-  min-height : 100vh;
-  background-color: black;
+  background-color:black;
   font-family: 'Roboto', sans-serif;
+  /* padding-top: 140 px; */
+  @media (max-width: 480px) {
+  padding-top: 80px;
 
-  @media (max-width: 375px) {
-    padding: 10px;
   }
 `;
 
 const TabContainer = styled.div`
   display: flex;
   align-items: center;
-  justify-content: flex-start;
   margin-bottom: 1.5rem;
+
+  
 `;
 
 const TabWrapper = styled.div`
@@ -50,6 +50,16 @@ const Tab = styled.div`
   cursor: pointer;
   font-size: 25px;
   font-weight: 700;
+    display: inline-block;
+  text-align: left;
+
+   @media (max-width: 480px) {
+    font-size: 25px; // Adjust font size for smaller screens
+  }
+
+  @media (max-width: 320px) {
+    font-size: 25px; // Further adjust for very small screens
+  }
 
   &:hover {
     opacity: 0.8;
@@ -147,7 +157,7 @@ const BackButton = styled.button`
 
   @media (max-width: 375px) {
     font-size: 16px;
-    margin: 0.5rem;
+    margin: 0.1rem;
   }
 `;
 
@@ -324,7 +334,7 @@ const DepositHistory = () => {
               depositHistory.map((data, index) => (
                 <DepositHistoryCard key={index}>
                   <InfoRow>
-                    <Label>Transaction:</Label>
+                    <Label>Order ID:</Label>
                     <Value>{data.OrderId}</Value>
                   </InfoRow>
                   <InfoRow>
@@ -336,7 +346,7 @@ const DepositHistory = () => {
                     <Value>{data.Network}</Value>
                   </InfoRow>
                   <InfoRow>
-                    <Label>Created Time:</Label>
+                    <Label>Date & Time:</Label>
                     <Value>{data.Date} {data.Time}</Value>
                   </InfoRow>
                   <InfoRow>
@@ -352,8 +362,8 @@ const DepositHistory = () => {
           </ScrollableArea>
         </Card>
       </PageContainer>
-      {/* <HomeContact />
-      <Footer /> */}
+       {/* <HomeContact /> */}
+      <Footer /> 
     </>
   );
 };

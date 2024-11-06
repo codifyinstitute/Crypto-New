@@ -11,7 +11,7 @@ import { RiHome5Fill } from "react-icons/ri";
 import { RiExchangeFill } from "react-icons/ri";
 import { CgProfile } from "react-icons/cg";
 import newWallet from "../assets/new icon/newWallet.png";
-
+import { FaPlusSquare } from "react-icons/fa";
 
 
 
@@ -336,20 +336,9 @@ img{
 `;
 
 const StyledCard = styled.button`
-  // display: inline-flex;
-  align-items: center;
-  // border-radius : 5px;
-    background-color: black;
-  border-radius : 4px 0px 0px 4px;
-  
-  // padding: 0.5rem 0.75rem;
-  // background-color: white;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  align-items: center;  
   transition: box-shadow 0.3s ease;
-  border : 2px solid;
-  // &:hover {
-  //   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-  // }
+ 
 `;
 
 const IconContainer = styled.div`
@@ -358,42 +347,97 @@ const IconContainer = styled.div`
   height : 40px;
   // gap: 0.5rem;
     background-color: #2b9178;
-  border-radius : 4px 4px 4px 4px;
+  // border-radius : 4px 4px 4px 4px;
 
 `;
 
 const Icon = styled.img`
-  width: 2rem;
-  height: 2rem;
-  // padding-top : 0.2rem;
-  padding-right : 0.2rem;
-  // image-size : cover;
-  // background-color : white;
-//  border-radius : 4px 0px 0px 4px;
-  // margin-left : 0px;
+  width: 1.6rem;
+  height: 1.6rem;
+  // padding-right : 0.2rem;
 `;
 
-const IconWrapper = styled.span`
- background-color : #f0f0f0;
-  height: 2.5rem;
-  padding-top : 0.24rem;
-  // display: inline-block; 
-  width: auto,
+// const IconWrapper = styled.span`
+//  background-color : black;
+//   height: 2.5rem;
+//   padding-top : 0.24rem;
+//   width: auto,
+// `;
+// const BalanceText = styled.span`
+//   font-size: 1.35rem;
+//   font-weight: 600;
+//   color: #2b9178;
+//   color: white;
+//   padding-left: 0.6rem;
+//   display: inline-block; 
+//   padding-right : 5px;
+//   min-width :50px;
+//   // min-height :25px;
+//   width: auto,
+// `;
+
+
+
+const BalanceContainer = styled.button`
+  display: flex;
+  align-items: center;
+  flex-direction : row;
+  padding: 5px 10px;
+  border : 2px solid orange;
+  background-color: rgba(0, 0, 0, 0.6)  ; 
+  border-radius: 16px;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.15);
+  width: 150px;
 `;
+
+// Icon Wrapper for Tether icon
+const IconWrapper = styled.div`
+
+  width: 10px;
+  height: 10px;
+  display: flex;
+  padding-left: 0.8rem;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10px;
+`;
+
+// Text to display the balance
 const BalanceText = styled.span`
-  font-size: 1.35rem;
-  font-weight: 600;
-  color: #2b9178;
   color: white;
-  padding-left: 0.6rem;
-  display: inline-block; 
-  padding-right : 5px;
-  margin-left : 0px;
-  border-radius : 4px 0px 0px 4px;
-  min-width :50px;
-  // min-height :25px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-right: 0.5rem;
+  padding-left : 0.35rem;
+`;
 
-  width: auto,
+const PlusIconWrapper = styled.div`
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+`;
+
+// Dropdown icon for currency selection
+const DropdownIcon = styled.span`
+  color: #aaa;
+  font-size: 1rem;
+  margin-right: 10px;
+`;
+
+// Plus button to add balance
+const AddButton = styled.button`
+  background-color: orange; /* bright green for the plus button */
+  border: none;
+  // border-radius: 50%;
+  width: 15px;
+  height: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  cursor: pointer;
+
+
 `;
 
 const countryFlags = {
@@ -543,30 +587,36 @@ const Navbar = () => {
       {/* <span className="amount-container">{amount}</span> */}
     {/* </DepositButton2> */}
 
+    
+    {/* <span style={{ border: "2px solid orange", borderRadius: "8px", }}>
     <StyledCard onClick={handleWalletClick}>
       <IconContainer>
-        <span style={{height : '2.5rem',  backgroundColor: '#f0f0f0',borderRadius : " 4px 0px 0px 4px"}}>
-        <img 
-  src={newWallet} 
-  alt="Wallet" 
-  style={{
-    width: '1.8rem',            
-    height: '2rem',
-    paddingTop: '0.30rem',          
-    backgroundColor: '#f0f0f0',  
-    borderRadius : " 4px 0px 0px 4px"
-    // borderRadius: '50%'          
-  }} 
-/>
-          </span>
-     
+        {/* <span style={{height : '2.5rem',borderRadius : " 4px 0px 0px 4px"}}>
+
+          </span> */}
+{/*      
         <IconWrapper>
         <Icon src={Tether} alt="USDT" />
         </IconWrapper>
-        <BalanceText>{amount}</BalanceText>
-      </IconContainer>
-    </StyledCard>
-  
+        <BalanceText>{amount}</BalanceText> */}
+      {/* </IconContainer> */}
+    {/* </StyledCard> */}
+    {/* </span>  */}
+
+    <BalanceContainer onClick={handleWalletClick}>
+      <IconWrapper>
+        <span style={{ paddingTop : "4px" }}>
+        <Icon src={Tether} alt="USDT" />
+        </span>
+      </IconWrapper>
+      <BalanceText>{amount}
+         <span> USDT</span>
+      </BalanceText>
+      <PlusIconWrapper>
+        <FaPlusSquare style={{ color: 'orange', fontSize: '1.2rem' }} />
+      </PlusIconWrapper>
+      {/* <FaPlusSquare /> */}
+    </BalanceContainer>
 
           {/* <NavLink to="/deposit" style={{ textDecoration: 'none' }}>
             <DepositButton onClick={handleDepositClick}>
@@ -652,7 +702,7 @@ const Navbar = () => {
                 }}
               >
                 <img src={USA} alt="USA Flag" />
-                <p style={{ fontWeight: "bold" }}>United State of America<p style={{ color: "gray" }}>USD</p></p>
+                <p style={{ fontWeight: "bold" }}>United States<p style={{ color: "gray" }}>USD</p></p>
               </div>
 
             </DropdownMenu>

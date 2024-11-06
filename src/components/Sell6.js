@@ -10,7 +10,7 @@ import HomeContact from "./HomeContact";
 const Main = styled.div`
   display: flex;
   align-items: center;
-  min-height: 100vh;
+  // min-height: 100vh;
   background-color: black;
   flex-direction: column;
   padding: 20px;
@@ -28,7 +28,7 @@ const Container = styled.div`
   padding: 1.5rem;
   border-radius: 12px;
   width: 380px;
-  height: 610px;
+  height: 650px;
   font-family: "Inter", Arial, sans-serif;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
     0 2px 4px -1px rgba(0, 0, 0, 0.06);
@@ -351,16 +351,16 @@ const Sell5 = () => {
               Deposit Details
             </InfoTitle>
             <InfoText>
-              <span style={{fontWeight:"bold"}}>Order Id :</span> <span>{location.state?.data?.transaction?.OrderId}</span>
+              <span style={{fontWeight:"bold"}}>Order ID :</span> <span>{location.state?.data?.transaction?.OrderId}</span>
             </InfoText>
             <InfoText>
-              <span style={{fontWeight:"bold"}}>USDT :</span> <span>{location.state?.data?.transaction?.Amount} USDT</span>
+              <span style={{fontWeight:"bold"}}>Order :</span> <span>{location.state?.data?.transaction?.Amount} USDT</span>
             </InfoText>
             {/* <InfoText>
               <span style={{fontWeight:"bold"}}>Your Recieve :</span> <span>₹{location.state?.data?.ReceivedAmount}</span>
             </InfoText> */}
             <InfoText>
-              <span style={{fontWeight:"bold"}}>Satus :</span> <span>{location.state?.data?.transaction?.Status}</span>
+              <span style={{fontWeight:"bold"}}>Status :</span> <span>{location.state?.data?.transaction?.Status}</span>
             </InfoText>
           </InfoBox>
 
@@ -370,7 +370,7 @@ const Sell5 = () => {
           </Button>
         </Container>
       </Main>
-      <HomeContact />
+      {/* <HomeContact /> */}
       <Footer />
     </>
   );

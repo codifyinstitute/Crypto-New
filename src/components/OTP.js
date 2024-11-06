@@ -36,7 +36,7 @@ const Card = styled.div`
   border-radius: 0.5rem;
   padding: 20px;
   width: 380px;
-   height: 650px;
+   height: 680px;
   color: black;
   // margin-bottom: 240px;
   @media (max-width: 430px) {
@@ -51,13 +51,12 @@ const Title = styled.h1`
 `;
 
 const Logo = styled.div`
-  color: #ffa500;
-  font-size: 24px;
-  font-weight: bold;
+  display: inline-block; /* Ensure it's aligned with the text */
+  vertical-align: middle; /* Align vertically with the text */
+  width: 25%; /* Adjust the size of the logo */
+  margin-left: 40px; 
   margin-bottom: 20px;
-  display : flex;
-  justify-content : center;
-  align-items: center;
+  width: 70%;
 `;
 
 const Subtitle = styled.h2`
@@ -75,7 +74,7 @@ const FormContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height:69%;
+  height:60%;
 `;
 
 const OTPInput = styled.input`
@@ -114,12 +113,13 @@ const PoweredBy = styled.div`
       font-size: 0.8rem;
     color: black;
     text-align: center;
-    margin-top: 0.5rem;
+    margin-top: 0.7rem;
     display: flex;
     align-items: center;
     justify-content: center;
+    margin : 15px
   @media (max-width: 430px) {
-    margin-top: 0px;
+    margin-top: 15px;
     ;
   }
 `;
@@ -179,7 +179,7 @@ const BackButton = styled.button`
 
 const TimerContainer = styled.div`
   margin-bottom: 20px;
-  font-size: 16px;
+  font-size: 14px;
   /* color: #ffa500; */
   text-align: center;
 `;
@@ -268,7 +268,7 @@ const OTPPage = () => {
             </BackButton>
             <Tab active>Verification Code</Tab>
           </TabContainer>
-          <Logo><Moonn style={{height : "60px", width :  "160px"}} src={logoM}/></Logo>
+          <Logo><Moonn style={{height : "90px", width :  "250px"}} src={logoM}/></Logo>
        
           <FormContainer>
             <div>
@@ -286,7 +286,7 @@ const OTPPage = () => {
                 ))}
               </OTPContainer>
               <TimerContainer>
-              New verification code sent in : {formatTime(timer)}
+              Request New Verification Code in : {formatTime(timer)}
             </TimerContainer>
             
              

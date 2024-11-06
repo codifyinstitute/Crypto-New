@@ -522,9 +522,9 @@ const Balance = styled.div`
     margin-top: 5px; 
     margin-right: 0; /* Remove right margin to keep content aligned */
     font-weight: bold;
-    background-color: #2b9178;
+    // background-color: #2b9178;
     border-radius: 4px;
-    color: white;
+    color: black;
     width: 100%; /* Allow p to take full width for left alignment */
     justify-content: flex-start; /* Align contents inside p to the left */
   }
@@ -1122,7 +1122,7 @@ const Depposit1 = () => {
                   <Balance>
       <p>
         <span style={{
-          backgroundColor: "#d3d3d3",
+          // backgroundColor: "#d3d3d3",
           paddingTop: "5px",
           paddingRight: "2px",
           borderRadius: "4px 0px 0px 4px"
@@ -1130,16 +1130,17 @@ const Depposit1 = () => {
           <img src={usdtimg} alt="coin" />
         </span>
         <span style={{
-          marginLeft: "8px",
+          // marginLeft: "8px",
           marginRight: "8px", 
           fontSize: "16px",
-          paddingLeft : "10px",
+          // paddingLeft : "10px",
           fontWeight : "700",
           minWidth: "40px", // Set a minimum width
           width: "auto", // Allow the width to grow as needed
           display: "inline-block" // Ensure it behaves like a block element
         }}>
           {amount}
+          <span> USDT</span>
         </span>
       </p>
     </Balance>
@@ -1210,7 +1211,7 @@ const Depposit1 = () => {
           </Card>
         </Center>
       </PageContainer>
-      <HomeContact />
+      {/* <HomeContact /> */}
       <Footer />
 
       {showConfirmation && (
@@ -1244,12 +1245,3 @@ export default Depposit1;
 
 
 
-
-// <DepositAmountvalues>
-// <DepositAmountvalues1 src={usdtimg}style={{ width: "22px", height: "22px" }} alt="image" />
-// <DepositAmountvalues2>
-//   <span>
-//     {amount}
-//   </span>
-// </DepositAmountvalues2>
-// </DepositAmountvalues>

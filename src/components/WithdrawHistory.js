@@ -24,8 +24,9 @@ const PageContainer = styled.div`
   background-color: black;
   font-family: 'Roboto', sans-serif;
 
-  @media (max-width: 375px) {
-    padding: 10px; // Reduce padding for smaller screens
+  @media (max-width: 480px) {
+  padding-top: 80px;
+
   }
 `;
 
@@ -40,11 +41,11 @@ const Tab = styled.div`
   color: orange;
   border-bottom: 2px solid orange;
   cursor: pointer;
-  font-size: 24px;
+  font-size: 25px;
   font-weight: 700;
 
   @media (max-width: 375px) {
-    font-size: 20px; // Reduce font size for smaller screens
+    font-size: 25px; // Reduce font size for smaller screens
   }
 `;
 
@@ -77,7 +78,7 @@ const ScrollableArea = styled.div`
   scrollbar-width: none; // Hide scrollbar for Firefox
 
   @media (max-width: 375px) {
-    max-height: 400px; // Reduce max height for smaller screens
+    max-height: 550px; // Reduce max height for smaller screens
   }
 `;
 
@@ -419,7 +420,7 @@ const WithdrawHistory = () => {
                     <Value>{data.Network}</Value>
                   </InfoRow>
                   <InfoRow>
-                    <Label>Created Time:</Label>
+                    <Label>Date & Time:</Label>
                     <Value>{data.Date} {data.Time}</Value> {/* Combine Date and Time */}
                   </InfoRow>
                   {/* <InfoRow>
@@ -427,7 +428,7 @@ const WithdrawHistory = () => {
                     <Value>{data.WalletAddress}</Value> {/* Combine Date and Time */}
                   {/* </InfoRow> */}
                   <InfoRow>
-                    <Label>Withdraw Amount:</Label>
+                    <Label>Amount:</Label>
                     <AmountContainer>
                       <img src={usdtimg} style={{ width: '26px', height: '26px' }} alt="USDT Icon" />
                       <Value>{data.WithdrawAmount} USDT</Value> {/* Display amount with currency */}

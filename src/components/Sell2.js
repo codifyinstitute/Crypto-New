@@ -61,11 +61,12 @@ const Tab = styled.div`
 `;
 
 const Logo = styled.img`
-  /* color: #ffa500; */
-  /* font-size: 24px; */
-  /* font-weight: bold; */
-  /* margin-bottom: 20px; */
-  width: 40%;
+display: inline-block; /* Ensure it's aligned with the text */
+  vertical-align: middle; /* Align vertically with the text */
+  width: 25%; /* Adjust the size of the logo */
+  margin-left: 40px; 
+  margin-bottom: 20px;
+  width: 70%;
 `;
 
 const Subtitle = styled.h2`
@@ -245,14 +246,14 @@ const Sell2 = () => {
             <Tab active>Login To Moon Pay</Tab>
           </TabContainer>
           <Logo src ={logoM1}/>
-          <Subtitle>Checkout with Moon Pay</Subtitle>
+          {/* <Subtitle>Checkout with Moon Pay</Subtitle> */}
 
           <Forg>
             <Boxx>
               <Label>What is your Email Address?</Label>
               <Input
                 type="email"
-                placeholder="Enter your mail"
+                placeholder="Email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
@@ -267,14 +268,14 @@ const Sell2 = () => {
 <div style={{ display: 'flex', alignItems: 'center' }}>
 <Input
   type="tel"
-  placeholder="Code"
+  placeholder="    ISD"
   value={countryCode ? `+${countryCode}` : ''} // Display the '+' symbol
   onChange={handleCountryCode}
   style={{ width: '80px', marginRight: '10px' }} // Adjust width and margin as needed
 />
   <Input
     type="tel"
-    placeholder="Enter your Phone Number"
+    placeholder="Phone Number"
     value={phone}
     onChange={handlePhoneChange}
     style={{ flex: 1 }} // This will allow it to take the remaining space
@@ -292,7 +293,7 @@ const Sell2 = () => {
             </Boxx>
             <Boo>
               <Button type="button" disabled={!isFormValid || loading} onClick={handleProceed}>
-                {loading ? <LoadingSpinner /> : 'Proceed - Sell USDT '}<ChevronRight />
+                {loading ? <LoadingSpinner /> : 'Login'}<ChevronRight />
               </Button>
               <PoweredBy>
               Powered by <Moon src={logoM}/>

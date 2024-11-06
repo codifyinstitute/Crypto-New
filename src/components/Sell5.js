@@ -10,7 +10,7 @@ import HomeContact from "./HomeContact";
 const Main = styled.div`
   display: flex;
   align-items: center;
-  min-height: 100vh;
+  // min-height: 100vh;
   background-color: black;
   flex-direction: column;
   padding: 20px;
@@ -349,16 +349,16 @@ const Sell5 = () => {
               Transaction Details
             </InfoTitle>
             <InfoText>
-              <span style={{fontWeight:"bold"}}>Order Id :</span> <span>{location.state?.data?.OrderId}</span>
+              <span style={{fontWeight:"bold"}}>Order ID :</span> <span>{location.state?.data?.OrderId}</span>
             </InfoText>
             <InfoText>
-              <span style={{fontWeight:"bold"}}>USDT Paid :</span> <span>{location.state?.data?.USDTAmount} USDT</span>
+              <span style={{fontWeight:"bold"}}>You Sold :</span> <span>{location.state?.data?.USDTAmount} USDT</span>
             </InfoText>
             <InfoText>
-              <span style={{fontWeight:"bold"}}>Your Recieve :</span> <span>₹{location.state?.data?.ReceivedAmount}</span>
+              <span style={{fontWeight:"bold"}}>You Recieve :</span> <span>₹{location.state?.data?.ReceivedAmount}</span>
             </InfoText>
             <InfoText>
-              <span style={{fontWeight:"bold"}}>Satus :</span> <span>{location.state?.data?.Status}</span>
+              <span style={{fontWeight:"bold"}}>Status :</span> <span>{location.state?.data?.Status}</span>
             </InfoText>
           </InfoBox>
 
@@ -368,7 +368,7 @@ const Sell5 = () => {
           </Button>
         </Container>
       </Main>
-      <HomeContact />
+      {/* <HomeContact /> */}
       <Footer />
     </>
   );

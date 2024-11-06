@@ -14,8 +14,8 @@ import newWallet from "../assets/new icon/newWallet.png";
 import coin from "../assets/FINAL-USDT.png";
 import deposit from "../assets/depositimg.jpg";
 import withdraw from "../assets/withdraw.jpg";
-import withdrawicon from "../assets/withdrawicon-removebg-preview.png";
-import DEPOSIT__2_ from "../assets/DEPOSIT__2_-removebg-preview.png";
+import withdrawicon from "../assets/3-removebg-preview.png";
+import DEPOSIT__2_ from "../assets/4-removebg-preview.png";
 
 import { AiOutlineHistory } from "react-icons/ai";
 import { PiSpeakerHighFill } from "react-icons/pi";
@@ -102,8 +102,9 @@ const Balance = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  // border : 2px solid green;
   flex-direction: column;
-  font-size: 22px;
+  font-size: 20px;
   color: black;
   margin-bottom: 1rem;
 
@@ -113,13 +114,14 @@ const Balance = styled.div`
     margin-left: 8px;
     margin-right: 12px;
     font-weight: bold;
-    background-color: #2b9178;
+    // background-color: #2b9178;
     border-radius: 4px;
     color: white;
   }
 
   img {
-    margin-left: 5px;
+    // margin-left: 1px;
+    margin-right : 1px;
     width: 30px;
     height: 30px;
   }
@@ -492,9 +494,10 @@ const Wallet = () => {
                 <img src={newWallet} alt="wallet"></img>
               </WalletIcon>
               <Balance>
+                <span style={{border : "2px solid green", borderRadius :  "8px" }}>
                 <p>
                   <span style={{
-                    backgroundColor: "#d3d3d3",
+                    // backgroundColor: "#d3d3d3",
                     paddingTop: "5px",
                     paddingRight: "6px",
                     borderRadius: "4px 0px 0px 4px"
@@ -503,23 +506,29 @@ const Wallet = () => {
                   </span>
                   <span style={{
                     marginLeft: "8px",
+                    fontWeight : "800",
                     marginRight: "8px",
-                    paddingLeft: "10px",
+                    color : "black",
+                    paddingLeft: "0px",
                     minWidth: "50px", // Set a minimum width
                     width: "auto", // Allow the width to grow as needed
                     display: "inline-block" // Ensure it behaves like a block element
                   }}>
                     {walletAmount}
+                    <span> USDT</span>
                   </span>
+                  
                 </p>
+                </span>
                 <span style={{ fontSize: "16px", marginTop: "7px", fontWeight: "700" }}>Wallet balance</span>
+              
               </Balance>
             </Part>
             {login ? null : <LoginButton onClick={() => navigate('/sell2')}>Login to Deposit</LoginButton>}
             <ActionButtons>
               <Deposit onClick={handleDepositclick}>
                 <div>
-                  <img src={DEPOSIT__2_} style={{ height: "80px", width: "80px", marginTop: "10px" }} alt="Deposit" />
+                  <img src={DEPOSIT__2_} style={{ height: "70px", width: "75px", marginTop: "2px" }} alt="Deposit" />
                 </div>
                 <span style={{ fontWeight: 700 }}>Deposit</span>
               </Deposit>
@@ -527,7 +536,7 @@ const Wallet = () => {
 
               <Deposit onClick={handleWithdrawclick}>
                 <div>
-                  <img src={withdrawicon} alt="Withdraw" style={{ height: "60px", width: "65px" }} />
+                  <img src={withdrawicon} alt="Withdraw" style={{ height: "70px", width: "75px" }} />
                 </div>
                 <span style={{ fontWeight: 700 }}>Withdraw</span>
               </Deposit>

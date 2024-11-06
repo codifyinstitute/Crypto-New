@@ -56,7 +56,10 @@ const ExchangeCard = styled.div`
   }
 
   @media (max-width: 320px) {
-    padding: 0.5rem; // Further reduce padding for very small screens
+    padding: 1rem;
+    font-weight : 700;
+    font-size : 25px;
+    // Further reduce padding for very small screens
   }
 `;
 
@@ -84,11 +87,11 @@ const Tab = styled.div`
   text-align: left;
 
   @media (max-width: 480px) {
-    font-size: 20px; // Adjust font size for smaller screens
+    font-size: 25px; // Adjust font size for smaller screens
   }
 
   @media (max-width: 320px) {
-    font-size: 18px; // Further adjust for very small screens
+    font-size: 25px; // Further adjust for very small screens
   }
 `;
 const InputLabel = styled.div`
@@ -852,9 +855,9 @@ const BalanceText = styled.div`
 
 
 const IconValueWrapper = styled.div`
-    background-color: rgb(251 251 251);
+    // background-color: rgb(251 251 251);
     color: black;
-    padding: 5px 13px;
+    // padding: 5px 13px;
     border-radius: 10px;
     border: none;
     font-size: 8px;
@@ -863,9 +866,9 @@ const IconValueWrapper = styled.div`
     display: flex;
     align-items: center;
     /* height: 40px; */
-    gap: 2px;
+    // gap: 2px;
     width: auto;
-    transition: background-color 0.3s;
+    // transition: background-color 0.3s;
 `
 
 const BalanceIcon = styled.div`
@@ -920,6 +923,9 @@ const Balance = styled.div`
   font-size: 22px;
   color: black;
   margin-bottom: 1rem;
+    collor : black;
+    margin-left : 10px;
+
 
   p {
     display: flex;
@@ -928,7 +934,8 @@ const Balance = styled.div`
     margin-top: 15px; 
     margin-right: 0; /* Remove right margin to keep content aligned */
     font-weight: bold;
-    background-color: #2b9178;
+    // background-color: #2b9178;
+    collor : black;
     border-radius: 4px;
     color: white;
     width: 100%; /* Allow p to take full width for left alignment */
@@ -1274,24 +1281,26 @@ const Deposit = () => {
               <Balance>
       <p>
         <span style={{
-          backgroundColor: "#d3d3d3",
+          // backgroundColor: "#d3d3d3",
           paddingTop: "5px",
-          paddingRight: "2px",
+          // paddingRight: "2px",
           borderRadius: "4px 0px 0px 4px"
         }}>
           <img src={usdtimg} alt="coin" />
         </span>
         <span style={{
-          marginLeft: "8px",
-          marginRight: "8px", 
+          // marginLeft: "8px",
+          // marginRight: "8px", 
           fontSize: "16px",
           paddingLeft : "10px",
+          color : "black",
           fontWeight : "700",
           minWidth: "40px", // Set a minimum width
           width: "auto", // Allow the width to grow as needed
           display: "inline-block" // Ensure it behaves like a block element
         }}>
           {walletAmount}
+          <span> USDT</span>
         </span>
       </p>
     </Balance>
@@ -1341,7 +1350,7 @@ const Deposit = () => {
         </ExchangeCard>
 
       </TradingEnvironment>
-      <HomeContact />
+      {/* <HomeContact /> */}
       <Footer />
     </>
   );

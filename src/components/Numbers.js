@@ -85,13 +85,13 @@ const TextContent = styled.div`
 `;
 
 const StatValue = styled.p`
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   font-weight: bold;
   margin-bottom: 0.5rem;
 `;
 
 const StatTitle = styled.div`
-  font-size: 0.875rem;
+  font-size: 0.775rem;
   color: white;
   @media (max-width: 768px) {
     height: 34px;
@@ -166,22 +166,22 @@ const StatsDashboard = () => {
       <DashboardContainer>
         <StatsWrapper>
           <StatItem
-            title="Supported countries"
-            value="170+"
+            title="Supported Countries"
+            value="30+"
             image={currancy1}
           />
           <StatItem
-            title="Fiat currencies"
-            value="50+"
+            title="Fiat Currencies"
+            value="6"
             image={currancy2}
           />
           <StatItem
-            title="Fiat payment channels"
-            value="300+"
+            title="Fiat Payment Channels"
+            value="50+"
             image={currancy3}
           />
           <StatItem
-            title="Cryptocurrencies supported"
+            title="Major Network Supported"
             value="ALL"
             image={currancy4}
           />

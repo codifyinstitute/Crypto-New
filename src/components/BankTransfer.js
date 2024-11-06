@@ -12,6 +12,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 import * as Yup from 'yup'; // Import Yup
 import { Formik, Form, Field, ErrorMessage } from 'formik'; // Import Formik
+import nobankdetails from "./../assets/no-bank-building-icon-with-textured-only-for-girls-vector-27765593-removebg-preview.png";
+
 
 const PageContainer = styled.div`
   display: flex;
@@ -267,12 +269,50 @@ const ProceedButton = styled.button`
   text-align: center;
 `;
 
+const NoHistoryContainer = styled.div`
+  display: flex;
+  margin-top : 85px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; // Center the entire container
+`;
+
+const IconContainer = styled.div`
+  display: flex;
+  justify-content: center; // Center the icon horizontally
+  align-items: center; // Center the icon vertically
+  height: 20%; // Full height to center vertically in the viewport
+`;
+
+const CenteredValueContainer = styled.div`
+  display: flex;
+  justify-content: center; // Center horizontally
+  align-items: center; // Center vertically
+   margin-top: 10px; 
+`;
+
+const TextValue = styled.div`
+  font-size: 16px; // Font size for the text
+  color: black; // Text color
+  font-weight : 600;
+  text-align: center; // Center align the text
+  margin-top: 55px; // Additional margin for consistency
+`;
+
+const LoadingText = styled.div`
+  font-size: 18px;
+  color: #ffa500;
+  font-weight: bold;
+  margin-top: 20px;
+`;
 
 const BankTransfer = () => {
   const selectedCountry = useSelector((state) => state.country.value);
   const navigate = useNavigate();
   const [form, setForm] = useState(true);
   const [accounts, setAccounts] = useState([]);
+  const [loading, setLoading] = useState(true); 
+
 
   const [formData, setFormData] = useState({
     firstName: "", lastName: "", bankName: "", accountNumber: "",
@@ -282,10 +322,16 @@ const BankTransfer = () => {
   });
 
   useEffect(() => {
+    setLoading(true);
     const email = localStorage.getItem("token");
     axios.get(`https://crypto-backend-main.onrender.com/account-details/${countryObject[selectedCountry].urlName}/${email}`)
-      .then((response) => setAccounts(response.data))
-      .catch((error) => console.error("Error fetching Accounts:", error));
+    .then((response) => {
+      setAccounts(response.data); // Set accounts data
+      setLoading(false); // Stop loading
+    }).catch((error) => {
+      console.error("Error fetching Accounts:", error);
+      setLoading(false); // Stop loading on error
+    });
   }, [selectedCountry]);
 
   const validationSchema = Yup.object().shape({
@@ -549,7 +595,12 @@ const BankTransfer = () => {
                   </Form>
                 )}
               </Formik>
-            ) : (
+            ) 
+            : loading ? (
+              <LoadingText>Loading...</LoadingText>
+            ) 
+
+            : (
               <>
                 <CardsSection>
                   {accounts.length > 0 ? accounts.map((account, index) => (
@@ -565,12 +616,31 @@ const BankTransfer = () => {
                       <strong>IFSC:</strong> {account.IFSC}
                     </Crosss> */}
                     </Card>
-                  )) : <>
-                    <OptionTitle>No Bank Details is Added</OptionTitle>
-                    <ProceedButton style={{ width: "fit-content" }} onClick={AddAccount}>
-                      Add Bank Details
-                    </ProceedButton>
-                  </>}
+                  )) :   (
+                    <NoHistoryContainer>
+                      <IconContainer>
+                        <img
+                          src={nobankdetails}
+                          alt="Empty Icon"
+                          style={{
+                            height: "100px",
+                            width: "100px",
+                            backgroundColor: "#f0f0f0",
+                            padding: "10px",
+                            borderRadius: "20px",
+                            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
+                          }}
+                        />
+                      </IconContainer>
+                      <CenteredValueContainer>
+                        <TextValue>No Card Details Available.</TextValue>
+                      </CenteredValueContainer>
+                      <ProceedButton style={{ width: "fit-content" }} onClick={AddAccount}>
+                    Add Bank Details
+                  </ProceedButton>
+                    </NoHistoryContainer>
+                  )}
+                 
                 </CardsSection>
               </>
             )}

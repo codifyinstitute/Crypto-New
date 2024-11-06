@@ -286,16 +286,20 @@ const CardTransfer = () => {
   const navigate = useNavigate();
   const [form, setForm] = useState(true);
   const [accounts, setAccounts] = useState([]);
+  const [loading, setLoading] = useState(true); 
 
   useEffect(() => {
+    setLoading(true);
     const email = localStorage.getItem("token");
     axios
       .get(`https://crypto-backend-main.onrender.com/account-details/${countryObject[selectedCountry].urlName}/card/${email}`)
       .then((response) => {
         setAccounts(response.data);
+        setLoading(false); 
       })
       .catch((error) => {
         console.error("Error fetching Accounts:", error);
+        setLoading(false);  
       });
   }, [selectedCountry]);
 
@@ -338,6 +342,9 @@ const CardTransfer = () => {
       toast.error("Failed to save card information.");
       console.error("Error:", error.response ? error.response.data : error.message);
     }
+    finally {
+      setLoading(false);
+    }
   };
 
   const AddAccount = () => {
@@ -349,121 +356,122 @@ const CardTransfer = () => {
       <Navbar />
       <PageContainer>
         <FormWrapper>
-          <FormContainer>
-            <TabContainer>
-              <Left>
-                <button
-                  onClick={() => window.history.back()}
+        <FormContainer>
+      <TabContainer>
+        <Left>
+          <button
+            onClick={() => window.history.back()}
+            style={{
+              border: "none",
+              background: "transparent",
+              cursor: "pointer",
+              color: "#f7a600",
+            }}
+          >
+            <ChevronLeft />
+          </button>
+          <Tab>Payment Method</Tab>
+        </Left>
+        <Button onClick={AddAccount}>{form ? "My Cards" : "Add Card +"}</Button>
+      </TabContainer>
+
+      {form ? (
+        <Formik
+          initialValues={{
+            FirstName: "",
+            LastName: "",
+            CardNumber: "",
+            ExpiryDate: "",
+            CVV: "",
+            PhoneNumber: "",
+          }}
+          validationSchema={validationSchema}
+          onSubmit={handleSubmit}
+        >
+          {({ isSubmitting }) => (
+            <Form>
+              <FormSection>
+                <p>Card Information</p>
+                <FormLabel>First Name</FormLabel>
+                <Field name="FirstName" as={FormInput} placeholder="Please enter your First name" />
+                <ErrorMessage name="FirstName" component={FormWarning} />
+
+                <FormLabel>Last Name</FormLabel>
+                <Field name="LastName" as={FormInput} placeholder="Please enter your Last name" />
+                <ErrorMessage name="LastName" component={FormWarning} />
+
+                <FormLabel>Card Number</FormLabel>
+                <Field name="CardNumber" as={FormInput} placeholder="Enter Your Card Number" />
+                <ErrorMessage name="CardNumber" component={FormWarning} />
+
+                <FormLabel>Expiry Date</FormLabel>
+                <Field name="ExpiryDate" type="month" as={FormInput} />
+                <ErrorMessage name="ExpiryDate" component={FormWarning} />
+
+                <FormLabel>CVV/CVC</FormLabel>
+                <Field name="CVV" as={FormInput} placeholder="Enter Your CVV/CVC" />
+                <ErrorMessage name="CVV" component={FormWarning} />
+
+                <FormLabel>Phone Number</FormLabel>
+                <Field name="PhoneNumber" as={FormInput} placeholder="Enter Your Phone Number" />
+                <ErrorMessage name="PhoneNumber" component={FormWarning} />
+              </FormSection>
+
+              <FormWarning>
+                Attention: Please ensure the card information is accurate.
+              </FormWarning>
+
+              <FormButton type="submit" disabled={isSubmitting}>
+                Confirm
+                <IoArrowForwardOutline />
+              </FormButton>
+            </Form>
+          )}
+        </Formik>
+      ) : loading ? (
+        <LoadingText>Loading...</LoadingText>
+      ) : (
+        <CardsSection>
+          {accounts.length > 0 ? accounts.map((account, index) => (
+            <Card key={index} onClick={() => handleCardClick(account)}>
+              <CardTitle>
+                <span>Card Number</span> <span>{account.CardNumber}</span>
+              </CardTitle>
+              <Crosss>
+                <strong>Expiry Date:</strong> {account.ExpiryDate}
+              </Crosss>
+              <Crosss>
+                <strong>CVV:</strong> {account.CVV}
+              </Crosss>
+            </Card>
+          )) : (
+            <NoHistoryContainer>
+              <IconContainer>
+                <img
+                  src={nocard}
+                  alt="Empty Icon"
                   style={{
-                    border: "none",
-                    background: "transparent",
-                    cursor: "pointer",
-                    color: "#f7a600",
+                    height: "100px",
+                    width: "100px",
+                    backgroundColor: "#f0f0f0",
+                    padding: "10px",
+                    borderRadius: "20px",
+                    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
                   }}
-                >
-                  <ChevronLeft />
-                </button>
-                <Tab>Payment Method</Tab>
-              </Left>
-              <Button onClick={AddAccount}>{form ? " My Cards" : "Add Card +"}</Button>
-            </TabContainer>
-            {form ? (
-              <Formik
-                initialValues={{
-                  FirstName: "",
-                  LastName: "",
-                  CardNumber: "",
-                  ExpiryDate: "",
-                  CVV: "",
-                  PhoneNumber: "",
-                }}
-                validationSchema={validationSchema}
-                onSubmit={handleSubmit}
-              >
-                {({ isSubmitting }) => (
-                  <Form>
-                    <FormSection>
-                      <p>Card Information</p>
-                      <FormLabel>First Name</FormLabel>
-                      <Field name="FirstName" as={FormInput} placeholder="Please enter your First name" />
-                      <ErrorMessage name="FirstName" component={FormWarning} />
-
-                      <FormLabel>Last Name</FormLabel>
-                      <Field name="LastName" as={FormInput} placeholder="Please enter your Last name" />
-                      <ErrorMessage name="LastName" component={FormWarning} />
-
-                      <FormLabel>Card Number</FormLabel>
-                      <Field name="CardNumber" as={FormInput} placeholder="Enter Your Card Number" />
-                      <ErrorMessage name="CardNumber" component={FormWarning} />
-
-                      <FormLabel>Expiry Date</FormLabel>
-                      <Field name="ExpiryDate" type="month" as={FormInput} />
-                      <ErrorMessage name="ExpiryDate" component={FormWarning} />
-
-                      <FormLabel>CVV/CVC</FormLabel>
-                      <Field name="CVV" as={FormInput} placeholder="Enter Your CVV/CVC" />
-                      <ErrorMessage name="CVV" component={FormWarning} />
-
-                      <FormLabel>Phone Number</FormLabel>
-                      <Field name="PhoneNumber" as={FormInput} placeholder="Enter Your Phone Number" />
-                      <ErrorMessage name="PhoneNumber" component={FormWarning} />
-                    </FormSection>
-
-                    <FormWarning>
-                      Attention: Please ensure the card information is accurate.
-                    </FormWarning>
-
-                    <FormButton type="submit" disabled={isSubmitting}>
-                      Confirm
-                      <IoArrowForwardOutline />
-                    </FormButton>
-                  </Form>
-                )}
-              </Formik>
-            ) : (
-              <CardsSection>
-                {accounts.length > 0 ? accounts.map((account, index) => (
-                  <Card key={index} onClick={() => handleCardClick(account)}>
-                    <CardTitle>
-                      <span>Card Number</span> <span>{account.CardNumber}</span>
-                    </CardTitle>
-                    <Crosss>
-                      <strong>Expiry Date:</strong> {account.ExpiryDate}
-                    </Crosss>
-                    <Crosss>
-                      <strong>CVV:</strong> {account.CVV}
-                    </Crosss>
-                  </Card>
-                )) : <>
-
-<NoHistoryContainer>
-<IconContainer>
-              <img
-                src={nocard}
-                alt="Empty Icon"
-                style={{
-                  height: "100px",
-                  width: "100px",
-                  backgroundColor: "#f0f0f0",
-                  padding: "10px",
-                  borderRadius: "20px",
-                  boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
-                }}
-              />
-            </IconContainer>
-            <CenteredValueContainer>
-              <TextValue>No Card Details Available.</TextValue>
-            </CenteredValueContainer>
-</NoHistoryContainer>
-
-                  {/* <OptionTitle>No Card Details is Added</OptionTitle> */}
-                  <ProceedButton style={{ width: "fit-content" }} onClick={AddAccount}>
-                    Add Card Details
-                  </ProceedButton>
-                </>}
-              </CardsSection>
-            )}
-          </FormContainer>
+                />
+              </IconContainer>
+              <CenteredValueContainer>
+                <TextValue>No Card Details Available.</TextValue>
+              </CenteredValueContainer>
+              <ProceedButton style={{ width: "fit-content" }} onClick={AddAccount}>
+            Add Card Details
+          </ProceedButton>
+            </NoHistoryContainer>
+          )}
+        
+        </CardsSection>
+      )}
+    </FormContainer>
         </FormWrapper>
       </PageContainer>
       <Footer></Footer>

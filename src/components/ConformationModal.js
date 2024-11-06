@@ -132,6 +132,9 @@ const Modal = ({ title,
   message,
   onConfirm,
   onCancel,
+  confirmText = "Confirm",
+  cancelText = "Cancel",
+
   showDoneButton }) => (
   <Overlay>
     <ModalContainer>
@@ -153,8 +156,8 @@ const Modal = ({ title,
           <Button onClick={onConfirm}>Done</Button>
         ) : (
           <>
-            <CancelButton onClick={onCancel}>Not yet</CancelButton>
-            <Button onClick={onConfirm}>Confirm</Button>
+            <CancelButton onClick={onCancel}>{cancelText}</CancelButton>
+            <Button onClick={onConfirm}>{confirmText}</Button>
 
           </>
         )}

@@ -16,7 +16,7 @@ import axios from "axios";
 const PageContainer = styled.div`
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  min-height: 80vh;
   background-color: black;
   padding-top: 80px;
 
@@ -71,7 +71,7 @@ const Left = styled.div`
 const Tab = styled.div`
   padding: 0.5rem 0;
   color: #f7a600;
-  font-size: 18px;
+  font-size: 25px;
   font-weight: 700;
 `;
 

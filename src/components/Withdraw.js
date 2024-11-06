@@ -259,10 +259,10 @@ const WithdrawUSDT = () => {
 <Balance>
                <p style={{marginLeft: "8px",
                   marginTop : "15px",
-                  marginRight: "77px", fontWeight: "700", backgroundColor: "#2b9178", 
-                  borderRadius: "4px", color: "white", display: "flex", 
+                  marginRight: "77px", fontWeight: "700", 
+                  borderRadius: "4px", color: "black", display: "flex", 
                   alignItems: "center" }}>
-                 <span style={{ backgroundColor: "#d3d3d3", paddingTop : "5px",paddingRight: "2px", borderRadius: "4px  0px 0px  4px ", 
+                 <span style={{  paddingTop : "5px",paddingRight: "2px", borderRadius: "4px  0px 0px  4px ", 
                    
                  }}>
                    <img src={usdtimg} alt="coin" />
@@ -383,16 +383,18 @@ const WithdrawUSDT = () => {
               <Balance>
                <p style={{marginLeft: "8px",
                   marginTop : "15px",
-                  marginRight: "77px", fontWeight: "700", backgroundColor: "#2b9178", 
-                  borderRadius: "4px", color: "white", display: "flex", 
+                  marginRight: "75px", fontWeight: "700",  
+                  borderRadius: "4px", color: "black", display: "flex", 
                   alignItems: "center" }}>
-                 <span style={{ backgroundColor: "#d3d3d3", paddingTop : "5px",paddingRight: "2px", borderRadius: "4px  0px 0px  4px ", 
+                 <span style={{  paddingTop : "5px", borderRadius: "4px  0px 0px  4px ", 
                    
                  }}>
                    <img src={usdtimg} alt="coin" />
                  </span>
-                 <span style={{  minWidth: "40px", // Set a minimum width
-          width: "auto", marginLeft: "4px",paddingLeft : "10px" ,marginRight: "8px" , fontWeight: "700",fontSize : "16px"}}>{walletAmount}</span> 
+                 <span style={{  minWidth: "100px", // Set a minimum width
+          width: "auto", marginLeft: "4px" , fontWeight: "700",fontSize : "16px"}}>{walletAmount}
+          <span> USDT</span>
+          </span> 
                 </p>
                </Balance>
 
@@ -403,7 +405,7 @@ const WithdrawUSDT = () => {
           </ProceedButton>
         </ExchangeCard>
       </TradingEnvironment>
-      <HomeContact />
+      {/* <HomeContact /> */}
       <Footer />
     </>
   );
@@ -418,7 +420,7 @@ const TradingEnvironment = styled.div`
   align-items: center;
   padding: 20px;
   background-color: black;
-
+  
   @media (max-width: 480px) {
     padding-top: 80px;
   }
@@ -426,7 +428,26 @@ const TradingEnvironment = styled.div`
   /* Targeting specific viewport sizes for improved responsiveness */
   @media (max-width: 360px) and (max-height: 640px) {
     padding: 10px;
+    padding-top: 80px;
+
   }
+
+  
+`;
+
+
+const ExchangeCard = styled.div`
+  background-color: white;
+  color: #333333;
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  width: 380px;
+  height: 650px;
+  max-width: 100%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 
   @media (max-width: 360px) and (max-height: 740px) {
     padding: 15px;
@@ -454,25 +475,11 @@ const TradingEnvironment = styled.div`
   }
 `;
 
-
-const ExchangeCard = styled.div`
-  background-color: white;
-  color: #333333;
-  padding: 1.5rem;
-  border-radius: 0.5rem;
-  width: 380px;
-  height: 650px;
-  max-width: 100%;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-`;
-
 const Header = styled.div`
   display: flex;
   justify-content: space-between;
   color: orange;
+  font-size: 25px;
   font-weight: 700;
   align-items: center;
   margin-bottom: 1rem;
@@ -494,7 +501,7 @@ const TabWrapper = styled.div`
 `;
 
 const Title = styled.h2`
-font-size: 1.5rem;
+font-size: 25px;
   font-weight: bold;
   color: orange;
   display: inline;  // Restrict border to text width
@@ -828,7 +835,7 @@ const Balance = styled.div`
   }
   img {
     margin-left: 5px;
-    width: 25px;
-    height: 25px;
+    width: 22px;
+    height: 22px;
   }
 `;

@@ -340,7 +340,7 @@ const Sell7 = () => {
             </TimelineItem>
             <TimelineItem>
               <TimelineDot />
-              <TimelineLabel>Withdrew</TimelineLabel>
+              <TimelineLabel>Completed</TimelineLabel>
             </TimelineItem>
           </Timeline>
 
@@ -353,10 +353,10 @@ const Sell7 = () => {
               <span style={{fontWeight:"bold"}}> Network :</span> <span>{location.state?.data?.Network}</span>
             </InfoText>
             <InfoText>
-              <span style={{fontWeight:"bold"}}>USDT :</span> <span>{location.state?.data?.WithdrawAmount} USDT</span>
+              <span style={{fontWeight:"bold"}}>Order :</span> <span>{location.state?.data?.WithdrawAmount} USDT</span>
             </InfoText>
             <InfoText>
-              <span style={{fontWeight:"bold"}}>Satus :</span> <span>{location.state?.data?.Status}</span>
+              <span style={{fontWeight:"bold"}}>Status :</span> <span>{location.state?.data?.Status}</span>
             </InfoText>
             <InfoText>
               <span style={{fontWeight:"bold"}}>Time :</span> <span>{location.state?.data?.Time}</span>
@@ -369,7 +369,7 @@ const Sell7 = () => {
           </Button>
         </Container>
       </Main>
-      <HomeContact />
+      {/* <HomeContact /> */}
       <Footer />
     </>
   );

@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import view from "../assets/Add_a_little_bit_of_body_text__43_-removebg-preview.png";
 
 // Styled Components
 const Container = styled.div`
@@ -349,14 +350,34 @@ const SellHistory = () => {
             .map((transaction, index) => (
               <TransactionCard key={index}>
                 <TransactionHeader>
-                  <Value> Order Id : {transaction.OrderId}</Value>
+                  <Value> Order ID : {transaction.OrderId}</Value>
                   <Value> Date : {transaction.Date}</Value>
                 </TransactionHeader>
                 <TransactionDetails>
                   <TransactionColumn>
                     <Label>Account Detail</Label>
                     <Value>
-                      <MdOutlineRemoveRedEye onClick={() => handleIconClick(transaction.AccountDetail)} />
+                      {/* <MdOutlineRemoveRedEye size={24}  onClick={() => handleIconClick(transaction.AccountDetail)} />
+                      <img 
+                      src={view} 
+                      alt="view icon" 
+                      width={60} 
+                      height={60} 
+                      onClick={() => handleIconClick(transaction.AccountDetail)} 
+                    /> */}
+ <span 
+  style={{ 
+    marginLeft : "25px",
+    cursor: "pointer", 
+    fontSize: "12px", 
+    border: "1px solid black", 
+    borderRadius: "12px", 
+    padding: "2px 7px" 
+  }} 
+  onClick={() => handleIconClick(transaction.AccountDetail)}
+>
+  view
+</span>
                     </Value>
                   </TransactionColumn>
                   <TransactionColumn>
