@@ -697,10 +697,10 @@ const countryObject = {
     name: "European Union",
     fait: "EUR"
   },
-  Dubai: {
+  UAE: {
     urlName: "aed",
     symbol: "د.إ",
-    name: "Dubai",
+    name: "UAE",
     fait: "AED"
   },
   USA: {
@@ -828,7 +828,7 @@ const Sell1 = () => {
       },
       { name: "United Kingdom", symbol: "GBP", image: ukFlag, short: "UK" },
       { name: "European Union", symbol: "EUR", image: EuropeFlag, short: "EU" },
-      { name: "Dubai", symbol: "AED", image: dubaiFlag, short: "Dubai" },
+      { name: "UAE", symbol: "AED", image: dubaiFlag, short: "UAE" },
       { name: "Brazil", symbol: "BRL", image: BrazilFlag, short: "Brazil" },
     ];
 

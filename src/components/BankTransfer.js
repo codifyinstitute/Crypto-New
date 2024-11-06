@@ -243,10 +243,10 @@ const countryObject = {
     symbol: "€",
     name: "European Union"
   },
-  Dubai: {
+  UAE: {
     urlName: "aed",
     symbol: "د.إ",
-    name: "Dubai"
+    name: "UAE"
   },
   USA: {
     urlName: "usa",
@@ -350,8 +350,8 @@ const BankTransfer = () => {
     idType: selectedCountry === "Brazil" ? Yup.string().required("ID type is required") : Yup.string(),
     idNumber: selectedCountry === "Brazil" ? Yup.string().matches(/^\d+$/, "ID number must be a number").required("ID number is required") : Yup.string(),
     bankBranchCode: selectedCountry === "Brazil" ? Yup.string().required("Bank branch code is required") : Yup.string(),
-    accountOpeningBranch: selectedCountry === "Dubai" ? Yup.string().required("Account opening branch is required") : Yup.string(),
-    iban: selectedCountry === "Dubai" ? Yup.string().required("IBAN is required") : Yup.string(),
+    accountOpeningBranch: selectedCountry === "UAE" ? Yup.string().required("Account opening branch is required") : Yup.string(),
+    iban: selectedCountry === "UAE" ? Yup.string().required("IBAN is required") : Yup.string(),
     ifsc: selectedCountry === "India" ? Yup.string().required("IFSC is required") : Yup.string(),
   });
 
@@ -396,7 +396,7 @@ const BankTransfer = () => {
     } else if (selectedCountry === "Euro") {
       submissionData.ABACode = values.abaCode;
       submissionData.SwiftCode = values.swiftCode;
-    } else if (selectedCountry === "Dubai") {
+    } else if (selectedCountry === "UAE") {
       submissionData.OpeningBranch = values.accountOpeningBranch;
       submissionData.IBAN = values.iban;
     } else if (selectedCountry === "India") {
@@ -563,7 +563,7 @@ const BankTransfer = () => {
                         </>
                       )}
 
-                      {selectedCountry === "Dubai" && (
+                      {selectedCountry === "UAE" && (
                         <>
                           <FormLabel>Account Opening Branch</FormLabel>
                           <Field name="accountOpeningBranch" as={FormInput} placeholder="Enter Your Account Opening Branch" />

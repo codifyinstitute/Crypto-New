@@ -17,7 +17,7 @@ import { FaPlusSquare } from "react-icons/fa";
 
 // Import country flags
 import USA from "../assets/USD AMERICA.jpg";
-import Dubai from "../assets/AED DUBAI.jpg";
+import UAE from "../assets/AED DUBAI.jpg";
 import India from "../assets/INR INDIA.jpg";
 import Brazil from "../assets/BRL BRAZIL.jpg";
 import UK from "../assets/GBP UK.jpg";
@@ -445,7 +445,7 @@ const countryFlags = {
   Brazil: Brazil,
   UK: UK,
   Euro: Euro,
-  Dubai: Dubai,
+  UAE: UAE,
   USA: USA,
 };
 
@@ -478,9 +478,9 @@ const Navbar = () => {
     }
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     fetchWallet();
-  },[])
+  }, [])
 
   useEffect(() => {
 
@@ -580,65 +580,65 @@ const Navbar = () => {
           >
           </NavLink>
 
-    
-      {/* <img src={newWallet} alt="Wallet Icon" className="wallet-icon" /> Use the new wallet image */}
-        {/* <img src={Tether} alt="logo" /> */}
-      {/* </div> */}
-      {/* <span className="amount-container">{amount}</span> */}
-    {/* </DepositButton2> */}
 
-    
-    {/* <span style={{ border: "2px solid orange", borderRadius: "8px", }}>
+          {/* <img src={newWallet} alt="Wallet Icon" className="wallet-icon" /> Use the new wallet image */}
+          {/* <img src={Tether} alt="logo" /> */}
+          {/* </div> */}
+          {/* <span className="amount-container">{amount}</span> */}
+          {/* </DepositButton2> */}
+
+
+          {/* <span style={{ border: "2px solid orange", borderRadius: "8px", }}>
     <StyledCard onClick={handleWalletClick}>
       <IconContainer>
         {/* <span style={{height : '2.5rem',borderRadius : " 4px 0px 0px 4px"}}>
 
           </span> */}
-{/*      
+          {/*      
         <IconWrapper>
         <Icon src={Tether} alt="USDT" />
         </IconWrapper>
         <BalanceText>{amount}</BalanceText> */}
-      {/* </IconContainer> */}
-    {/* </StyledCard> */}
-    {/* </span>  */}
+          {/* </IconContainer> */}
+          {/* </StyledCard> */}
+          {/* </span>  */}
 
-    <BalanceContainer onClick={handleWalletClick}>
-      <IconWrapper>
-        <span style={{ paddingTop : "4px" }}>
-        <Icon src={Tether} alt="USDT" />
-        </span>
-      </IconWrapper>
-      <BalanceText>{amount}
-         <span> USDT</span>
-      </BalanceText>
-      <PlusIconWrapper>
-        <FaPlusSquare style={{ color: 'orange', fontSize: '1.2rem' }} />
-      </PlusIconWrapper>
-      {/* <FaPlusSquare /> */}
-    </BalanceContainer>
+          <BalanceContainer onClick={handleWalletClick}>
+            <IconWrapper>
+              <span style={{ paddingTop: "4px" }}>
+                <Icon src={Tether} alt="USDT" />
+              </span>
+            </IconWrapper>
+            <BalanceText>{amount}
+              <span> USDT</span>
+            </BalanceText>
+            <PlusIconWrapper>
+              <FaPlusSquare style={{ color: 'orange', fontSize: '1.2rem' }} />
+            </PlusIconWrapper>
+            {/* <FaPlusSquare /> */}
+          </BalanceContainer>
 
           {/* <NavLink to="/deposit" style={{ textDecoration: 'none' }}>
             <DepositButton onClick={handleDepositClick}>
                 <CirclePlus size={20}/>DEPOSIT
             </DepositButton>
           </NavLink> */}
-          {path === "/payment-method" || path === "/bank-transfer" || path === "/card-transfer" || path === "/sell4"? null
-          :<DepositButton onClick={toggleDropdown}>
-            {selectedCountry && (
-              <img
-                src={selectedCountry.flag}
-                alt={`${selectedCountry.name} Flag`}
-                width="20"
-                style={{
-                  marginRight: "2px",
-                  borderRadius: "50%",
-                  border: "1px solid white",
-                }}
-              />
-            )}
-            <IoMdArrowDropdown />
-          </DepositButton>}
+          {path === "/payment-method" || path === "/bank-transfer" || path === "/card-transfer" || path === "/sell4" || path === "/sell5" || path === "/sell6" || path === "/sell7" ? null
+            : <DepositButton onClick={toggleDropdown}>
+              {selectedCountry && (
+                <img
+                  src={selectedCountry.flag}
+                  alt={`${selectedCountry.name} Flag`}
+                  width="20"
+                  style={{
+                    marginRight: "2px",
+                    borderRadius: "50%",
+                    border: "1px solid white",
+                  }}
+                />
+              )}
+              <IoMdArrowDropdown />
+            </DepositButton>}
 
 
           {isDropdownOpen && (
@@ -686,12 +686,12 @@ const Navbar = () => {
               </div>
               <div
                 onClick={() => {
-                  handelCountryChange("Dubai")
-                  setSelectedCountry({ name: "Dubai", flag: Dubai });
+                  handelCountryChange("UAE")
+                  setSelectedCountry({ name: "UAE", flag: UAE });
                   setDropdownOpen(false); // Close dropdown
                 }}
               >
-                <img src={Dubai} alt="Dubai Flag" />
+                <img src={UAE} alt="Dubai Flag" />
                 <p style={{ fontWeight: "bold" }}>United Arab Emirates <p style={{ color: "gray" }}>AED</p></p>
               </div>
               <div

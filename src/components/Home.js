@@ -57,10 +57,10 @@ const countryObject = {
     symbol: "€",
     name: "European Union"
   },
-  Dubai: {
+  UAE: {
     urlName: "aed",
     symbol: "د.إ",
-    name: "Dubai"
+    name: "UAE"
   },
   USA: {
     urlName: "usa",
@@ -165,7 +165,7 @@ const Home = () => {
       { name: "United States", symbol: "USD", image: usaFlag, short: "USA" },
       { name: "United Kingdom", symbol: "GBP", image: ukFlag, short: "UK" },
       { name: "European Union", symbol: "EUR", image: EuropeFlag, short: "EU" },
-      { name: "UAE", symbol: "AED", image: dubaiFlag, short: "Dubai" },
+      { name: "UAE", symbol: "AED", image: dubaiFlag, short: "UAE" },
       { name: "Brazil", symbol: "BRL", image: BrazilFlag, short: "Brazil" },
     ];
     setFilteredFiatCurrencies(fiatCurrencies);
@@ -206,7 +206,7 @@ const Home = () => {
   const handleFiatCurrencySelect = (currency) => {
     // console.log(currency.name)
     const selectedKey = Object.keys(countryObject).find(key => countryObject[key].name === currency.name);
-    // console.log(selectedKey);
+    console.log(selectedKey);
     dispatch(changeCountry(selectedKey));
     localStorage.setItem("Country", selectedKey);
     setSelectedFiatCurrency(currency);
