@@ -68,7 +68,7 @@ const FormContainer = styled.div`
   @media (max-width: 360px) {
     padding: 1rem;
     margin: 0px 15px;
-    width: 300px;
+    width: 320px;
     height : 670px;
   }
     
@@ -96,6 +96,11 @@ const Tab = styled.div`
   color: #f7a600;
   font-size: 20px;
   font-weight: 700;
+
+ @media (max-width: 320px) {
+  font-size: 18px;
+  
+  }
 `;
 
 const FormSection = styled.div`
@@ -216,6 +221,7 @@ const CardTitle = styled.h4`
 const Crosss = styled.p`
   display: flex;
   width: 100%;
+  padding : 1.5px;
   justify-content: space-between;
   @media (max-Width:480px){
     font-size: 14px;
@@ -334,6 +340,7 @@ const BankTransfer = () => {
     });
   }, [selectedCountry]);
 
+  // console.log("countrywise",accounts)
   const validationSchema = Yup.object().shape({
     firstName: Yup.string().matches(/^[A-Za-z\s]+$/, "First name can only contain letters").required("First name is required"),
     lastName: Yup.string().matches(/^[A-Za-z\s]+$/, "Last name can only contain letters").required("Last name is required"),
@@ -608,13 +615,49 @@ const BankTransfer = () => {
                       key={index}
                       onClick={() => handleCardClick(account)}
                     >
-                      <CardTitle><span>Bank Name</span> <span>{account.BankName}</span></CardTitle>
+                      <Crosss><strong>Bank Name</strong> {account.BankName}</Crosss>
                       <Crosss>
-                        <strong>Account Number:</strong> {account.AccountNo}
+                        <strong>A/C Holder Name:</strong> {account.AccountNo}
                       </Crosss>
-                      {/* <Crosss>
-                      <strong>IFSC:</strong> {account.IFSC}
-                    </Crosss> */}
+
+
+                      {selectedCountry === "USA" && (
+                    <>
+                          <Crosss><strong>ABA Code:</strong>{account.ABACode}</Crosss>
+                    </>
+                  )}
+
+
+                      {selectedCountry === "Brazil" && (
+                    <>
+                          <Crosss><strong>Bank Branch Code:</strong>{account.BranchCode}</Crosss>
+                    </>
+                  )}
+
+                  {selectedCountry === "UK" && (
+                        <>
+                          <Crosss><strong>Sort Code:</strong>{account.SortCode}</Crosss>
+                        </>
+                  )}
+
+{selectedCountry === "Euro" && (
+                    <>
+                          <Crosss><strong>ABA Code:</strong>{account.ABACode}</Crosss>
+                    </>
+                  )}
+
+                  {selectedCountry === "Dubai" && (
+                    <>
+                          <Crosss><strong>IBAN:</strong>{account.IBAN}</Crosss>
+                    </>
+                  )}
+
+                  {selectedCountry === "India" && (
+                    <>
+                          <Crosss><strong>IFSC:</strong>{account.IFSC}</Crosss>                       
+                    </>
+                  )}
+
                     </Card>
                   )) :   (
                     <NoHistoryContainer>
@@ -633,7 +676,7 @@ const BankTransfer = () => {
                         />
                       </IconContainer>
                       <CenteredValueContainer>
-                        <TextValue>No Card Details Available.</TextValue>
+                        <TextValue>No Bank Details Available.</TextValue>
                       </CenteredValueContainer>
                       <ProceedButton style={{ width: "fit-content" }} onClick={AddAccount}>
                     Add Bank Details

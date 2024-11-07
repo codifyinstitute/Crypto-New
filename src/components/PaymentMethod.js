@@ -11,6 +11,8 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useSelector } from "react-redux";
 import axios from "axios";
+import nobankdetails from "./../assets/no-bank-building-icon-with-textured-only-for-girls-vector-27765593-removebg-preview.png";
+
 
 // Styled components
 const PageContainer = styled.div`
@@ -71,8 +73,13 @@ const Left = styled.div`
 const Tab = styled.div`
   padding: 0.5rem 0;
   color: #f7a600;
-  font-size: 25px;
+  font-size: 20px;
   font-weight: 700;
+
+   @media (max-width: 320px) {
+  font-size: 18px;
+  
+  }
 `;
 
 const PaymentOption = styled.div`
@@ -196,12 +203,52 @@ const CardTitle = styled.h4`
 
 const Crosss = styled.p`
   display: flex;
+  padding : 1.5px;
   width: 100%;
   justify-content: space-between;
   @media (max-Width:480px){
     font-size: 14px;
   }
 `;
+
+
+const NoHistoryContainer = styled.div`
+  display: flex;
+  margin-top : 85px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; // Center the entire container
+`;
+
+const IconContainer = styled.div`
+  display: flex;
+  justify-content: center; // Center the icon horizontally
+  align-items: center; // Center the icon vertically
+  height: 20%; // Full height to center vertically in the viewport
+`;
+
+const CenteredValueContainer = styled.div`
+  display: flex;
+  justify-content: center; // Center horizontally
+  align-items: center; // Center vertically
+   margin-top: 10px; 
+`;
+
+const TextValue = styled.div`
+  font-size: 16px; // Font size for the text
+  color: black; // Text color
+  font-weight : 600;
+  text-align: center; // Center align the text
+  margin-top: 55px; // Additional margin for consistency
+`;
+
+const LoadingText = styled.div`
+  font-size: 18px;
+  color: #ffa500;
+  font-weight: bold;
+  margin-top: 20px;
+`;
+
 
 const countryObject = {
   India: {
@@ -242,6 +289,7 @@ const PaymentMethod = () => {
   const [accounts, setAccounts] = useState([]);
   const [form, setForm] = useState(true);
   const [selectedOption, setSelectedOption] = useState(null); // State to track the selected payment option
+  const [loading, setLoading] = useState(true); 
 
   const handleOptionClick = (option) => {
     setSelectedOption(option); // Set the selected option
@@ -276,15 +324,20 @@ const PaymentMethod = () => {
   };
 
   useEffect(() => {
+    setLoading(true);
     const email = localStorage.getItem("token");
     axios
       .get(`https://crypto-backend-main.onrender.com/account-details/${countryObject[selectedCountry].urlName}/${email}`)
       .then((response) => {
         console.log(response.data)
         setAccounts(response.data);
+      setLoading(false); // Stop loading
+
       })
       .catch((error) => {
         console.error("Error fetching Accounts:", error);
+      setLoading(false); // Stop loading on error
+
       });
   }, [selectedCountry])
 
@@ -366,29 +419,91 @@ const PaymentMethod = () => {
               <ProceedButton onClick={handleProceedClick} disabled={!selectedOption}>
                 Proceed
               </ProceedButton>
-            </>) : (<>
+            </>) : 
+              loading ? (
+              <LoadingText>Loading...</LoadingText>
+            ) 
+            :
+            (<>
               <CardsSection>
                 {accounts.length > 0 ? accounts.map((account, index) => (
                   <Card
                     key={index}
                     onClick={() => handleCardClick(account)}
                   >
-                    <CardTitle><span>Bank Name</span> <span>{account.BankName}</span></CardTitle>
+                    <Crosss><strong>Bank Name</strong> <span>{account.BankName}</span></Crosss>
                     <Crosss>
                       <strong>Account Number:</strong> {account.AccountNo}
                     </Crosss>
-                     <Crosss>
+                     {/* <Crosss>
                       <strong>IFSC:</strong> {account.IFSC}
-                    </Crosss> 
+                    </Crosss>  */}
+
+{selectedCountry === "USA" && (
+                    <>
+                          <Crosss><strong>ABA Code:</strong>{account.ABACode}</Crosss>
+                    </>
+                  )}
+
+
+                  {selectedCountry === "Brazil" && (
+                    <>
+                          <Crosss><strong>Bank Branch Code:</strong>{account.BranchCode}</Crosss>
+                    </>
+                  )}
+
+                  {selectedCountry === "UK" && (
+                        <>
+                          <Crosss><strong>Sort Code:</strong>{account.SortCode}</Crosss>
+                        </>
+                  )}
+
+                  {selectedCountry === "Euro" && (
+                    <>
+                          <Crosss><strong>ABA Code:</strong>{account.ABACode}</Crosss>
+                    </>
+                  )}
+
+                  {selectedCountry === "Dubai" && (
+                    <>
+                          <Crosss><strong>IBAN:</strong>{account.IBAN}</Crosss>
+                    </>
+                  )}
+
+                  {selectedCountry === "India" && (
+                    <>
+                          <Crosss><strong>IFSC:</strong>{account.IFSC}</Crosss>                       
+                    </>
+                  )}
+
                   </Card>
-                )) : <>
-                  <OptionTitle>No Bank Details is Added</OptionTitle>
-                  <ProceedButton style={{ width: "fit-content" }} onClick={() => navigate('/bank-transfer')}>
-                    Add Bank Details
-                  </ProceedButton>
-                </>}
+                )) :   (
+                  <NoHistoryContainer>
+                    <IconContainer>
+                      <img
+                        src={nobankdetails}
+                        alt="Empty Icon"
+                        style={{
+                          height: "100px",
+                          width: "100px",
+                          backgroundColor: "#f0f0f0",
+                          padding: "10px",
+                          borderRadius: "20px",
+                          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
+                        }}
+                      />
+                    </IconContainer>
+                    <CenteredValueContainer>
+                      <TextValue>No Bank Details Available.</TextValue>
+                    </CenteredValueContainer>
+                    <ProceedButton style={{ width: "fit-content" }} onClick={() => navigate('/bank-transfer')}>
+  Add Bank Details
+</ProceedButton>
+                  </NoHistoryContainer>
+                )}
               </CardsSection>
-            </>)}
+            </>
+            )}
 
           </FormContainer>
         </FormWrapper>
@@ -401,3 +516,40 @@ const PaymentMethod = () => {
 
 export default PaymentMethod;
 
+
+
+
+// :   (
+//   <NoHistoryContainer>
+//     <IconContainer>
+//       <img
+//         src={nobankdetails}
+//         alt="Empty Icon"
+//         style={{
+//           height: "100px",
+//           width: "100px",
+//           backgroundColor: "#f0f0f0",
+//           padding: "10px",
+//           borderRadius: "20px",
+//           boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
+//         }}
+//       />
+//     </IconContainer>
+//     <CenteredValueContainer>
+//       <TextValue>No Card Details Available.</TextValue>
+//     </CenteredValueContainer>
+//     <ProceedButton style={{ width: "fit-content" }} onClick={AddAccount}>
+//   Add Bank Details
+// </ProceedButton>
+//   </NoHistoryContainer>
+// )}
+
+
+
+{/* <>
+<OptionTitle>No Bank Details is Added</OptionTitle>
+<ProceedButton style={{ width: "fit-content" }} onClick={() => navigate('/bank-transfer')}>
+  Add Bank Details
+</ProceedButton>
+</>}
+</CardsSection> */}

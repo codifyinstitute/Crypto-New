@@ -57,7 +57,7 @@ const Tab = styled.div`
   border-bottom: 2px solid orange;
   cursor: pointer;
   font-weight:700 ;
-  font-size: 25px;
+  font-size: 22px;
 `;
 
 const Logo = styled.img`
@@ -75,7 +75,7 @@ const Subtitle = styled.h2`
 `;
 
 const Label = styled.label`
-  font-size: 18px;
+  font-size: 16px;
 `;
 
 const Input = styled.input`

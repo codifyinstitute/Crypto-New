@@ -696,6 +696,10 @@ const AccountInfo = styled.div`
   width: 100%;
   flex-direction: column;
   flex: 1;
+
+  @media (max-width: 430px) {
+    margin-top: -35px;
+  }
 `;
 
 const AccountName = styled.span`
@@ -924,7 +928,7 @@ useEffect(() => {
   fetchAccounts();
 }, [selectedCountry]);
 
-
+console.log("bank",accounts);
 const handleDelete = async (id) => {
   setLoading(true);
   try {
@@ -967,8 +971,8 @@ const handleDelete = async (id) => {
                 src={nobankdetails}
                 alt="Empty Icon"
                 style={{
-                  height: "100px",
-                  width: "100px",
+                  height: "120px",
+                  width: "120px",
                   backgroundColor: "#f0f0f0",
                   padding: "10px",
                   borderRadius: "20px",
@@ -1346,7 +1350,7 @@ const handleDelete = async (id) => {
                   </AccountName>
                   <AccountDetails>
                     <Maincol>
-                      <Col1><Label>Account Name:</Label></Col1>
+                      <Col1><Label> A/C Holder Name:</Label></Col1>
                       <Col2>{account.FirstName} {account.LastName}</Col2>
                     </Maincol>
                   </AccountDetails>
@@ -1360,24 +1364,24 @@ const handleDelete = async (id) => {
                   {/* Conditional rendering based on country */}
                   {selectedCountry === "USA" && (
                     <>
-                      <AccountDetails>
+                      {/* <AccountDetails>
                         <Maincol>
                           <Col1><Label>City:</Label></Col1>
                           <Col2>{account.City}</Col2>
                         </Maincol>
-                      </AccountDetails>
-                      <AccountDetails>
+                      </AccountDetails> */}
+                      {/* <AccountDetails>
                         <Maincol>
                           <Col1><Label>State:</Label></Col1>
                           <Col2>{account.State}</Col2>
                         </Maincol>
-                      </AccountDetails>
-                      <AccountDetails>
+                      </AccountDetails> */}
+                      {/* <AccountDetails>
                         <Maincol>
                           <Col1><Label>Zip Code:</Label></Col1>
                           <Col2>{account.ZipCode}</Col2>
                         </Maincol>
-                      </AccountDetails>
+                      </AccountDetails> */}
                       <AccountDetails>
                         <Maincol>
                           <Col1><Label>Account Type:</Label></Col1>
@@ -1401,22 +1405,22 @@ const handleDelete = async (id) => {
                           <Col2>{account.AccountType}</Col2>
                         </Maincol>
                       </AccountDetails>
-                      <AccountDetails>
+                      {/* <AccountDetails>
                         <Maincol>
                           <Col1><Label>ID Type:</Label></Col1>
                           <Col2>{account.IDType}</Col2>
                         </Maincol>
-                      </AccountDetails>
-                      <AccountDetails>
+                      </AccountDetails> */}
+                      {/* <AccountDetails>
                         <Maincol>
                           <Col1><Label>ID Number:</Label></Col1>
                           <Col2>{account.IDNumber}</Col2>
                         </Maincol>
-                      </AccountDetails>
+                      </AccountDetails> */}
                       <AccountDetails>
                         <Maincol>
                           <Col1><Label>Bank Branch Code:</Label></Col1>
-                          <Col2>{account.BankBranchCode}</Col2>
+                          <Col2>{account.BranchCode}</Col2>
                         </Maincol>
                       </AccountDetails>
                     </>
@@ -1430,12 +1434,12 @@ const handleDelete = async (id) => {
                           <Col2>{account.SortCode}</Col2>
                         </Maincol>
                       </AccountDetails>
-                      <AccountDetails>
+                      {/* <AccountDetails>
                         <Maincol>
                           <Col1><Label>Address:</Label></Col1>
                           <Col2>{account.Address}</Col2>
                         </Maincol>
-                      </AccountDetails>
+                      </AccountDetails> */}
                     </>
                   )}
 

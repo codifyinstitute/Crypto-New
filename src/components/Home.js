@@ -571,7 +571,7 @@ const Title = styled.h1`
 `;
 
 const Subtitle = styled.p`
-  font-size: 1 em;
+  font-size: 0.8 em;
   color: white;
   margin-bottom: 2rem;
   width: 80%;

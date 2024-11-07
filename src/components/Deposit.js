@@ -1179,7 +1179,7 @@ const Deposit = () => {
           <div>
 
             <TabContainer>
-              <BackButton onClick={handleBackClick}>
+              <BackButton onClick={() => window.history.back()}>
                 <ChevronLeft />
               </BackButton>
               {/* <Tab active> USDT Deposit </Tab> */}

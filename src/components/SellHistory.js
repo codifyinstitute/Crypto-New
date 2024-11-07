@@ -14,6 +14,8 @@ const Container = styled.div`
   background-color: #121212;
   min-height: 100vh;
   padding: 20px;
+  overflow: auto;
+  scrollbar-width: none; 
   color: white;
   font-family: Arial, sans-serif;
   display: flex;
@@ -76,6 +78,7 @@ const Tab = styled.button`
 const TransactionList = styled.div`
   width: 100%;
   max-width: 600px;
+  min-height :100vh;
 `;
 
 const TransactionCard = styled.div`

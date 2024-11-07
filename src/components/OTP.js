@@ -51,12 +51,11 @@ const Title = styled.h1`
 `;
 
 const Logo = styled.div`
-  display: inline-block; /* Ensure it's aligned with the text */
-  vertical-align: middle; /* Align vertically with the text */
-  width: 25%; /* Adjust the size of the logo */
-  margin-left: 40px; 
+ display: flex;
+  justify-content: center; /* Centers the logo horizontally */
+  align-items: center; /* Centers vertically if needed */
+  width: 100%;
   margin-bottom: 20px;
-  width: 70%;
 `;
 
 const Subtitle = styled.h2`
@@ -149,7 +148,7 @@ const Tab = styled.div`
   color: orange;
   border-bottom: 2px solid orange;
   cursor: pointer;
-  font-size: 25px;
+  font-size: 22px;
   font-weight: 700;
 `;
 
