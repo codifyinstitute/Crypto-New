@@ -263,10 +263,10 @@ const countryObject = {
     symbol: "€",
     name: "European Union"
   },
-  Dubai: {
+  UAE: {
     urlName: "aed",
     symbol: "د.إ",
-    name: "Dubai"
+    name: "UAE"
   },
   USA: {
     urlName: "usa",
@@ -287,7 +287,7 @@ const Sell4 = () => {
   const [currencyRate, setCurrencyRate] = useState(0);
   const [coinName, setCoinName] = useState("");
   const [orderId, setOrderId] = useState(0);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
@@ -366,8 +366,6 @@ const Sell4 = () => {
       }
     } catch (error) {
       setError("Error fetching currency data");
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -375,7 +373,7 @@ const Sell4 = () => {
     if (localData.symbol) {
       fetchCurrencyData();
     }
-  }, [localData.symbol,selectedCountry]);
+  }, [localData.symbol, selectedCountry]);
 
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem("transactionDetails"));
@@ -405,11 +403,12 @@ const Sell4 = () => {
   };
 
   const handleProceedClick = () => {
-      setShowConfirmation(true);
+    setShowConfirmation(true);
   };
 
   const confirmTransaction = async () => {
     setShowConfirmation(false);
+    setLoading(true)
     try {
       const response = await fetch("https://crypto-backend-main.onrender.com/transactions/add", {
         method: "POST",
@@ -419,7 +418,7 @@ const Sell4 = () => {
         body: JSON.stringify({
           Email: localStorage.getItem("token"),
           Country: selectedCountry,
-          AccountDetail:localData.AccountDetail,
+          AccountDetail: localData.AccountDetail,
           USDTAmount: localData.amountPay,
           Token: localData.symbol,
           ProcessingFee: transactionFee,
@@ -438,6 +437,8 @@ const Sell4 = () => {
       navigate("/sell5", { state: { data: result.transaction } });
     } catch (error) {
       alert("Error submitting transaction: " + error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -496,7 +497,7 @@ const Sell4 = () => {
               </BackButton>
               <Tab active>Sell USDT</Tab>
             </TabContainer>
-            <div style={{display:"flex",flexDirection:"column", justifyContent:"space-between",height:"100%"}}>
+            <div style={{ display: "flex", flexDirection: "column", justifyContent: "space-between", height: "100%" }}>
               <div>
                 <div>
                   <InfoRow>
@@ -649,11 +650,12 @@ const Sell4 = () => {
             <hr /> */}
                 <Heading style={{ marginTop: "15px" }}>What Happens Next?</Heading>
                 <Text>
-                After selling your USDT, the fiat amount will be deposited into your selected account within 2 hours
+                  After selling your USDT, the fiat amount will be deposited into your selected account within 2 hours
                 </Text>
               </div>
               <Button onClick={handleProceedClick}>
-                Complete Order
+                {loading ? <div style={{ display: "flex", justifyContent: "center" }}><div class="loader"></div></div> : "Confirm Order"}
+
               </Button>
             </div>
           </Card>

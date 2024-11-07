@@ -549,10 +549,10 @@ const countryObject = {
     symbol: "€",
     name: "European Union"
   },
-  Dubai: {
+  UAE: {
     urlName: "aed",
     symbol: "د.إ",
-    name: "Dubai"
+    name: "UAE"
   },
   USA: {
     urlName: "usa",
@@ -883,7 +883,7 @@ const countrySchemas = {
       .required("Sort code is required"),
   }),
 
-  Dubai: Yup.object().shape({
+  UAE: Yup.object().shape({
     ...baseSchema,
     accountOpeningBranch: Yup.string().required("Account opening branch is required"),
     iban: Yup.string().required("IBAN is required"),
@@ -1036,7 +1036,7 @@ const handleDelete = async (id) => {
                 } else if (selectedCountry === "Euro") {
                   submissionData.ABACode = values.abaCode;
                   submissionData.SwiftCode = values.swiftCode;
-                } else if (selectedCountry === "Dubai") {
+                } else if (selectedCountry === "UAE") {
                   submissionData.OpeningBranch = values.accountOpeningBranch;
                   submissionData.IBAN = values.iban;
                 } else if (selectedCountry === "India") {
@@ -1285,7 +1285,7 @@ const handleDelete = async (id) => {
                           </>
                         )}
 
-                        {selectedCountry === "Dubai" && (
+                        {selectedCountry === "UAE" && (
                           <>
                             <FormLabel>Account Opening Branch</FormLabel>
                             <FormInput

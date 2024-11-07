@@ -558,10 +558,10 @@ const countryObject = {
     symbol: "€",
     name: "European Union"
   },
-  Dubai: {
+  UAE: {
     urlName: "aed",
     symbol: "د.إ",
-    name: "Dubai"
+    name: "UAE"
   },
   USA: {
     urlName: "usa",
@@ -582,7 +582,7 @@ const Depposit1 = () => {
   const [currencyRate, setCurrencyRate] = useState(0);
   const [coinName, setCoinName] = useState("");
   const [orderId, setOrderId] = useState(0);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
@@ -737,8 +737,6 @@ const Depposit1 = () => {
       }
     } catch (error) {
       setError("Error fetching currency data");
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -847,6 +845,7 @@ const Depposit1 = () => {
 
   const confirmTransaction = async () => {
     setShowConfirmation(false);
+    setLoading(true);
     const currentDate = new Date();
     const formattedDate = currentDate.toLocaleDateString();
     const formattedTime = currentDate.toLocaleTimeString();
@@ -890,6 +889,8 @@ const Depposit1 = () => {
       navigate("/sell6", { state: { data: result } });
     } catch (error) {
       alert("Error submitting transaction: " + error.message);
+    } finally {
+        setLoading(false)
     }
   };
 
@@ -959,6 +960,7 @@ const Depposit1 = () => {
   const handleBepClick = () => {
     setSelectNetwork('BEP20');
   };
+
 
   return (
     <>
@@ -1042,57 +1044,57 @@ const Depposit1 = () => {
               <Value>{timeLeft}</Value>
             </InfoRow> */}
 
-<InfoRow style={{ textAlign: "center" }}>
-<Label1 style={{ fontWeight: 700, fontSize: '14px', marginBottom: '10px', color: '#333' }}>
-  Time Remaining
-</Label1>
-        <TimerContainer>
-          {timeLeft.split(':').map((time, index) => (
-            <TimerCard key={index}>
-              <TimerValue>{time}</TimerValue>
-              <TimerLabel>{['Hours', 'Minutes', 'Seconds'][index]}</TimerLabel>
-            </TimerCard>
-          ))}
-        </TimerContainer>
-      </InfoRow>
+            <InfoRow style={{ textAlign: "center" }}>
+              <Label1 style={{ fontWeight: 700, fontSize: '14px', marginBottom: '10px', color: '#333' }}>
+                Time Remaining
+              </Label1>
+              <TimerContainer>
+                {timeLeft.split(':').map((time, index) => (
+                  <TimerCard key={index}>
+                    <TimerValue>{time}</TimerValue>
+                    <TimerLabel>{['Hours', 'Minutes', 'Seconds'][index]}</TimerLabel>
+                  </TimerCard>
+                ))}
+              </TimerContainer>
+            </InfoRow>
 
             {/* Timer ended */}
             <InfoRow
-  style={{
-    display: "flex",
-    alignItems: "center",
-    flexWrap: "nowrap",
-    marginTop: "15px",
-    width: "100%", // Ensures it fits within the container
-    paddingRight: "10px", // Adds a buffer to the right side
-    boxSizing: "border-box",
-  }}
->
-  <Label>TxID:</Label>
-  <input
-    style={{
-      padding: "5px",
-      margin: "0 5px",
-      fontSize: "16px",
-      flexGrow: 1,
-      maxWidth: "65%", // Adjusts to keep both elements visible
-      border: "black solid 1px",
-      borderRadius: "5px",
-      boxSizing: "border-box",
-    }}
-    type="text"
-    value={transaction}
-    onChange={handleTransactionChange}
-    disabled={submited}
-  />
-  {submited ? (
-    <SubmitButton onClick={editId}>Edit</SubmitButton>
-  ) : (
-    <SubmitButton onClick={submitTrans} disabled={isSubmitDisabled}>
-      Submit
-    </SubmitButton>
-  )}
-</InfoRow>
+              style={{
+                display: "flex",
+                alignItems: "center",
+                flexWrap: "nowrap",
+                marginTop: "15px",
+                width: "100%", // Ensures it fits within the container
+                paddingRight: "10px", // Adds a buffer to the right side
+                boxSizing: "border-box",
+              }}
+            >
+              <Label>TxID:</Label>
+              <input
+                style={{
+                  padding: "5px",
+                  margin: "0 5px",
+                  fontSize: "16px",
+                  flexGrow: 1,
+                  maxWidth: "65%", // Adjusts to keep both elements visible
+                  border: "black solid 1px",
+                  borderRadius: "5px",
+                  boxSizing: "border-box",
+                }}
+                type="text"
+                value={transaction}
+                onChange={handleTransactionChange}
+                disabled={submited}
+              />
+              {submited ? (
+                <SubmitButton onClick={editId}>Edit</SubmitButton>
+              ) : (
+                <SubmitButton onClick={submitTrans} disabled={isSubmitDisabled}>
+                  Submit
+                </SubmitButton>
+              )}
+            </InfoRow>
 
             {showSubmitAnimation && (
               <SubmitAnimation>TxID submitted successfully!</SubmitAnimation>
@@ -1119,51 +1121,51 @@ const Depposit1 = () => {
                     </span>
                   </DepositAmountvalues2>
                 </DepositAmountvalues> */}
-                  <Balance>
-      <p>
-        <span style={{
-          // backgroundColor: "#d3d3d3",
-          paddingTop: "5px",
-          paddingRight: "2px",
-          borderRadius: "4px 0px 0px 4px"
-        }}>
-          <img src={usdtimg} alt="coin" />
-        </span>
-        <span style={{
-          // marginLeft: "8px",
-          marginRight: "8px", 
-          fontSize: "16px",
-          // paddingLeft : "10px",
-          fontWeight : "700",
-          minWidth: "40px", // Set a minimum width
-          width: "auto", // Allow the width to grow as needed
-          display: "inline-block" // Ensure it behaves like a block element
-        }}>
-          {amount}
-          <span> USDT</span>
-        </span>
-      </p>
-    </Balance>
+                <Balance>
+                  <p>
+                    <span style={{
+                      // backgroundColor: "#d3d3d3",
+                      paddingTop: "5px",
+                      paddingRight: "2px",
+                      borderRadius: "4px 0px 0px 4px"
+                    }}>
+                      <img src={usdtimg} alt="coin" />
+                    </span>
+                    <span style={{
+                      // marginLeft: "8px",
+                      marginRight: "8px",
+                      fontSize: "16px",
+                      // paddingLeft : "10px",
+                      fontWeight: "700",
+                      minWidth: "40px", // Set a minimum width
+                      width: "auto", // Allow the width to grow as needed
+                      display: "inline-block" // Ensure it behaves like a block element
+                    }}>
+                      {amount}
+                      <span> USDT</span>
+                    </span>
+                  </p>
+                </Balance>
               </DepositAmountWrapper>
 
 
 
               <DepositNetworkWrapper>
-                  <Check
-    strokeWidth={3}
-    style={{
-      position: "absolute",
-      bottom: "15px",
-      right: "5px",
-      backgroundColor: "#FFF176",
-      
-      borderRadius: "50%",
-      padding: "2px",
-      color: "#000000",
-      width: "16px",
-      height: "16px"
-    }}
-  />
+                <Check
+                  strokeWidth={3}
+                  style={{
+                    position: "absolute",
+                    bottom: "15px",
+                    right: "5px",
+                    backgroundColor: "#FFF176",
+
+                    borderRadius: "50%",
+                    padding: "2px",
+                    color: "#000000",
+                    width: "16px",
+                    height: "16px"
+                  }}
+                />
                 <DepositNetworkHeading>
                   Deposit Network
                 </DepositNetworkHeading>
@@ -1206,7 +1208,7 @@ const Depposit1 = () => {
 
 
             <Button onClick={handleProceedClick} disabled={!submited}>
-              Deposit Sent
+            {loading?<div style={{display:"flex", justifyContent:"center"}}><div class="loader"></div></div>:"Deposit Sent"}
             </Button>
           </Card>
         </Center>

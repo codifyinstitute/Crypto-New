@@ -22,6 +22,7 @@ const WithdrawUSDT = () => {
   const [walletAddress, setWalletAddress] = useState('');
   const [withdrawAmount, setWithdrawAmount] = useState('');
   const [isFormValid, setIsFormValid] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [addressError, setAddressError] = useState('');
   const [amountError, setAmountError] = useState('');
   const [networkFee, setNetworkFee] = useState(0);
@@ -165,6 +166,7 @@ const WithdrawUSDT = () => {
 
   const handleConfirmClick = async () => {
     // console.log(50)
+    setLoading(true);
     if (isFormValid) {
       const currentDate = new Date();
       const formattedDate = currentDate.toLocaleDateString();
@@ -205,6 +207,8 @@ const WithdrawUSDT = () => {
         navigate("/sell7", { state: { data: result } });
       } catch (error) {
         alert("Error submitting transaction: " + error.message);
+      }finally{
+        setLoading(false)
       }
     } else {
       toast.error("Please fill in all fields correctly.");
@@ -401,7 +405,7 @@ const WithdrawUSDT = () => {
 
           </CurrencyRow>
           <ProceedButton onClick={handleConfirmClick} disabled={!isFormValid}>
-            Confirm
+            {loading?<div style={{display:"flex", justifyContent:"center"}}><div class="loader"></div></div>:"Confirm"}
           </ProceedButton>
         </ExchangeCard>
       </TradingEnvironment>

@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
-import { useLocation,useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
 import { AlertCircle, ChevronRight } from "lucide-react";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import { ChevronLeft } from "lucide-react";
 import HomeContact from "./HomeContact";
+import { useSelector } from "react-redux";
 
 const Main = styled.div`
   display: flex;
@@ -270,7 +271,42 @@ const SuccessMessage = styled.div`
   } 
 `;
 
+
+const countryObject = {
+  India: {
+    urlName: "india",
+    symbol: "₹",
+    name: "India"
+  },
+  Brazil: {
+    urlName: "brl",
+    symbol: "R$",
+    name: "Brazil"
+  },
+  UK: {
+    urlName: "uk",
+    symbol: "£",
+    name: "United Kingdom"
+  },
+  Euro: {
+    urlName: "euro",
+    symbol: "€",
+    name: "European Union"
+  },
+  UAE: {
+    urlName: "aed",
+    symbol: "د.إ",
+    name: "UAE"
+  },
+  USA: {
+    urlName: "usa",
+    symbol: "$",
+    name: "United States of America"
+  }
+}
+
 const Sell5 = () => {
+  const selectedCountry = useSelector((state) => state.country.value);
   const location = useLocation();
   const navigate = useNavigate();
   const starCount = 12;
@@ -320,7 +356,7 @@ const Sell5 = () => {
                 <path d="M5 13l4 4L19 7" />
               </CheckMark>
             </SuccessCenter>
-            <SuccessMessage>{}</SuccessMessage>
+            <SuccessMessage>{ }</SuccessMessage>
           </SuccessContainer>
 
           <Timeline>
@@ -349,20 +385,20 @@ const Sell5 = () => {
               Transaction Details
             </InfoTitle>
             <InfoText>
-              <span style={{fontWeight:"bold"}}>Order ID :</span> <span>{location.state?.data?.OrderId}</span>
+              <span style={{ fontWeight: "bold" }}>Order ID :</span> <span>{location.state?.data?.OrderId}</span>
             </InfoText>
             <InfoText>
-              <span style={{fontWeight:"bold"}}>You Sold :</span> <span>{location.state?.data?.USDTAmount} USDT</span>
+              <span style={{ fontWeight: "bold" }}>You Sold :</span> <span>{location.state?.data?.USDTAmount} USDT</span>
             </InfoText>
             <InfoText>
-              <span style={{fontWeight:"bold"}}>You Recieve :</span> <span>₹{location.state?.data?.ReceivedAmount}</span>
+              <span style={{ fontWeight: "bold" }}>You Recieve :</span> <span>{countryObject[selectedCountry].symbol} {location.state?.data?.ReceivedAmount}</span>
             </InfoText>
             <InfoText>
-              <span style={{fontWeight:"bold"}}>Status :</span> <span>{location.state?.data?.Status}</span>
+              <span style={{ fontWeight: "bold" }}>Status :</span> <span>{location.state?.data?.Status}</span>
             </InfoText>
           </InfoBox>
 
-          <Button onClick={()=>navigate('/sellhistory')}>
+          <Button onClick={() => navigate('/sellhistory')}>
             Transaction Status
             <ChevronRight size={24} />
           </Button>
