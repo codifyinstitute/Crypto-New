@@ -81,17 +81,17 @@ const Tab = styled.div`
   color: orange;
   border-bottom: 2px solid orange;
   cursor: pointer;
-  font-size: 25px;
+  font-size: 22px;
   font-weight: 700;
   display: inline-block;
   text-align: left;
 
   @media (max-width: 480px) {
-    font-size: 25px; // Adjust font size for smaller screens
+    font-size: 22px; // Adjust font size for smaller screens
   }
 
   @media (max-width: 320px) {
-    font-size: 25px; // Further adjust for very small screens
+    font-size: 22px; // Further adjust for very small screens
   }
 `;
 const InputLabel = styled.div`

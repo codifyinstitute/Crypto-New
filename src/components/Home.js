@@ -495,13 +495,28 @@ const Home = () => {
                   </>
                 )}
               </OrderSummary>
-              {inSufficientBalance?
-              <ProceedButton style={{backgroundColor:"#e1dcdc"}} onClick={()=>navigate('/deposit')}>
-              Add USDT to Wallet 
-            </ProceedButton>
-              :<ProceedButton onClick={handleSellNowClick}>
-                Proceed · Sell {selectedCurrency?.Name} <ChevronRight />
-              </ProceedButton>}
+              {inSufficientBalance ? (
+  <ProceedButton
+    style={{ backgroundColor: "#e1dcdc" }}
+    onClick={() => navigate('/deposit')}
+  >
+    Add USDT to Wallet
+  </ProceedButton>
+) : !isValid ? (
+  <ProceedButton
+    style={{ backgroundColor: "#e1dcdc" }}
+    onClick={handleSellNowClick}
+  >
+    Proceed · Sell 
+  </ProceedButton>
+) : (
+  <ProceedButton
+    style={{ backgroundColor: "orange" }} // Yellow color
+    onClick={handleSellNowClick}
+  >
+    Proceed · Sell {selectedCurrency?.Name} <ChevronRight />
+  </ProceedButton>
+)}
               
               <PaymentMethods>
               <PaymentIcon />
@@ -672,7 +687,7 @@ const Tab = styled.div`
 `;
 
 const InputLabel = styled.div`
-  font-size: 16px;
+  font-size: 14px;
   color: #888;
 `;
 
@@ -689,7 +704,7 @@ const InputWrapper = styled.div`
   background-color: #f8f9fa;
   border-radius: 0.5rem;
   border: 1px solid ${(props) => (props.isInvalid ? "red" : "#e0e0e0")};
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 0.5rem;
 `;
 
 const Input = styled.input`
@@ -697,7 +712,7 @@ const Input = styled.input`
   border: 2px solid transparent;
   background-color: transparent;
   color: #333;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   font-weight: bold;
   width: 20%;
   transition: border-color 0.3s ease;
@@ -714,9 +729,9 @@ const CurrencyToggle = styled.div`
   background-color: #e1dcdc;
   color: black;
   height: 3.2rem;
-  padding: 5px 15px;
+  padding: 1px 10px;
   border-radius: 16px;
-  width : 8.8rem;
+  width : 7.8rem;
 `;
 
 const Rocks = styled.div`

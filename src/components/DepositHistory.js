@@ -54,11 +54,11 @@ const Tab = styled.div`
   text-align: left;
 
    @media (max-width: 480px) {
-    font-size: 25px; // Adjust font size for smaller screens
+    font-size: 22px; // Adjust font size for smaller screens
   }
 
   @media (max-width: 320px) {
-    font-size: 25px; // Further adjust for very small screens
+    font-size: 22px; // Further adjust for very small screens
   }
 
   &:hover {
@@ -347,7 +347,7 @@ const DepositHistory = () => {
                   </InfoRow>
                   <InfoRow>
                     <Label>Date & Time:</Label>
-                    <Value>{data.Date} {data.Time}</Value>
+                    <Value style={{ fontSize: '0.85em' }}>{data.Date} {data.Time}</Value>
                   </InfoRow>
                   <InfoRow>
                     <Label>Amount:</Label>

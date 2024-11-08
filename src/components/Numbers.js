@@ -15,10 +15,10 @@ import image9 from "../assets/Item-9.png";
 import image10 from "../assets/Item-10.png";
 import image11 from "../assets/Item-11.png";
 import image12 from "../assets/Item-12.png";
-import currancy1 from "../assets/imagecurrancy1.png";
-import currancy2 from "../assets/imagecurrancy2.png";
-import currancy3 from "../assets/imagecurrancy3.png";
-import currancy4 from "../assets/imagecurrancy4.png";
+import currancy1 from "../assets/country-final1.png";
+import currancy2 from "../assets/fiat-final.png";
+import currancy3 from "../assets/bg-3.png";
+import currancy4 from "../assets/bg-4.png";
 
 const DashboardContainer = styled.div`
   background: linear-gradient(to right, #1a202c, #2d3748, #4a5568);

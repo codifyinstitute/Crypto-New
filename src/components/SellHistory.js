@@ -8,28 +8,44 @@ import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import view from "../assets/Add_a_little_bit_of_body_text__43_-removebg-preview.png";
+import countryImage from "../assets/country.png";
+
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #121212;
+`;
 
 // Styled Components
 const Container = styled.div`
   background-color: #121212;
   min-height: 100vh;
-  padding: 20px;
+  padding: 100px 20px 20px 20px; // Top padding for larger screens
   overflow: auto;
-  scrollbar-width: none; 
   color: white;
   font-family: Arial, sans-serif;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 100px;
-  @media (max-width: 760px) {
-    padding-top: 80px;
+  
+  scrollbar-width: none; // Hide scrollbar on Firefox
+  -ms-overflow-style: none; // Hide scrollbar on IE and Edge
+  
+  // Webkit-based browsers (Chrome, Safari)
+  &::-webkit-scrollbar {
+    display: none; // Hide scrollbar on Webkit browsers
   }
+  
+  @media (max-width: 760px) {
+    padding-top: 80px; // Adjusted top padding for medium screens
+  }
+  
   @media (max-width: 430px) {
-    padding-top: 70px;
+    padding-top: 70px; // Adjusted top padding for smaller screens
   }
 `;
-
 const Title = styled.h1`
   font-size: 24px;
   margin-bottom: 20px;
@@ -76,9 +92,37 @@ const Tab = styled.button`
 `;
 
 const TransactionList = styled.div`
+  padding-bottom: 25px;
   width: 100%;
   max-width: 600px;
-  min-height :100vh;
+  max-height: 60vh; // Limit height to ensure it doesn’t overflow
+  min-height: 100vh;
+  overflow-y: auto; // Enable scrolling
+  background-color: #222; // Set dark background
+  
+  scrollbar-width: thin; // Firefox: Thin scrollbar width
+  scrollbar-color: #333 transparent; // Firefox: Dark scrollbar on transparent track
+  
+  -ms-overflow-style: none; // IE and Edge scrollbar hiding
+  
+  // Webkit-based browsers (Chrome, Safari)
+  &::-webkit-scrollbar {
+    width: 8px; // Show a thin scrollbar
+  }
+  &::-webkit-scrollbar-track {
+    background: #222; // Dark track background
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: #555; // Dark scrollbar color
+    border-radius: 10px;
+    border: 2px solid #222; // Border to blend with track
+  }
+  
+  @media (max-width: 768px) { // Hide scrollbar on mobile
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
 `;
 
 const TransactionCard = styled.div`
@@ -277,12 +321,12 @@ const SellHistory = () => {
           if (!response.ok) throw new Error("Failed to fetch transactions");
           const data = await response.json();
           const filData = data.filter(val => val.Country === selectedCountry)
-          // console.log(filData);
+          console.log( "data",data);
           setTransactions(filData.reverse());
         } catch (error) {
           toast.error(error.message);
         } finally {
-          setLoading(false);
+          setLoading(false);  
         }
       } else {
         toast.error("No email found in local storage");
@@ -293,15 +337,28 @@ const SellHistory = () => {
     fetchTransactions();
   }, [selectedCountry]);
 
+    console.log("tsx data",transactions);
   const handleIconClick = (accountDetail) => {
     setAccountDetails(accountDetail);
-    console.log(accountDetail)
+    console.log("accountdetails" ,accountDetail)
     setModalVisible(true);
   };
 
   const closeModal = () => {
     setModalVisible(false);
     setAccountDetails(null);
+  };
+
+  // Sorting for arrangement
+  const getOrderedAccountDetails = (accountDetails) => {
+    const orderedFields = ["FirstName", "LastName", "Email"];
+    const orderedEntries = Object.entries(accountDetails)
+      .sort((a, b) => {
+        const indexA = orderedFields.indexOf(a[0]);
+        const indexB = orderedFields.indexOf(b[0]);
+        return (indexA !== -1 ? indexA : orderedFields.length) - (indexB !== -1 ? indexB : orderedFields.length);
+      });
+    return orderedEntries;
   };
 
   if (loading)
@@ -314,6 +371,7 @@ const SellHistory = () => {
   return (
     <>
       <Navbar />
+      <Wrapper>
       <Container>
         <Title>
           <BackButton onClick={() => window.history.back()}>
@@ -402,30 +460,33 @@ const SellHistory = () => {
             ))}
         </TransactionList>
       </Container>
+      </Wrapper>
       {/* Modal for Account Details */}
       {modalVisible && (
-        <ModalBackground onClick={closeModal}>
-          <ModalContent onClick={(e) => e.stopPropagation()}>
-            <CloseButton onClick={closeModal}>&times;</CloseButton>
-            
-            <Table>
-              <thead>
-                <tr>
-                  <th colSpan="2">{Object.keys(accountDetails).includes("CardNumber")?"Card Details":"Bank Details"}</th>
-                </tr>
-              </thead>
-              <tbody>
-                {accountDetails && Object.entries(accountDetails).map(([key, value]) => (
-                  <tr key={key}>
-                    <td>{key}</td>
-                    <td>{value}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </Table>
-          </ModalContent>
-        </ModalBackground>
-      )}
+  <ModalBackground onClick={closeModal}>
+    <ModalContent onClick={(e) => e.stopPropagation()}>
+      <CloseButton onClick={closeModal}>&times;</CloseButton>
+      
+      <Table>
+        <thead>
+          <tr>
+            <th colSpan="2">
+              {Object.keys(accountDetails).includes("CardNumber") ? "Card Details" : "Bank Details"}
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {accountDetails && getOrderedAccountDetails(accountDetails).map(([key, value]) => (
+            <tr key={key}>
+              <td>{key}</td>
+              <td>{value}</td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
+    </ModalContent>
+  </ModalBackground>
+)}
       {/* <Footer /> */}
     </>
   );

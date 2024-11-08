@@ -296,6 +296,7 @@ const CardTransfer = () => {
       .then((response) => {
         setAccounts(response.data);
         setLoading(false); 
+        console.log("gettingdataviaemail",response.data)
       })
       .catch((error) => {
         console.error("Error fetching Accounts:", error);
@@ -331,11 +332,11 @@ const CardTransfer = () => {
       Email: email,
       ...values,
     };
-
+    console.log("Submitting Data:", submissionData); 
     const url = `https://crypto-backend-main.onrender.com/account-details/${countryObject[selectedCountry].urlName}/card/add`;
-
     try {
-      await axios.post(url, submissionData);
+     const response =  await axios.post(url, submissionData);
+    console.log("card Data",response.data);
       toast.success("Card information saved successfully!");
       resetForm();
     } catch (error) {
@@ -346,7 +347,6 @@ const CardTransfer = () => {
       setLoading(false);
     }
   };
-
   const AddAccount = () => {
     setForm(!form);
   };

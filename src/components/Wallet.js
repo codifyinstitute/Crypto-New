@@ -393,12 +393,24 @@ const Wallet = () => {
   }
 
   const dataEntries = [
-    "13:00 98***1233 sold for $388",
-    "13:02 88***1234 sold for $400",
-    "13:05 77***5678 sold for $290",
-    "13:08 66***6789 sold for $310",
-    "13:10 55***7890 sold for $450",
-    "13:12 44***8901 sold for $320"
+    // "13:00 98***1233 sold for $388",
+    // "13:02 88***1234 sold for $400",
+    // "13:05 77***5678 sold for $290",
+    // "13:08 66***6789 sold for $310",
+    // "13:10 55***7890 sold for $450",
+    // "13:12 44***8901 sold for $320"
+"ja*******@yahoo.com sold 150 USDT",
+"ma****@gmail.com sold 250 USDT",
+"se******@outlook.com sold 400 USDT",
+"di******@hotmail.com sold 300 USDT",
+"kh*******@gmail.com sold 200 USDT",
+"ar******@protonmail.com sold 500 USDT",
+"la******@icloud.com sold 350 USDT",
+"ri******@yahoo.com sold 600 USDT",
+"ts******@gmail.com sold 450 USDT",
+"pr******@mail.com sold 700 USDT",
+"bo******@aol.com sold 550 USDT",
+"ze******@live.com sold 800 USDT",
   ];
 
   const [index, setIndex] = useState(0);
@@ -551,7 +563,7 @@ const Wallet = () => {
                   fontSize: "19px",
                 }}
               />
-              <Text>{dataEntries[index]}</Text>
+              <Text style={{ fontSize: "14px", fontWeight : "600" }}>{dataEntries[index]}</Text>
             </Banner>
             {loading?null:<>
             <Part2>

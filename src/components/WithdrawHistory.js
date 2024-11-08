@@ -45,7 +45,7 @@ const Tab = styled.div`
   font-weight: 700;
 
   @media (max-width: 375px) {
-    font-size: 25px; // Reduce font size for smaller screens
+    font-size: 22px; // Reduce font size for smaller screens
   }
 `;
 
@@ -115,7 +115,8 @@ const Label = styled.span`
 
 const Value = styled.span`
   color: black;
-  font-weight: bold;
+  font-weight: 600;
+  font-size : 1rem;
 `;
 
 const DepositHistoryCard = styled.div`
@@ -421,7 +422,7 @@ const WithdrawHistory = () => {
                   </InfoRow>
                   <InfoRow>
                     <Label>Date & Time:</Label>
-                    <Value>{data.Date} {data.Time}</Value> {/* Combine Date and Time */}
+                    <Value style={{ fontSize: '0.88em' ,fontWeight :  "600"}}>{data.Date} {data.Time}</Value>
                   </InfoRow>
                   {/* <InfoRow>
                     <Label>Wallet Address:</Label>

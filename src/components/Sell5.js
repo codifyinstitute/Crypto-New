@@ -55,7 +55,7 @@ const Tab = styled.div`
   color: orange;
   border-bottom: 2px solid orange;
   cursor: pointer;
-  font-size: 25px;
+  font-size: 22px;
   font-weight: 700;
   text-align: left;
 `;

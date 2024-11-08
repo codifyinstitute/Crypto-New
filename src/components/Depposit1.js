@@ -1102,7 +1102,7 @@ const Depposit1 = () => {
             <TxidDisclaimerWrapper>
               <TxidDisclaimer>
 
-                Please ensure that TxId you have entered is correct
+                Please ensure that TxID you have entered is correct
               </TxidDisclaimer>
             </TxidDisclaimerWrapper>
 
@@ -1190,8 +1190,8 @@ const Depposit1 = () => {
             </CountDownWrapper> */}
 
             <InfoRow style={{ marginTop: "10px", textAlign: "center" }}>
-              <Label1>Created Time</Label1>
-              <Value>{createdTime}</Value>
+              <Label1 style={{ fontWeight: "600" }}>Date & Time</Label1>
+              <Value style={{ fontSize: "13px" ,fontWeight: "550"}}>{createdTime}</Value>
             </InfoRow>
 
             <div>

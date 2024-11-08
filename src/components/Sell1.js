@@ -108,13 +108,13 @@ const Input = styled.input`
   font-size: 1.5rem;
   font-weight: bold;
   width: 20%;
-
+  padding-left : 0.18rem;
   &:focus {
     outline: none;
   }
 
   @media (max-width: 480px) {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
   }
 `;
 
@@ -125,14 +125,15 @@ const CurrencyToggle = styled.div`
   background-color: #e1dcdc;
   /* padding: 9px; */
   color: black;
-  padding-left: 15px;
+  padding-left: 10px;
   padding-right: 15px;
   padding-top: 5px;
+  
   padding-bottom: 5px;
   border-radius: 16px;
-  width : 9.2rem;
-  height : 3.5rem;
-  gap : 5px;
+  width : 8rem;
+  height : 3rem;
+  // gap : 5px;
 `;
 
 const UpdateText = styled.div`
@@ -669,7 +670,7 @@ const InputWrapper = styled.div`
   background-color: #f8f9fa;
   border-radius: 0.5rem;
   border: 1px solid ${(props) => (props.isInvalid ? "red" : "#e0e0e0")};
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 0.3rem;
 `;
 
 const countryObject = {
@@ -1187,15 +1188,28 @@ const Sell1 = () => {
             </OrderSummary>
           </div>
           <div>
-            {inSufficientBalance ?
-              <ProceedButton style={{backgroundColor:"#e1dcdc"}} onClick={() => navigate('/deposit')}>
-                Add USDT to Wallet
-              </ProceedButton>
-              :
-              <ProceedButton onClick={handleSellNowClick} disabled={!isValid}>
-                Proceed · Sell {selectedCurrency?.Name} <ChevronRight />
-              </ProceedButton>
-            }
+          {inSufficientBalance ? (
+  <ProceedButton
+    style={{ backgroundColor: "#e1dcdc" }}
+    onClick={() => navigate('/deposit')}
+  >
+    Add USDT to Wallet
+  </ProceedButton>
+) : !isValid ? (
+  <ProceedButton
+    style={{ backgroundColor: "#e1dcdc" }}
+    onClick={handleSellNowClick}
+  >
+    Proceed · Sell 
+  </ProceedButton>
+) : (
+  <ProceedButton
+    style={{ backgroundColor: "orange" }} // Yellow color
+    onClick={handleSellNowClick}
+  >
+    Proceed · Sell {selectedCurrency?.Name} <ChevronRight />
+  </ProceedButton>
+)}
 
             <PaymentMethods>
               <PaymentIcon />
