@@ -218,11 +218,14 @@ const Sell2 = () => {
   const handleProceed = async () => {
     if (isFormValid) {
       setLoading(true);
+      const fullPhoneNumber = `+${countryCode}${phone}`;  
+      console.log("mnumber",fullPhoneNumber);
       try {
-        const response = await axios.post('https://crypto-backend-main.onrender.com/users/login', { Email: email, MobileNo: phone });
+        const response = await axios.post('https://crypto-backend-main.onrender.com/users/login', { Email: email, MobileNo: fullPhoneNumber });
         if (response.status === 200) {
-          navigate('/otp', { state: { email: email, phone: phone } });
+          navigate('/otp', { state: { email: email, phone: fullPhoneNumber } });
         }
+        console.log( "login data",response.data)
       } catch (error) {
         console.error("Error during login:", error);
         toast.error("Invalid email, phone number, or server error. Please try again.");
