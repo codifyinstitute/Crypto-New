@@ -26,7 +26,7 @@ const Title = styled.h1`
 
 const Para = styled.p`
   width: 100%;
-  text-align: center;
+  text-align: left;
   @media (max-width: 480px) {
   text-align: left;
 

@@ -42,7 +42,7 @@ const BackButton = styled.button`
 
 const Para = styled.p`
   width: 100%;
-  text-align: center;
+  text-align: left;
   color: white;
   @media (max-width: 480px) {
   text-align: left;
