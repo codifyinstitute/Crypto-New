@@ -715,7 +715,7 @@ const Navbar = () => {
       <NavbarWrapper>
         <NavLinksMobile>
           <li>
-            <NavLink exact to="/" activeClassName="active"><RiHome5Fill style={{ fontSize: "25px" }} /><br></br>
+            <NavLink exact to="/" activeClassName="active"><RiHome5Fill style={{ fontSize: "20px" }} /><br></br>
               Home
             </NavLink>
           </li>
@@ -725,7 +725,7 @@ const Navbar = () => {
               className={isExchangeActive ? "active" : ""}
               onClick={handleExchangeClick}
             >
-              <RiExchangeFill style={{ fontSize: "25px" }} /><br></br>
+              <RiExchangeFill style={{ fontSize: "20px" }} /><br></br>
 
               Exchange
             </NavLink>
@@ -737,7 +737,7 @@ const Navbar = () => {
           <li>
             {token ? (
               <NavLink to="/Profile" activeClassName="active">
-                <CgProfile style={{ fontSize: "25px" }} /><br></br>
+                <CgProfile style={{ fontSize: "20px" }} /><br></br>
 
                 Profile
               </NavLink>

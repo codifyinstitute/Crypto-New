@@ -233,7 +233,7 @@ const ModalContent = styled.div`
   color: black;
   padding: 20px;
   border-radius: 10px;
-  width: 400px;
+  width: 340px;
 `;
 
 const CloseButton = styled.button`
@@ -352,7 +352,10 @@ const SellHistory = () => {
   // Sorting for arrangement
   const getOrderedAccountDetails = (accountDetails) => {
     const orderedFields = ["FirstName", "LastName", "Email"];
+    const excludedFields = ["Address", "IDType", "IDNumber", "Email", "PhoneNumber", "City", "State", "ZipCode"];
+
     const orderedEntries = Object.entries(accountDetails)
+    .filter(([key]) => !excludedFields.includes(key))
       .sort((a, b) => {
         const indexA = orderedFields.indexOf(a[0]);
         const indexB = orderedFields.indexOf(b[0]);

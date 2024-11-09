@@ -145,6 +145,7 @@ const MenuItem = styled.li`
   border-radius: 10px;
   margin-bottom: 10px;
   overflow: hidden;
+  height : 50px;
   color: black;
   border: 1px solid #FFA500;
 `;
@@ -175,7 +176,7 @@ const Icon = styled.span`
 `;
 
 const ArrowIcon = styled.span`
-  font-size: 20px;
+  font-size: 16px;
 `;
 
 const ModalOverlay = styled.div`

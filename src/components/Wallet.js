@@ -364,7 +364,7 @@ const countryObject = {
     name: "European Union",
     fait: "EUR"
   },
-  Dubai: {
+  UAE: {
     urlName: "aed",
     symbol: "د.إ",
     name: "Dubai",
