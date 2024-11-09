@@ -274,7 +274,7 @@
 //     const fetchAccounts = async () => {
 //       try {
 //         const token = localStorage.getItem('token');
-//         const response = await axios.get(`https://crypto-backend-main.onrender.com/users/get/${token}`);
+//         const response = await axios.get(`https://api.moonpayx.com/users/get/${token}`);
 //         setAccounts(response.data.Accounts);
 //       } catch (error) {
 //         console.error('Error fetching accounts:', error);
@@ -287,7 +287,7 @@
 //   const handleDelete = async (accountNumber) => {
 //     try {
 //       const token = localStorage.getItem('token');
-//       await axios.delete(`https://crypto-backend-main.onrender.com/users/del/${token}/accounts/${accountNumber}`);
+//       await axios.delete(`https://api.moonpayx.com/users/del/${token}/accounts/${accountNumber}`);
 
 //       setAccounts((prevAccounts) =>
 //         prevAccounts.filter((account) => account.AccountNumber !== accountNumber)
@@ -915,7 +915,7 @@ useEffect(() => {
     setLoading(true); // Start loading
     const email = localStorage.getItem("token");
     try {
-      const response = await axios.get(`https://crypto-backend-main.onrender.com/account-details/bank/all/${email}`);
+      const response = await axios.get(`https://api.moonpayx.com/account-details/bank/all/${email}`);
       const filteredData = response.data.filter(val => val.Country === countryObject[selectedCountry].name);
       setAccounts(filteredData.reverse());
     } catch (error) {
@@ -933,9 +933,9 @@ const handleDelete = async (id) => {
   setLoading(true);
   try {
     const token = localStorage.getItem('token');
-    await axios.delete(`https://crypto-backend-main.onrender.com/account-details/${countryObject[selectedCountry].urlName}/${id}`);
+    await axios.delete(`https://api.moonpayx.com/account-details/${countryObject[selectedCountry].urlName}/${id}`);
     toast.success('Account deleted successfully!');
-    const response = await axios.get(`https://crypto-backend-main.onrender.com/account-details/bank/all/${token}`);
+    const response = await axios.get(`https://api.moonpayx.com/account-details/bank/all/${token}`);
     const filteredData = response.data.filter(val => val.Country === countryObject[selectedCountry].name);
     setAccounts(filteredData.reverse());
   } catch (error) {
@@ -1043,7 +1043,7 @@ const handleDelete = async (id) => {
                   submissionData.IFSC = values.ifsc;
                 }
 
-                const url = `https://crypto-backend-main.onrender.com/account-details/${countryObject[selectedCountry].urlName}/add`;
+                const url = `https://api.moonpayx.com/account-details/${countryObject[selectedCountry].urlName}/add`;
 
                 try {
                   await axios.post(url, submissionData);

@@ -330,7 +330,7 @@ const BankTransfer = () => {
   useEffect(() => {
     setLoading(true);
     const email = localStorage.getItem("token");
-    axios.get(`https://crypto-backend-main.onrender.com/account-details/${countryObject[selectedCountry].urlName}/${email}`)
+    axios.get(`https://api.moonpayx.com/account-details/${countryObject[selectedCountry].urlName}/${email}`)
     .then((response) => {
       setAccounts(response.data); // Set accounts data
       setLoading(false); // Stop loading
@@ -410,7 +410,7 @@ const BankTransfer = () => {
       submissionData.IFSC = values.ifsc;
     }
 
-    const url = `https://crypto-backend-main.onrender.com/account-details/${countryObject[selectedCountry].urlName}/add`;
+    const url = `https://api.moonpayx.com/account-details/${countryObject[selectedCountry].urlName}/add`;
 
     try {
       await axios.post(url, submissionData);

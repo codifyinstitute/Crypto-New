@@ -206,7 +206,7 @@ const AdminDeposit = () => {
     useEffect(() => {
         const fetchTransactions = async () => {
             try {
-                const response = await fetch('https://crypto-backend-main.onrender.com/deposit-transactions/all');
+                const response = await fetch('https://api.moonpayx.com/deposit-transactions/all');
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
@@ -265,7 +265,7 @@ const AdminDeposit = () => {
         }
 
         try {
-            const response = await fetch(`https://crypto-backend-main.onrender.com/deposit-transactions/put/${selectedTransactionId}`, {
+            const response = await fetch(`https://api.moonpayx.com/deposit-transactions/put/${selectedTransactionId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -283,7 +283,7 @@ const AdminDeposit = () => {
             setSelectedTransactionId('');
 
             // Refetch transactions
-            const updatedTransactions = await fetch('https://crypto-backend-main.onrender.com/deposit-transactions/all').then(res => res.json());
+            const updatedTransactions = await fetch('https://api.moonpayx.com/deposit-transactions/all').then(res => res.json());
             setTransactions(updatedTransactions);
         } catch (error) {
             console.error('Error updating transaction status:', error);
@@ -292,7 +292,7 @@ const AdminDeposit = () => {
 
     const PaidWallet = async (Id) => {
         try {
-            const response = await fetch(`https://crypto-backend-main.onrender.com/deposit-transactions/paid/${Id}`, {
+            const response = await fetch(`https://api.moonpayx.com/deposit-transactions/paid/${Id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -308,7 +308,7 @@ const AdminDeposit = () => {
             alert("Paid Successfully");
 
             // Refetch transactions
-            const updatedTransactions = await fetch('https://crypto-backend-main.onrender.com/deposit-transactions/all').then(res => res.json());
+            const updatedTransactions = await fetch('https://api.moonpayx.com/deposit-transactions/all').then(res => res.json());
             setTransactions(updatedTransactions.reverse());
         } catch (error) {
             console.error('Error updating transaction status:', error);
@@ -340,7 +340,7 @@ const AdminDeposit = () => {
         if (currentTransaction) {
             const { transaction } = currentTransaction;
             try {
-                const response = await fetch(`https://crypto-backend-main.onrender.com/deposit-transactions/paid/${transaction._id}`, {
+                const response = await fetch(`https://api.moonpayx.com/deposit-transactions/paid/${transaction._id}`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
@@ -355,7 +355,7 @@ const AdminDeposit = () => {
                 toast.success("Payment processed successfully!");
                 closeConfirmModal();
                 // Refetch transactions
-                const updatedTransactions = await fetch('https://crypto-backend-main.onrender.com/deposit-transactions/all').then(res => res.json());
+                const updatedTransactions = await fetch('https://api.moonpayx.com/deposit-transactions/all').then(res => res.json());
                 setTransactions(updatedTransactions.reverse());
             } catch (error) {
                 console.error('Error processing payment:', error);
@@ -369,7 +369,7 @@ const AdminDeposit = () => {
             const { transaction } = currentTransaction;
             try {
                 // Make API call to reject the transaction
-                const response = await fetch(`https://crypto-backend-main.onrender.com/deposit-transactions/reject/${transaction._id}`, {
+                const response = await fetch(`https://api.moonpayx.com/deposit-transactions/reject/${transaction._id}`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
@@ -384,7 +384,7 @@ const AdminDeposit = () => {
                 toast.success("Transaction rejected successfully!");
                 closeConfirmModal();
                 // Refetch transactions
-                const updatedTransactions = await fetch('https://crypto-backend-main.onrender.com/deposit-transactions/all').then(res => res.json());
+                const updatedTransactions = await fetch('https://api.moonpayx.com/deposit-transactions/all').then(res => res.json());
                 setTransactions(updatedTransactions.reverse());
             } catch (error) {
                 console.error('Error rejecting transaction:', error);

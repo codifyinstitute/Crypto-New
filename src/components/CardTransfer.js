@@ -292,7 +292,7 @@ const CardTransfer = () => {
     setLoading(true);
     const email = localStorage.getItem("token");
     axios
-      .get(`https://crypto-backend-main.onrender.com/account-details/${countryObject[selectedCountry].urlName}/card/${email}`)
+      .get(`https://api.moonpayx.com/account-details/${countryObject[selectedCountry].urlName}/card/${email}`)
       .then((response) => {
         setAccounts(response.data);
         setLoading(false); 
@@ -333,7 +333,7 @@ const CardTransfer = () => {
       ...values,
     };
     console.log("Submitting Data:", submissionData); 
-    const url = `https://crypto-backend-main.onrender.com/account-details/${countryObject[selectedCountry].urlName}/card/add`;
+    const url = `https://api.moonpayx.com/account-details/${countryObject[selectedCountry].urlName}/card/add`;
     try {
      const response =  await axios.post(url, submissionData);
     console.log("card Data",response.data);

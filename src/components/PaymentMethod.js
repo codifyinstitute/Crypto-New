@@ -327,7 +327,7 @@ const PaymentMethod = () => {
     setLoading(true);
     const email = localStorage.getItem("token");
     axios
-      .get(`https://crypto-backend-main.onrender.com/account-details/${countryObject[selectedCountry].urlName}/${email}`)
+      .get(`https://api.moonpayx.com/account-details/${countryObject[selectedCountry].urlName}/${email}`)
       .then((response) => {
         console.log(response.data)
         setAccounts(response.data);

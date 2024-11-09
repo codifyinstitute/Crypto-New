@@ -702,8 +702,8 @@ const Depposit1 = () => {
 
   const fetchTransactionFee = async () => {
     try {
-      const response = await fetch(`https://crypto-backend-main.onrender.com/static/${countryObject[selectedCountry]?.urlName}/one`);
-      /* const countResponse = await fetch("https://crypto-backend-main.onrender.com/transactions/get/count"); */
+      const response = await fetch(`https://api.moonpayx.com/static/${countryObject[selectedCountry]?.urlName}/one`);
+      /* const countResponse = await fetch("https://api.moonpayx.com/transactions/get/count"); */
 
       if (!response.ok) {
         throw new Error("Network response was not ok");
@@ -720,7 +720,7 @@ const Depposit1 = () => {
 
   const fetchCurrencyData = async () => {
     try {
-      const response = await fetch(`https://crypto-backend-main.onrender.com/currencies/${countryObject[selectedCountry].urlName}/all`);
+      const response = await fetch(`https://api.moonpayx.com/currencies/${countryObject[selectedCountry].urlName}/all`);
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
@@ -804,7 +804,7 @@ const Depposit1 = () => {
   // const confirmTransaction = async () => {
   //   setShowConfirmation(false);
   //   try {
-  //     const response = await fetch("https://crypto-backend-main.onrender.com/transactions/add", {
+  //     const response = await fetch("https://api.moonpayx.com/transactions/add", {
   //       method: "POST",
   //       headers: {
   //         "Content-Type": "application/json",
@@ -861,7 +861,7 @@ const Depposit1 = () => {
         Date: formattedDate,
         Time: formattedTime,
       }) */
-      const response = await fetch("https://crypto-backend-main.onrender.com/deposit-transactions/add", { // Updated URL for the backend
+      const response = await fetch("https://api.moonpayx.com/deposit-transactions/add", { // Updated URL for the backend
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -986,7 +986,7 @@ const Depposit1 = () => {
             <QRCodeContainer>
               <QRCode>
                 <img
-                  src={`https://crypto-backend-main.onrender.com/uploads/${image}`}
+                  src={`https://api.moonpayx.com/uploads/${image}`}
                   width="100px"
                   alt="QR code"
                 />

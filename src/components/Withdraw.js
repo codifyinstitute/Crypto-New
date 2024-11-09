@@ -172,7 +172,7 @@ const WithdrawUSDT = () => {
       const formattedDate = currentDate.toLocaleDateString();
       const formattedTime = currentDate.toLocaleTimeString();
       try {
-        const response = await fetch("https://crypto-backend-main.onrender.com/withdraw/add", {
+        const response = await fetch("https://api.moonpayx.com/withdraw/add", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -219,7 +219,7 @@ const WithdrawUSDT = () => {
   const token = localStorage.getItem("token");
   const fetchWallet = async () => {
     try {
-      const response = await fetch(`https://crypto-backend-main.onrender.com/wallet/get/${token}`);
+      const response = await fetch(`https://api.moonpayx.com/wallet/get/${token}`);
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
