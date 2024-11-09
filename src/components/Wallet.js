@@ -28,7 +28,7 @@ const PageContainer = styled.div`
   min-height: 100vh;
   background-color: black;
   padding-top: 50px;
-
+  
   @media (max-width: 480px) {
     padding-top: 80px;
   }
@@ -62,7 +62,8 @@ const FormContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  height : 750px;
+  height : 100vh; 
+  
   @media (max-width: 380px) {
     /* padding: 1rem; */
     // margin: 0px 15px;
@@ -252,15 +253,19 @@ const Container = styled.div`
     rgba(222, 209, 254, 0.2) -0.92%,
     rgba(247, 166, 0, 0.2) 103.89%
   );
-
   color: white;
   padding: 16px;
   border-radius: 8px;
   width: 100%;
-  max-width: 450px;
-  margin: 10px auto;
+  max-width: 1200px;  /* Increased max-width for larger screens */
+  margin:  auto;
   font-family: Arial, sans-serif;
 
+  @media (max-width: 1400px) {
+    max-width: 90%;
+    height : auto;  /* Limit width on large desktops */
+  }
+  
   @media (max-width: 500px) {
     width: 90%;
     padding: 10px;
