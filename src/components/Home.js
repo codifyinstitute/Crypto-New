@@ -814,7 +814,7 @@ const PaymentMethods = styled.div`
 `;
 
 const Buddy = styled.p`
-  font-size: 18px;
+  font-size: 13px;
   font-weight: 600;
 `;
 

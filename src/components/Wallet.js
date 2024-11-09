@@ -67,7 +67,7 @@ const FormContainer = styled.div`
   @media (max-width: 380px) {
     /* padding: 1rem; */
     // margin: 0px 15px;
-  height : 750px;
+  height : 800px;
     width: 100%;
   }
 `;
@@ -404,18 +404,18 @@ const Wallet = () => {
     // "13:08 66***6789 sold for $310",
     // "13:10 55***7890 sold for $450",
     // "13:12 44***8901 sold for $320"
-"ja*******@yahoo.com sold 150 USDT",
+"ja*******@gmail.com sold 150 USDT",
 "ma****@gmail.com sold 250 USDT",
-"se******@outlook.com sold 400 USDT",
-"di******@hotmail.com sold 300 USDT",
+"se******@gmail.com sold 400 USDT",
+"di******@gmail.com sold 300 USDT",
 "kh*******@gmail.com sold 200 USDT",
-"ar******@protonmail.com sold 500 USDT",
-"la******@icloud.com sold 350 USDT",
-"ri******@yahoo.com sold 600 USDT",
+"ar******@gmail.com.com sold 500 USDT",
+"la******@gmail.com sold 350 USDT",
+"ri******@gmail.com sold 600 USDT",
 "ts******@gmail.com sold 450 USDT",
-"pr******@mail.com sold 700 USDT",
-"bo******@aol.com sold 550 USDT",
-"ze******@live.com sold 800 USDT",
+"pr******@gmail.com sold 700 USDT",
+"bo******@gmail.com sold 550 USDT",
+"ze******@gmail.com.com sold 800 USDT",
   ];
 
   const [index, setIndex] = useState(0);
@@ -447,7 +447,7 @@ const Wallet = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setIndex((prevIndex) => (prevIndex + 1) % dataEntries.length);
-    }, 2000); // Change every 2 seconds
+    }, 4000); // Change every 4 seconds
 
     return () => clearInterval(interval);
   }, []);
