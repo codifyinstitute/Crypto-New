@@ -248,11 +248,11 @@ const Profile = () => {
     const email = localStorage.getItem('token');
     if (email) {
       try {
-        const response = await fetch(`https://crypto-backend-main.onrender.com/users/get/${email}`);
+        const response = await fetch(`https://api.moonpayx.com/users/get/${email}`);
         if (!response.ok) throw new Error('Failed to fetch user data');
         const data = await response.json();
         setUserEmail(data.Email);
-        setProfileImage(`https://crypto-backend-main.onrender.com/uploads/${data.Profile}`);
+        setProfileImage(`https://api.moonpayx.com/uploads/${data.Profile}`);
       } catch (error) {
         toast.error(error.message);
       } finally {
@@ -268,7 +268,7 @@ const Profile = () => {
     const email = localStorage.getItem('token');
     if (email) {
       try {
-        const response = await fetch(`https://crypto-backend-main.onrender.com/wallets/getBalance/${email}`);
+        const response = await fetch(`https://api.moonpayx.com/wallets/getBalance/${email}`);
         if (!response.ok) throw new Error('Failed to fetch wallet balance');
         const data = await response.json();
         setWalletBalance(data.balance);

@@ -162,7 +162,7 @@ const AdminTransactionFee = () => {
         // console.log(country)
         // console.log(con)
         try {
-            const response = await fetch(`https://crypto-backend-main.onrender.com/static/${countryObject[country]?.urlName}/one`);
+            const response = await fetch(`https://api.moonpayx.com/static/${countryObject[country]?.urlName}/one`);
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
@@ -194,7 +194,7 @@ const AdminTransactionFee = () => {
         setLoading(true);
 
         try {
-            const response = await fetch(`https://crypto-backend-main.onrender.com/static/${countryObject[country]?.urlName}/put/${id}`, {
+            const response = await fetch(`https://api.moonpayx.com/static/${countryObject[country]?.urlName}/put/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -220,7 +220,7 @@ const AdminTransactionFee = () => {
         setLoading(true);
 
         try {
-            const response = await fetch(`https://crypto-backend-main.onrender.com/static/${countryObject[country]?.urlName}/put/${id}`, {
+            const response = await fetch(`https://api.moonpayx.com/static/${countryObject[country]?.urlName}/put/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -246,7 +246,7 @@ const AdminTransactionFee = () => {
         setLoading(true);
 
         try {
-            const response = await fetch(`https://crypto-backend-main.onrender.com/static/${countryObject[country]?.urlName}/put/${id}`, {
+            const response = await fetch(`https://api.moonpayx.com/static/${countryObject[country]?.urlName}/put/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

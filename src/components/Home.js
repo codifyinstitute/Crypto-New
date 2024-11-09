@@ -94,7 +94,7 @@ const Home = () => {
   const token = localStorage.getItem("token");
   const fetchWallet = async () => {
     try {
-      const response = await fetch(`https://crypto-backend-main.onrender.com/wallet/get/${token}`);
+      const response = await fetch(`https://api.moonpayx.com/wallet/get/${token}`);
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
@@ -123,7 +123,7 @@ const Home = () => {
     console.log(selectedCountry);
     try {
       const response = await fetch(
-        `https://crypto-backend-main.onrender.com/static/${countryObject[selectedCountry]?.urlName}/one`
+        `https://api.moonpayx.com/static/${countryObject[selectedCountry]?.urlName}/one`
       );
       if (!response.ok) {
         throw new Error("Network response was not ok");
@@ -147,7 +147,7 @@ const Home = () => {
 
   useEffect(() => {
     axios
-      .get(`https://crypto-backend-main.onrender.com/currencies/${countryObject[selectedCountry]?.urlName}/all`)
+      .get(`https://api.moonpayx.com/currencies/${countryObject[selectedCountry]?.urlName}/all`)
       .then((response) => {
         setCurrencies(response.data);
         setSelectedCurrency(response.data[0] || null);
