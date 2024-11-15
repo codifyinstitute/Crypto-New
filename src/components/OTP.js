@@ -81,6 +81,7 @@ const OTPInput = styled.input`
   height: 40px;
   font-size: 18px;
   text-align: center;
+  font-weight : 700;
   border: 1px solid #ccc;
   border-radius: 5px;
 

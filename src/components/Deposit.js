@@ -14,7 +14,7 @@ import Navbar from './Navbar';
 import payment from "./../assets/Frame 47.png";
 import { RefreshCw } from 'lucide-react';
 import logoM from "./../assets/logo2.png";
-import Depositimg from "./../assets/Deposit.jpg"
+import Depositimg from "./../assets/newDep.png"
 import Bepimg from "./../assets/bep21(1).png";
 import trcimg from "./../assets/trc20(1).png";
 import usdtimg from "./../assets/usdt1-removebg-preview(2).png";

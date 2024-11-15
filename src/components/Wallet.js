@@ -233,9 +233,9 @@ const Banner = styled.div`
 
 const Text = styled.div`
   display: inline-block;
-  animation: ${slideUp} 2s ease-in-out infinite;
+  animation: ${slideUp} 5s cubic-bezier(.68,-0.55,.27,1.55) infinite;
   white-space: nowrap;
-  margin-left: 8px;
+  // margin-left: 8px;
 `;
 
 // -------------------------------------------------
@@ -390,6 +390,7 @@ const Wallet = () => {
   const [loading, setLoading] = useState(false);
   const [selectedCurrency, setSelectedCurrency] = useState(null);
   const [login, setLogin] = useState(false);
+  const [isChanging, setIsChanging] = useState(false); 
   const handleDepositclick = () => {
     navigate('/deposit')
   }
@@ -397,25 +398,134 @@ const Wallet = () => {
     navigate('/withdraw')
   }
 
-  const dataEntries = [
-    // "13:00 98***1233 sold for $388",
-    // "13:02 88***1234 sold for $400",
-    // "13:05 77***5678 sold for $290",
-    // "13:08 66***6789 sold for $310",
-    // "13:10 55***7890 sold for $450",
-    // "13:12 44***8901 sold for $320"
-"ja*******@gmail.com sold 150 USDT",
-"ma****@gmail.com sold 250 USDT",
-"se******@gmail.com sold 400 USDT",
-"di******@gmail.com sold 300 USDT",
-"kh*******@gmail.com sold 200 USDT",
-"ar******@gmail.com.com sold 500 USDT",
-"la******@gmail.com sold 350 USDT",
-"ri******@gmail.com sold 600 USDT",
-"ts******@gmail.com sold 450 USDT",
-"pr******@gmail.com sold 700 USDT",
-"bo******@gmail.com sold 550 USDT",
-"ze******@gmail.com.com sold 800 USDT",
+  const countryPrices = {
+    "USA": { price1: 0.02, price2: 0.04, price3: 0.07 },
+    "UAE": { price1: 0.24, price2: 0.37, price3: 0.51 },
+    "UK": {  price1: 0.03, price2: 0.05, price3: 0.07 },
+    "Euro": { price1: 0.08, price2: 0.11, price3: 0.15 },
+    "Brazil": { price1: 0.44, price2: 0.62, price3: 0.79 },
+    "India": { price1: 0.5, price2: 1, price3: 2 },
+  };
+
+  const countryPrice = countryPrices[selectedCountry] ;
+
+  const dataEntries = [ 
+
+"har****ka@gmail.com Sold 1327 USDT",
+"ami****ed@gmail.com Sold 982 USDT",
+"kem****ye@gmail.com Sold 1023 USDT",
+"fio****or@gmail.com Sold 432 USDT",
+"iri****va@gmail.com Sold 1075 USDT",
+"ann****ka@gmail.com Sold 673 USDT",
+"jav****es@gmail.com Sold 1254 USDT",
+"bri****ms@gmail.com Sold 1289 USDT",
+"muh****an@gmail.com Sold 1001 USDT",
+"kar****as@gmail.com Sold 421 USDT",
+"jua****as@gmail.com Sold 1342 USDT",
+"mar****ez@gmail.com Sold 531 USDT",
+"gab****ns@gmail.com Sold 725 USDT",
+"li.****ei@gmail.com Sold 853 USDT",
+"chi****or@gmail.com Sold 1102 USDT",
+"mar****on@gmail.com Sold 1305 USDT",
+"jay****gh@gmail.com Sold 549 USDT",
+"arv****on@gmail.com Sold 1113 USDT",
+"han****th@gmail.com Sold 1247 USDT",
+"ang****od@gmail.com Sold 634 USDT",
+"ale****ov@gmail.com Sold 1081 USDT",
+"bio****le@gmail.com Sold 1036 USDT",
+"dav****en@gmail.com Sold 780 USDT",
+"isa****ta@gmail.com Sold 1251 USDT",
+"kat****to@gmail.com Sold 453 USDT",
+"yul****va@gmail.com Sold 1067 USDT",
+"ing****en@gmail.com Sold 612 USDT",
+"jor****ez@gmail.com Sold 1348 USDT",
+"edu****va@gmail.com Sold 749 USDT",
+"far****ta@gmail.com Sold 819 USDT",
+"pri****or@gmail.com Sold 943 USDT",
+"hec****ro@gmail.com Sold 1185 USDT",
+"car****ra@gmail.com Sold 627 USDT",
+"mar****ez@gmail.com Sold 847 USDT",
+"jun****al@gmail.com Sold 732 USDT",
+"dan****ng@gmail.com Sold 1181 USDT",
+"oma****ed@gmail.com Sold 1017 USDT",
+"ant****go@gmail.com Sold 770 USDT",
+"tan****ez@gmail.com Sold 923 USDT",
+"mah****an@gmail.com Sold 830 USDT",
+"cla****er@gmail.com Sold 1054 USDT",
+"aal****an@gmail.com Sold 702 USDT",
+"krz****ik@gmail.com Sold 952 USDT",
+"ele****va@gmail.com Sold 1313 USDT",
+"ale****ra@gmail.com Sold 1228 USDT",
+"joh****er@gmail.com Sold 933 USDT",
+"fio****or@gmail.com Sold 1297 USDT",
+"jay****gh@gmail.com Sold 915 USDT",
+"arv****on@gmail.com Sold 667 USDT",
+"han****th@gmail.com Sold 1150 USDT",
+"ale****ov@gmail.com Sold 620 USDT",
+"bio****le@gmail.com Sold 1058 USDT",
+"dav****en@gmail.com Sold 1027 USDT",
+"isa****ta@gmail.com Sold 763 USDT",
+"kat****to@gmail.com Sold 803 USDT",
+"yul****va@gmail.com Sold 609 USDT",
+"ing****en@gmail.com Sold 1033 USDT",
+"jor****ez@gmail.com Sold 684 USDT",
+"edu****va@gmail.com Sold 1138 USDT",
+"far****ta@gmail.com Sold 1301 USDT",
+"pri****or@gmail.com Sold 451 USDT",
+"hec****ro@gmail.com Sold 1206 USDT",
+"car****ra@gmail.com Sold 788 USDT",
+"mar****ez@gmail.com Sold 1343 USDT",
+"jun****al@gmail.com Sold 1147 USDT",
+"dan****ng@gmail.com Sold 1173 USDT", 
+"oma****ed@gmail.com Sold 864 USDT",
+"ant****go@gmail.com Sold 770 USDT",
+"tan****ez@gmail.com Sold 877 USDT",
+"mah****an@gmail.com Sold 830 USDT",
+"cla****er@gmail.com Sold 1054 USDT",
+"aal****an@gmail.com Sold 702 USDT",
+"krz****ik@gmail.com Sold 952 USDT",
+"ele****va@gmail.com Sold 1313 USDT",
+"ale****ra@gmail.com Sold 1228 USDT",
+"joh****er@gmail.com Sold 933 USDT",
+"fio****or@gmail.com Sold 1297 USDT",
+"jay****gh@gmail.com Sold 915 USDT",
+"arv****on@gmail.com Sold 667 USDT",
+"han****th@gmail.com Sold 1150 USDT",
+"ale****ov@gmail.com Sold 620 USDT",
+"bio****le@gmail.com Sold 1058 USDT",
+"dav****en@gmail.com Sold 1027 USDT",
+"isa****ta@gmail.com Sold 763 USDT",
+"kat****to@gmail.com Sold 803 USDT",
+"yul****va@gmail.com Sold 609 USDT",
+"ing****en@gmail.com Sold 1033 USDT",
+"jor****ez@gmail.com Sold 684 USDT",
+"edu****va@gmail.com Sold 1138 USDT",
+"far****ta@gmail.com Sold 1301 USDT",
+"pri****or@gmail.com Sold 451 USDT",
+"hec****ro@gmail.com Sold 1206 USDT",
+"car****ra@gmail.com Sold 788 USDT",
+"mar****ez@gmail.com Sold 1343 USDT",
+"jun****al@gmail.com Sold 1147 USDT",
+"dan****ng@gmail.com Sold 1173 USDT",
+"oma****ed@gmail.com Sold 864 USDT",
+"ant****go@gmail.com Sold 770 USDT",
+"tan****ez@gmail.com Sold 877 USDT",
+"mah****an@gmail.com Sold 1156 USDT",
+"cla****er@gmail.com Sold 642 USDT",
+"aal****an@gmail.com Sold 491 USDT"
+
+// "ja*******@gmail.com sold 150 USDT",
+// "ma****@gmail.com sold 250 USDT",
+// "se******@gmail.com sold 400 USDT",
+// "di******@gmail.com sold 300 USDT",
+// "kh*******@gmail.com sold 200 USDT",
+// "ar******@gmail.com.com sold 500 USDT",
+// "la******@gmail.com sold 350 USDT",
+// "ri******@gmail.com sold 600 USDT",
+// "ts******@gmail.com sold 450 USDT",
+// "pr******@gmail.com sold 700 USDT",
+// "bo******@gmail.com sold 550 USDT",
+// "ze******@gmail.com.com sold 800 USDT",
   ];
 
   const [index, setIndex] = useState(0);
@@ -444,13 +554,31 @@ const Wallet = () => {
     fetchData();
   }, [selectedCountry]);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setIndex((prevIndex) => (prevIndex + 1) % dataEntries.length);
-    }, 4000); // Change every 4 seconds
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     setIndex((prevIndex) => (prevIndex + 1) % dataEntries.length);
+  //   }, 4000); // Change every 4 seconds
 
-    return () => clearInterval(interval);
-  }, []);
+  //   return () => clearInterval(interval);
+  // }, []);
+
+  useEffect(() => {
+    let timeoutId;
+
+    const changeEntry = () => {
+      if (isChanging) return; // Prevent change if we're already in transition
+      setIsChanging(true); // Mark as changing to avoid immediate repeat
+      timeoutId = setTimeout(() => {
+        setIndex((prevIndex) => (prevIndex + 1) % dataEntries.length); // Change to the next entry
+        setIsChanging(false); // Allow next change
+      }, 5000); // Wait for 5 seconds
+
+    };
+
+    changeEntry(); // Call it to set the first change immediately.
+
+    return () => clearTimeout(timeoutId); // Cleanup timeout on unmount
+  }, [index]); // When the index changes, the effect will trigger again.
 
   const token = localStorage.getItem("token");
   const fetchWallet = async () => {
@@ -563,12 +691,13 @@ const Wallet = () => {
               <PiSpeakerHighFill
                 style={{
                   borderRight: "1px solid",
-                  marginRight: "13px",
-                  paddingRight: "4px",
-                  fontSize: "19px",
+                  marginRight: "15px",
+                  paddingRight: "1px",
+                  // fontSize: "19px",
                 }}
+                size={16}
               />
-              <Text style={{ fontSize: "14px", fontWeight : "600" }}>{dataEntries[index]}</Text>
+              <Text style={{ fontSize: "12px", fontWeight : "600" }}>{dataEntries[index]}</Text>
             </Banner>
             {loading?null:<>
             <Part2>
@@ -587,7 +716,7 @@ const Wallet = () => {
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
+                        {/* <tr>
                           <TableCell>
                             <b>1075 + USDT </b>
                           </TableCell>
@@ -609,8 +738,21 @@ const Wallet = () => {
                           </TableCell>
                           <TableCell>
                             <b>{selectedCurrency?.Rate} + 1</b>
-                          </TableCell>
-                        </tr>
+                          </TableCell>  
+                        </tr> */}
+
+<tr>
+      <TableCell><b>1075 + USDT</b></TableCell>
+      <TableCell><b>{selectedCurrency?.Rate} + {countryPrice.price1}</b></TableCell>
+    </tr>
+    <tr>
+      <TableCell><b>2150 + USDT</b></TableCell>
+      <TableCell><b>{selectedCurrency?.Rate} + {countryPrice.price2}</b></TableCell>
+    </tr>
+    <tr>
+      <TableCell><b>3255 + USDT</b></TableCell>
+      <TableCell><b>{selectedCurrency?.Rate} + {countryPrice.price3}</b></TableCell>
+    </tr>
                       </tbody>
                     </Table>
                     <TableFooter>

@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import phone from "../assets/mobil.png";
+import phone from "../assets/15-removebg-preview.png";
 
 const Container = styled.div`
   /* background-color: #1E1E1E; */

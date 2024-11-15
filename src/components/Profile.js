@@ -253,6 +253,7 @@ const Profile = () => {
         const data = await response.json();
         setUserEmail(data.Email);
         setProfileImage(`https://api.moonpayx.com/uploads/${data.Profile}`);
+        console.log('API Response:', data);
       } catch (error) {
         toast.error(error.message);
       } finally {
@@ -305,6 +306,31 @@ const Profile = () => {
     navigate("/")
   }
 
+  const handleImageChange = async(event) => {
+    const file = event.target.files[0];
+    if(file){
+      const formData = new FormData();
+    formData.append('profilePicture', file);
+
+    const email = localStorage.getItem('token');
+
+    try {
+      const response = await fetch(`https://api.moonpayx.com/users/update/${email}`, {
+        method: 'PUT',
+        body: formData,
+      });
+
+      if (!response.ok) throw new Error('Failed to update profile picture');
+      toast.success('Profile picture updated successfully');
+      fetchUserData(); 
+    } catch (error) {
+      console.log(error)
+      toast.error(error.message);
+    }
+    }
+  };
+
+
   return (
     <>
       <Navbar />
@@ -323,7 +349,7 @@ const Profile = () => {
           <input
             type="file"
             ref={fileInputRef}
-            onChange={() => { }}
+            onChange= {handleImageChange }
             accept="image/*"
             style={{ display: 'none' }}
           />

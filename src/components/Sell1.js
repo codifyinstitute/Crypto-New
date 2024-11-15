@@ -164,7 +164,7 @@ const OrderTitle = styled.div`
 const OrderDetail = styled.div`
   display: flex;
   justify-content: space-between;
-  font-size: 0.9rem;
+  font-size: 0.7rem;
   color: #888;
   margin-bottom: 0.5rem;
 `;
@@ -970,6 +970,17 @@ const Sell1 = () => {
     }
   };
 
+  const countryPrices = {
+    "USA": { price1: 0.02, price2: 0.04, price3: 0.07 },
+    "UAE": { price1: 0.24, price2: 0.37, price3: 0.51 },
+    "UK": {  price1: 0.03, price2: 0.05, price3: 0.07 },
+    "Euro": { price1: 0.08, price2: 0.11, price3: 0.15 },
+    "Brazil": { price1: 0.44, price2: 0.62, price3: 0.79 },
+    "India": { price1: 0.5, price2: 1, price3: 2 },
+  };
+  const countryPrice = countryPrices[selectedCountry] ;
+
+
   return (
     <>
       <Navbar />
@@ -1245,7 +1256,7 @@ const Sell1 = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
+                  {/* <tr>
                     <TableCell>
                       <b>1075 + USDT </b>
                     </TableCell>
@@ -1268,7 +1279,20 @@ const Sell1 = () => {
                     <TableCell>
                       <b>{selectedCurrency?.Rate} + 1</b>
                     </TableCell>
-                  </tr>
+                  </tr> */}
+
+                <tr>
+                      <TableCell><b>1075 + USDT</b></TableCell>
+                      <TableCell><b>{selectedCurrency?.Rate} + {countryPrice.price1}</b></TableCell>
+                    </tr>
+                    <tr>
+                      <TableCell><b>2150 + USDT</b></TableCell>
+                      <TableCell><b>{selectedCurrency?.Rate} + {countryPrice.price2}</b></TableCell>
+                    </tr>
+                    <tr>
+                      <TableCell><b>3255 + USDT</b></TableCell>
+                      <TableCell><b>{selectedCurrency?.Rate} + {countryPrice.price3}</b></TableCell>
+                    </tr>
                 </tbody>
               </Table>
               <TableFooter>

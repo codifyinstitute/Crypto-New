@@ -774,7 +774,7 @@ const OrderTitle = styled.div`
 const OrderDetail = styled.div`
   display: flex;
   justify-content: space-between;
-  font-size: 0.9rem;
+  font-size: 0.7rem;
   color: #888;
   margin-bottom: 0.5rem;
 `;

@@ -1,9 +1,39 @@
 import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import axios from 'axios';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+const NavigationContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-top: -8rem;
+  font-weight : 700;
+  gap : 74rem;
+`;
+
+const NavigationButton = styled.button`
+  background-color: transparent;
+  color: white;
+  border: none;
+  width : 55px;
+  height : 50px;
+  padding: 0.5rem 1rem;
+  font-weight : 600;
+  font-size: 1.2rem;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.2s ease-in-out;
+
+  &:hover {
+    background-color: #662d91;
+  }
+
+  @media (max-width: 1024px) {
+    display: none;
+  }
+`;
 
 const Container = styled.div`
-  background: #000; /* Black background */
+  background: #000; 
   color: white;
   padding: 2rem;
   font-family: Arial, sans-serif;
@@ -20,6 +50,27 @@ const HappyCustomerSection = styled.section`
   align-items: center;
   justify-content: center;
 `;
+// const slideIn = keyframes`
+//   from {
+//     transform: translateX(100%);
+//     opacity: 0;
+//   }
+//   to {
+//     transform: translateX(0);
+//     opacity: 1;
+//   }
+// `;
+
+// const slideOut = keyframes`
+//   from {
+//     transform: translateX(0);
+//     opacity: 1;
+//   }
+//   to {
+//     transform: translateX(-100%);
+//     opacity: 0;
+//   }
+// `;
 
 const SliderContainer = styled.div`
   position: relative;
@@ -38,16 +89,33 @@ const SliderContainer = styled.div`
   }
 `;
 const SliderWrapper = styled.div`
+  position: relative;
   display: flex;
-  transition: transform 0.5s ease;
-  transform: ${({ currentIndex }) => `translateX(-${currentIndex * 100}%)`};
-
-  @media (min-width: 1025px) {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 3 cards per row */
-    gap: 1rem;
-    margin-top: 20px;
-    transform: none; /* Disable sliding on desktop */
+  flex-wrap: wrap;
+  
+//   .testimonial-card {
+//     transition: all 0.5s ease-in-out; /* Maintain existing transition */
+//   }
+//   justify-content: center;
+//     transition: all 0.5s ease-in-out; /* Add transition */
+//   .testimonial-card {
+//    transition: all 0.5s ease-in-out; /* Add transition */
+//     animation: 0.5s ease-in-out;
+//   }
+//   .testimonial-card.out {
+    // animation: 0.5s ease-in-out;
+//   }
+   @media (min-width: 1025px) {
+    display: flex;
+    flex-wrap: nowrap; /* Prevent wrapping */
+    justify-content: space-around;
+    margin-top : 16px;
+  }
+  @media (max-width: 1024px) {
+    .testimonial-card {
+      flex-basis: 100%;
+      margin: 10px;
+    }
   }
 `;
 const Yellow = styled.span`
@@ -62,15 +130,18 @@ const TestimonialCard = styled.div`
   background-color: #f0f0f0;
   border-radius: 10px;
   padding: 1rem;
-  min-width: 100%;
+  min-width: 40%;
   flex-shrink: 0;
   margin-top: 2%;
-
+  className: testimonial-card;
+    // animation: 0.5s ease-in-out;
+  transition: all 0.5s ease-in-out; /* Add transition */
   @media (min-width: 1025px) {
-    min-width: auto; /* Reset width on desktop */
-    flex-shrink: 1;
-
-    width: 100%; /* Ensure the card takes full width in its grid cell */
+    flex-basis: 45%; /* Adjust width */
+    margin: 10px;
+    flex-grow: 1; /* Equalize heights */
+    flex-direction: row; /* Stack content vertically */
+    height : 170px;
   }
 
   @media (max-width: 1024px) {
@@ -85,6 +156,8 @@ const TestimonialCard = styled.div`
     text-align: left;
     gap: 0;
     margin-top: 19%;
+    height : 300px;
+    
   }
 `;
 
@@ -168,81 +241,121 @@ const Indicator = styled.div`
   cursor: pointer;
 `;
 
+
 const Component = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isMobileOrTablet, setIsMobileOrTablet] = useState(false);
-  const [reviews, setReviews] = useState([]);
-
-
-  const fetchReviews = async () => {
-    try {
-        const response = await axios.get('https://api.moonpayx.com/reviews/all');
-        setReviews(response.data);
-    } catch (error) {
-        console.error('Error fetching reviews:', error);
-    }
-};
-
-useEffect(() => {
-    fetchReviews();
-}, []);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobileOrTablet(window.innerWidth <= 1024);
-    };
-
-    handleResize();
-    window.addEventListener('resize', handleResize);
-
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  useEffect(() => {
-    if (isMobileOrTablet) {
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const [isMobileOrTablet, setIsMobileOrTablet] = useState(false);
+    const [reviews, setReviews] = useState([]);
+    const [visibleReviews, setVisibleReviews] = useState([]);
+    const [loading, setLoading] = useState(true);
+  
+    useEffect(() => {
+      const fetchReviews = async () => {
+        try {
+          const response = await axios.get('https://api.moonpayx.com/reviews/all');
+          if (response.data.length > 0) {
+            setReviews(response.data);
+            setLoading(false);
+          } else {
+            console.log('No reviews found');
+            setLoading(false);
+          }
+        } catch (error) {
+          console.error('Error fetching reviews:', error);
+          setLoading(false);
+        }
+      };
+      fetchReviews();
+    }, []);
+  
+    useEffect(() => {
+      const handleResize = () => {
+        setIsMobileOrTablet(window.innerWidth <= 1024);
+      };
+  
+      handleResize();
+      window.addEventListener('resize', handleResize);
+  
+      return () => window.removeEventListener('resize', handleResize);
+    }, []);
+  
+    useEffect(() => {
+      if (isMobileOrTablet) {
+        setVisibleReviews([reviews[currentIndex]]);
+      } else {
+        setVisibleReviews(reviews.slice(currentIndex * 2, (currentIndex + 1) * 2));
+      }
+    }, [reviews, currentIndex, isMobileOrTablet]);
+  
+    useEffect(() => {
       const interval = setInterval(() => {
-        setCurrentIndex((prevIndex) => (prevIndex + 1) % reviews.length);
+        setCurrentIndex((prevIndex) => (prevIndex + 1) % Math.ceil(reviews.length / (isMobileOrTablet ? 1 : 2)));
       }, 5000);
-
+  
       return () => clearInterval(interval);
-    }
-  }, [isMobileOrTablet, reviews.length]);
-
-  const handleIndicatorClick = (index) => {
-    setCurrentIndex(index);
-  };
-
-  return (
-    <Container>
-      <HappyCustomerSection>
-        <Title>Happy<Yellow> Customers</Yellow> </Title>
-        <SliderContainer>
-          <SliderWrapper currentIndex={currentIndex}>
-            {reviews.map((testimonial, index) => (
-              <TestimonialCard key={index}>
-                <Avatar>
-                  { <img src={`https://api.moonpayx.com/uploads/${testimonial.Image}`} alt={testimonial.Name} />}
-                </Avatar>
-                <TestimonialContent>
-                  <h3>{testimonial.Name}</h3>
-                  <p>{testimonial.Title}</p>
-                  <p>{testimonial.Quote}</p>
-                </TestimonialContent>
-              </TestimonialCard>
-            ))}
-          </SliderWrapper>
-          <IndicatorsContainer>
-            {reviews.map((_, index) => (
-              <Indicator
-                key={index}
-                isActive={index === currentIndex}
-                onClick={() => handleIndicatorClick(index)}
-              />
-            ))}
-          </IndicatorsContainer>
-        </SliderContainer>
-      </HappyCustomerSection>
-    </Container>
-  );
-};
-export default Component;
+    }, [reviews.length, isMobileOrTablet]);
+  
+    const handleIndicatorClick = (index) => {
+      setCurrentIndex(index);
+    };
+  
+    const handleNextClick = () => {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % Math.ceil(reviews.length / (isMobileOrTablet ? 1 : 2)));
+    };
+  
+    const handlePrevClick = () => {
+      setCurrentIndex((prevIndex) => (prevIndex - 1 + Math.ceil(reviews.length / (isMobileOrTablet ? 1 : 2))) % Math.ceil(reviews.length / (isMobileOrTablet ? 1 : 2)));
+    };
+  
+    return (
+        <Container>
+          <HappyCustomerSection>
+            <Title>Happy<Yellow> Customers</Yellow> </Title>
+            {/* <NavigationContainer>
+              <NavigationButton onClick={handlePrevClick}>Previous</NavigationButton>
+            //   <NavigationButton onClick={handleNextClick}>Next</NavigationButton>
+            </NavigationContainer> */}
+            <SliderContainer>
+              <SliderWrapper currentIndex={currentIndex}>
+                {loading ? (
+                  <p style={{color : "orange", fontWeight : "500"}}>Loading...</p>
+                ) : (
+                  visibleReviews.length > 0 && visibleReviews.map((testimonial, index) => (
+                    testimonial && (
+                      <TestimonialCard key={index}>
+                        <Avatar>
+                          {testimonial.Image && <img src={`https://api.moonpayx.com/uploads/${testimonial.Image}`} alt={testimonial.Name} />}
+                        </Avatar>
+                        <TestimonialContent>
+                          {testimonial.Name && <h3>{testimonial.Name}</h3>}
+                          {testimonial.Title && <p>{testimonial.Title}</p>}
+                          {testimonial.Quote && <p>{testimonial.Quote}</p>}
+                        </TestimonialContent>
+                      </TestimonialCard>
+                    )
+                  ))
+                )}
+              </SliderWrapper>
+              <IndicatorsContainer>
+                {reviews.map((_, index) => (
+                  <Indicator
+                    key={index}
+                    isActive={index === currentIndex * (isMobileOrTablet ? 1 : 2)}
+                    onClick={() => handleIndicatorClick(index / (isMobileOrTablet ? 1 : 2))}
+                  />
+                ))}
+              </IndicatorsContainer>
+          
+            </SliderContainer>
+            <NavigationContainer>
+              <NavigationButton onClick={handlePrevClick}><ChevronLeft size={30}/></NavigationButton>
+              <NavigationButton onClick={handleNextClick}><ChevronRight size={30}/></NavigationButton>
+            
+            </NavigationContainer>
+            <div style={{marginTop : "80px"}}> </div>
+          </HappyCustomerSection>
+        </Container>
+      );
+    };
+    
+    export default Component;
