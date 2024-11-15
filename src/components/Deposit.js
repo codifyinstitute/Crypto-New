@@ -14,7 +14,7 @@ import Navbar from './Navbar';
 import payment from "./../assets/Frame 47.png";
 import { RefreshCw } from 'lucide-react';
 import logoM from "./../assets/logo2.png";
-import Depositimg from "./../assets/newDep.png"
+import Depositimg from "./../assets/another-one.png"
 import Bepimg from "./../assets/bep21(1).png";
 import trcimg from "./../assets/trc20(1).png";
 import usdtimg from "./../assets/usdt1-removebg-preview(2).png";
@@ -668,8 +668,8 @@ const DepositImgIcon = styled.div`
 `;
 
 const DepositText = styled.div`
-  margin-top: 0.5rem;
-  font-size: 25px;
+  margin-top: 0.7rem;
+  font-size: 15px;
   font-weight: 700;
 
 `;
@@ -952,7 +952,7 @@ const Balance = styled.div`
 const Deposit = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const [usdt, setUsdt] = useState(location.state?.amount || '1');
+  const [usdt, setUsdt] = useState(location.state?.amount || '100');
   const [isValid, setIsValid] = useState(true);
   const [minAmount, setMinAmount] = useState(0);
   const [extra, setExtra] = useState(0);
@@ -1193,7 +1193,7 @@ const Deposit = () => {
             <DepositImageContainer>
               <DepositImgIcon />
             </DepositImageContainer>
-            <DepositText>  Network   </DepositText>
+            <DepositText>  Select Network   </DepositText>
 
 
 
