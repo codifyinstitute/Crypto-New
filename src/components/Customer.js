@@ -252,7 +252,7 @@ const Component = () => {
     useEffect(() => {
       const fetchReviews = async () => {
         try {
-          const response = await axios.get('https://api.moonpayx.com/reviews/all');
+          const response = await axios.get('http://147.93.20.176:8000/reviews/all');
           if (response.data.length > 0) {
             setReviews(response.data);
             setLoading(false);
@@ -324,7 +324,7 @@ const Component = () => {
                     testimonial && (
                       <TestimonialCard key={index}>
                         <Avatar>
-                          {testimonial.Image && <img src={`https://api.moonpayx.com/uploads/${testimonial.Image}`} alt={testimonial.Name} />}
+                          {testimonial.Image && <img src={`http://147.93.20.176:8000/uploads/${testimonial.Image}`} alt={testimonial.Name} />}
                         </Avatar>
                         <TestimonialContent>
                           {testimonial.Name && <h3>{testimonial.Name}</h3>}

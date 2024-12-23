@@ -327,7 +327,7 @@ const PaymentMethod = () => {
     setLoading(true);
     const email = localStorage.getItem("token");
     axios
-      .get(`https://api.moonpayx.com/account-details/${countryObject[selectedCountry].urlName}/${email}`)
+      .get(`http://147.93.20.176:8000/account-details/${countryObject[selectedCountry].urlName}/${email}`)
       .then((response) => {
         console.log(response.data)
         setAccounts(response.data);

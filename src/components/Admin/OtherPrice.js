@@ -129,7 +129,7 @@ const OtherPrice = () => {
     // console.log(countryObject[country]?.urlName);
     const fetchData = async () => {
       try {
-        const response = await axios.get(`https://api.moonpayx.com/static/${countryObject[country]?.urlName}/one`);
+        const response = await axios.get(`http://147.93.20.176:8000/static/${countryObject[country]?.urlName}/one`);
         setFormData(response.data);
         setId(response.data._id)
         console.log(response.data._id)
@@ -158,7 +158,7 @@ const OtherPrice = () => {
     // console.log(id)
     // console.log(countryObject[country]?.urlName)
     try {
-      const response = await axios.put(`https://api.moonpayx.com/static/${countryObject[country]?.urlName}/put/${id}`, formData);
+      const response = await axios.put(`http://147.93.20.176:8000/static/${countryObject[country]?.urlName}/put/${id}`, formData);
       alert('Data updated successfully');
       //console.log(response.data);
     } catch (error) {
@@ -183,7 +183,7 @@ const OtherPrice = () => {
               value={formData.Wazirx.Average}
               onChange={(e) => handleChange({ target: { name: 'Wazirx', value: { ...formData.Wazirx, Average: e.target.value } } })}
             />
-            <Label htmlFor="Wazirx_Min">Min</Label>
+            {/* <Label htmlFor="Wazirx_Min">Min</Label>
             <Input
               type="number"
               id="Wazirx_Min"
@@ -198,7 +198,7 @@ const OtherPrice = () => {
               name="Wazirx_Max"
               value={formData.Wazirx.Max}
               onChange={(e) => handleChange({ target: { name: 'Wazirx', value: { ...formData.Wazirx, Max: e.target.value } } })}
-            />
+            /> */}
 
             <h2>Binance</h2>
             <Label htmlFor="Binance_Average">Average</Label>
@@ -209,7 +209,7 @@ const OtherPrice = () => {
               value={formData.Binance.Average}
               onChange={(e) => handleChange({ target: { name: 'Binance', value: { ...formData.Binance, Average: e.target.value } } })}
             />
-            <Label htmlFor="Binance_Min">Min</Label>
+            {/* <Label htmlFor="Binance_Min">Min</Label>
             <Input
               type="number"
               id="Binance_Min"
@@ -224,7 +224,7 @@ const OtherPrice = () => {
               name="Binance_Max"
               value={formData.Binance.Max}
               onChange={(e) => handleChange({ target: { name: 'Binance', value: { ...formData.Binance, Max: e.target.value } } })}
-            />
+            /> */}
 
             <h2>Bybit</h2>
             <Label htmlFor="Coinbase_Average">Average</Label>
@@ -235,7 +235,7 @@ const OtherPrice = () => {
               value={formData.Coinbase.Average}
               onChange={(e) => handleChange({ target: { name: 'Coinbase', value: { ...formData.Coinbase, Average: e.target.value } } })}
             />
-            <Label htmlFor="Coinbase_Min">Min</Label>
+            {/* <Label htmlFor="Coinbase_Min">Min</Label>
             <Input
               type="number"
               id="Coinbase_Min"
@@ -250,7 +250,7 @@ const OtherPrice = () => {
               name="Coinbase_Max"
               value={formData.Coinbase.Max}
               onChange={(e) => handleChange({ target: { name: 'Coinbase', value: { ...formData.Coinbase, Max: e.target.value } } })}
-            />
+            /> */}
 
             <h2>Bitget</h2>
             <Label htmlFor="Kraken_Average">Average</Label>
@@ -261,7 +261,7 @@ const OtherPrice = () => {
               value={formData.Kraken.Average}
               onChange={(e) => handleChange({ target: { name: 'Kraken', value: { ...formData.Kraken, Average: e.target.value } } })}
             />
-            <Label htmlFor="Kraken_Min">Min</Label>
+            {/* <Label htmlFor="Kraken_Min">Min</Label>
             <Input
               type="number"
               id="Kraken_Min"
@@ -276,7 +276,7 @@ const OtherPrice = () => {
               name="Kraken_Max"
               value={formData.Kraken.Max}
               onChange={(e) => handleChange({ target: { name: 'Kraken', value: { ...formData.Kraken, Max: e.target.value } } })}
-            />
+            /> */}
 
             {/* Handle other fields like TransactionFee, NetworkFee, LoginId, and Password as needed */}
 

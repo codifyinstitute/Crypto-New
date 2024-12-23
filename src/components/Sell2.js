@@ -221,7 +221,7 @@ const Sell2 = () => {
       const fullPhoneNumber = `+${countryCode}${phone}`;  
       console.log("mnumber",fullPhoneNumber);
       try {
-        const response = await axios.post('https://api.moonpayx.com/users/login', { Email: email, MobileNo: fullPhoneNumber });
+        const response = await axios.post('http://147.93.20.176:8000/users/login', { Email: email, MobileNo: fullPhoneNumber });
         if (response.status === 200) {
           navigate('/otp', { state: { email: email, phone: fullPhoneNumber } });
         }
