@@ -466,7 +466,7 @@ const Navbar = () => {
   const token = localStorage.getItem("token");
   const fetchWallet = async () => {
     try {
-      const response = await fetch(`http://147.93.20.176:8000/wallet/get/${token}`);
+      const response = await fetch(`https://pay.moonpayx.com/wallet/get/${token}`);
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }

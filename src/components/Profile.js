@@ -248,11 +248,11 @@ const Profile = () => {
     const email = localStorage.getItem('token');
     if (email) {
       try {
-        const response = await fetch(`http://147.93.20.176:8000/users/get/${email}`);
+        const response = await fetch(`https://pay.moonpayx.com/users/get/${email}`);
         if (!response.ok) throw new Error('Failed to fetch user data');
         const data = await response.json();
         setUserEmail(data.Email);
-        setProfileImage(`http://147.93.20.176:8000/uploads/${data.Profile}`);
+        setProfileImage(`https://pay.moonpayx.com/uploads/${data.Profile}`);
         console.log('API Response:', data);
       } catch (error) {
         toast.error(error.message);
@@ -269,7 +269,7 @@ const Profile = () => {
     const email = localStorage.getItem('token');
     if (email) {
       try {
-        const response = await fetch(`http://147.93.20.176:8000/wallets/getBalance/${email}`);
+        const response = await fetch(`https://pay.moonpayx.com/wallets/getBalance/${email}`);
         if (!response.ok) throw new Error('Failed to fetch wallet balance');
         const data = await response.json();
         setWalletBalance(data.balance);
@@ -315,7 +315,7 @@ const Profile = () => {
     const email = localStorage.getItem('token');
 
     try {
-      const response = await fetch(`http://147.93.20.176:8000/users/update/${email}`, {
+      const response = await fetch(`https://pay.moonpayx.com/users/update/${email}`, {
         method: 'PUT',
         body: formData,
       });

@@ -198,7 +198,7 @@ const CryptoPriceGrid = () => {
 
   const fetchTransactionFee = async () => {
     try {
-      const response = await fetch(`http://147.93.20.176:8000/static/${countryObject[selectedCountry]?.urlName}/one`);
+      const response = await fetch(`https://pay.moonpayx.com/static/${countryObject[selectedCountry]?.urlName}/one`);
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }

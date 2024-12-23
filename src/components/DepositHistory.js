@@ -199,8 +199,8 @@ const MakeDepositButton = styled.button`
 //   const fetchDepositHistory = async () => {
 //     const email = localStorage.getItem("token");    
 //     try {
-//       const response = await fetch(`http://147.93.20.176:8000/deposit-transactions/get/email/${email}`);
-//       // http://147.93.20.176:8000/deposit-transactions/get/email/
+//       const response = await fetch(`https://pay.moonpayx.com/deposit-transactions/get/email/${email}`);
+//       // https://pay.moonpayx.com/deposit-transactions/get/email/
 //       if (!response.ok) throw new Error('Network response was not ok');
 //       const data = await response.json();
 //       console.log(data);
@@ -268,7 +268,7 @@ const DepositHistory = () => {
     setLoading(true);
     const email = localStorage.getItem("token");
     try {
-      const response = await fetch(`http://147.93.20.176:8000/deposit-transactions/get/email/${email}`);
+      const response = await fetch(`https://pay.moonpayx.com/deposit-transactions/get/email/${email}`);
       if (!response.ok) throw new Error('Network response was not ok');
       const data = await response.json();
       setDepositHistory(data.reverse());

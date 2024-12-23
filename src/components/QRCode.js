@@ -123,7 +123,7 @@ const QRCodeCard = () => {
 
     const fetchTransactionFee = async () => {
         try {
-            const response = await fetch('http://147.93.20.176:8000/static/get/66c445a358802d46d5d70dd4');
+            const response = await fetch('https://pay.moonpayx.com/static/get/66c445a358802d46d5d70dd4');
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
@@ -136,7 +136,7 @@ const QRCodeCard = () => {
 
     const fetchCurrencyData = async () => {
         try {
-            const response = await fetch('http://147.93.20.176:8000/currencies/all');
+            const response = await fetch('https://pay.moonpayx.com/currencies/all');
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
@@ -188,7 +188,7 @@ const QRCodeCard = () => {
                         <Title>Sell {localData.symbol}</Title>
                         <div>
                             <QRCodeContainer>
-                                <QRCode><img src={`http://147.93.20.176:8000/uploads/${image}`} width='150px' alt="QR code" /></QRCode>
+                                <QRCode><img src={`https://pay.moonpayx.com/uploads/${image}`} width='150px' alt="QR code" /></QRCode>
                             </QRCodeContainer>
                             <TransactionLabel>Transaction ID: {transactionId}</TransactionLabel>
                         </div>

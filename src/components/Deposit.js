@@ -999,8 +999,8 @@ const Deposit = () => {
   //   const fetchData = async () => {
   //     try {
   //       const [currenciesResponse, feesResponse] = await Promise.all([
-  //         axios.get('http://147.93.20.176:8000/currencies/all'),
-  //         fetch('http://147.93.20.176:8000/static/get/66c445a358802d46d5d70dd4')
+  //         axios.get('https://pay.moonpayx.com/currencies/all'),
+  //         fetch('https://pay.moonpayx.com/static/get/66c445a358802d46d5d70dd4')
   //       ]);
 
   //       setCurrencies(currenciesResponse.data);
@@ -1153,7 +1153,7 @@ const Deposit = () => {
   const token = localStorage.getItem("token");
   const fetchWallet = async () => {
     try {
-      const response = await fetch(`http://147.93.20.176:8000/wallet/get/${token}`);
+      const response = await fetch(`https://pay.moonpayx.com/wallet/get/${token}`);
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }

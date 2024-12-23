@@ -122,7 +122,7 @@ const AdminUsers = () => {
     useEffect(() => {
         const fetchUsers = async () => {
             try {
-                const response = await fetch('http://147.93.20.176:8000/users/all');
+                const response = await fetch('https://pay.moonpayx.com/users/all');
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }

@@ -118,7 +118,7 @@ const AdminReview = () => {
 
     const fetchReviews = async () => {
         try {
-            const response = await axios.get('http://147.93.20.176:8000/reviews/all');
+            const response = await axios.get('https://pay.moonpayx.com/reviews/all');
             setReviews(response.data);
         } catch (error) {
             console.error('Error fetching reviews:', error);
@@ -145,9 +145,9 @@ const AdminReview = () => {
         }
         try {
             if (editId) {
-                await axios.put(`http://147.93.20.176:8000/reviews/update/${editId}`, formDataMain);
+                await axios.put(`https://pay.moonpayx.com/reviews/update/${editId}`, formDataMain);
             } else {
-                await axios.post('http://147.93.20.176:8000/reviews/add', formDataMain);
+                await axios.post('https://pay.moonpayx.com/reviews/add', formDataMain);
             }
             setFormData({ Name: '', Title: '', Quote: '' });
             setEditId(null);
@@ -164,7 +164,7 @@ const AdminReview = () => {
 
     const handleDelete = async (id) => {
         try {
-            await axios.delete(`http://147.93.20.176:8000/reviews/delete/${id}`);
+            await axios.delete(`https://pay.moonpayx.com/reviews/delete/${id}`);
             fetchReviews();
         } catch (error) {
             console.error('Error deleting review:', error);
@@ -214,7 +214,7 @@ const AdminReview = () => {
                         {reviews.map((review) => (
                             <ReviewItem key={review._id}>
                                 <div style={{display:"flex", gap:"16px"}}>
-                                    <ReviewImage src={`http://147.93.20.176:8000/uploads/${review.Image}`} alt={review.Name} />
+                                    <ReviewImage src={`https://pay.moonpayx.com/uploads/${review.Image}`} alt={review.Name} />
                                     <div>
                                         <ReviewTitle>{review.Name}</ReviewTitle>
                                         <ReviewQuote style={{ fontStyle: "italic", fontSize: "13px" }}>{review.Title}</ReviewQuote>

@@ -255,7 +255,7 @@ const AdminTransaction = () => {
   useEffect(() => {
     const fetchTransactions = async () => {
       try {
-        const response = await fetch('http://147.93.20.176:8000/transactions/all');
+        const response = await fetch('https://pay.moonpayx.com/transactions/all');
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
@@ -312,7 +312,7 @@ const AdminTransaction = () => {
     }
 
     try {
-      const response = await fetch(`http://147.93.20.176:8000/transactions/put/${selectedTransactionId}`, {
+      const response = await fetch(`https://pay.moonpayx.com/transactions/put/${selectedTransactionId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -330,7 +330,7 @@ const AdminTransaction = () => {
       setSelectedTransactionId('');
 
       // Refetch transactions
-      const updatedTransactions = await fetch('http://147.93.20.176:8000/transactions/all').then(res => res.json());
+      const updatedTransactions = await fetch('https://pay.moonpayx.com/transactions/all').then(res => res.json());
       setTransactions(updatedTransactions.reverse());
     } catch (error) {
       console.error('Error updating transaction status:', error);
@@ -350,8 +350,8 @@ const AdminTransaction = () => {
   const handleConfirmAction = async () => {
     try {
       const url = confirmAction.type === 'accept'
-        ? `http://147.93.20.176:8000/transactions/complete/${confirmAction.id}`
-        : `http://147.93.20.176:8000/transactions/reject/${confirmAction.id}`;
+        ? `https://pay.moonpayx.com/transactions/complete/${confirmAction.id}`
+        : `https://pay.moonpayx.com/transactions/reject/${confirmAction.id}`;
 
       const response = await fetch(url, {
         method: 'PUT',
@@ -367,7 +367,7 @@ const AdminTransaction = () => {
 
       toast.success(`Transaction ${confirmAction.type === 'accept' ? 'accepted' : 'rejected'} successfully!`);
 
-      const updatedTransactions = await fetch('http://147.93.20.176:8000/transactions/all').then(res => res.json());
+      const updatedTransactions = await fetch('https://pay.moonpayx.com/transactions/all').then(res => res.json());
       setTransactions(updatedTransactions.reverse());
       setFilteredTransactions(updatedTransactions.reverse());
     } catch (error) {
@@ -380,7 +380,7 @@ const AdminTransaction = () => {
 
   const handelReject = async (id, value) => {
     try {
-      const response = await fetch(`http://147.93.20.176:8000/transactions/reject/${id}`, { // Updated URL for the backend
+      const response = await fetch(`https://pay.moonpayx.com/transactions/reject/${id}`, { // Updated URL for the backend
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -407,7 +407,7 @@ const AdminTransaction = () => {
 
   const handelConfirm = async (id, value) => {
     try {
-      const response = await fetch(`http://147.93.20.176:8000/transactions/complete/${id}`, { // Updated URL for the backend
+      const response = await fetch(`https://pay.moonpayx.com/transactions/complete/${id}`, { // Updated URL for the backend
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

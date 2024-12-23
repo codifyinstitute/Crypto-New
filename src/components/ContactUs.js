@@ -270,7 +270,7 @@ const ContactUs = () => {
     if (validateForm()) {
       setIsSubmitting(true);
       try {
-        const response = await fetch("http://147.93.20.176:8000/contacts/add", {
+        const response = await fetch("https://pay.moonpayx.com/contacts/add", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

@@ -316,7 +316,7 @@ const SellHistory = () => {
       if (email) {
         try {
           const response = await fetch(
-            `http://147.93.20.176:8000/transactions/get/email/${email}`
+            `https://pay.moonpayx.com/transactions/get/email/${email}`
           );
           if (!response.ok) throw new Error("Failed to fetch transactions");
           const data = await response.json();
